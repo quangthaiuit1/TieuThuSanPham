@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/home.xhtml">
+	<ui:define name="content">
+		<h3 style="margin: 0px">Danh mục nhóm sản phẩm km</h3>
+		<p:separator />
+		<h:form id="menuformid">
+			<div class="col-md-12"  style="padding-left:0px !important; padding-right: 0px !important;">
+	              <div class="col-md-12">
+				      <p:commandButton id="xoact"  process="@this"  action="#{promotionProductGroupBean.delete()}" style="padding: 3px 14px 3px 16px !important;font-size:11px !important;" styleClass="buttonaddrow"
+				       update=":messages,:menuformid"   icon="fa fa-trash">
+				          <p:confirm icon="ui-icon-alert" />
+				        </p:commandButton>
+					  <p:commandButton id="idorder" icon="fa fa-search" 
+					  style="padding:4px !important;" styleClass="buttonaddrow" value="Tìm kiếm" />
+				      <p:commandButton process="@this"  action="#{promotionProductGroupBean.showDialog()}" style="padding:4px !important;" styleClass="buttonaddrow" value="Thêm"
+				       update="editdetail"   icon="fa fa-plus" />
+				      <p:commandButton action="#{promotionProductGroupBean.showDialogEdit}" style="padding:4px !important;" styleClass="buttonaddrow" value="Chỉnh sửa"
+				       update="editdetail"   icon="fa fa-plus" />
+	                  <p:overlayPanel id="imagePanel" for="idorder" hideEffect="fade" dismissable="false"
+								widgetVar="panelsearch" style="width:350px;">
+						<div class="col-md-12" style="border: 1px solid #ccc; border-radius: 6px; margin-bottom: 5px !important;">
+						    <div class="col-md-12" style="padding-top:10px !important;padding-left: 0px !important; padding-right: 0px !important;">
+                                   <div class="row">
+                                       <div class="col-md-12" style="padding-left: 0px !important;padding-right:0px !important;margin-top: 5px;">
+                                            <label>Mã nhóm KM</label>
+                                       	</div>
+                                       <div class="col-md-12" style="padding-left: 0px !important;padding-right:0px !important; margin-bottom: 10px;">
+                                           <p:inputText value="#{promotionProductGroupBean.codeSearch}" />
+                                       	</div>
+                                       <div class="col-md-12" style="padding-left: 0px !important;padding-right:0px !important;margin-top: 5px;">
+                                            <label>Tên nhóm KM</label>
+                                       	</div>
+                                       <div class="col-md-12" style="padding-left: 0px !important;padding-right:0px !important; margin-bottom: 10px;">
+                                           <p:inputText value="#{promotionProductGroupBean.nameSearch}" />
+                                       	</div>
+                                   </div>
+                                 </div>
+						  </div>
+							<div class="col-md-12" style="padding-left: 0px !important;padding-right: 0px !important; margin-bottom: 5px;">
+							   <div class="pull-right">
+									<p:commandButton value="Tìm" process="menuformid:imagePanel" 
+									icon="ui-icon-search" oncomplete="PF('panelsearch').hide()"
+									actionListener="#{promotionProductGroupBean.search()}"
+									update="menuformid:tablesp" />
+								</div>
+							</div>
+					  </p:overlayPanel>
+	              </div>
+	              <div class="col-md-12" style="margin-top: 3px;">
+	                <p:dataTable value="#{promotionProductGroupBean.listPromotionProductGroup}" lazy="true"
+						paginatorPosition="bottom" rowsPerPageTemplate="60,90,180" 
+						paginator="true" rowKey="#{item.id}" 
+						selection="#{promotionProductGroupBean.promotionProductGroupSelect}" scrollable="true"
+						selectionMode="single" id="tablesp"
+						scrollHeight="500" widgetVar="datatb" resizableColumns="true"
+						var="item">
+						  <p:ajax event="rowDblselect" listener="#{promotionProductGroupBean.showDialogEdit()}"
+									 update="editdetail" />
+						<p:column headerText="ID" width="30">
+							<h:outputText value="#{item.id}" />
+						</p:column>
+						<p:column headerText="Mã nhómKM" width="50">
+							<h:outputText value="#{item.code}" />
+						</p:column>
+						<p:column headerText="Tên nhóm KM" width="250">
+							<h:outputText style="white-space: initial;" value="#{item.name}" />
+						</p:column>
+						<p:column headerText="ĐVT" width="50">
+						     <h:outputText value="#{item.unit}" />
+						</p:column>
+						<p:column headerText="SL Carton" width="70">
+						     <h:outputText value="#{item.carton_quantity}" />
+						</p:column>
+						<p:column headerText="DVT Carton" width="60">
+						     <h:outputText value="#{item.carton_unit}" />
+						</p:column>
+					</p:dataTable>
+	          </div>
+	           </div>
+		</h:form>
+		<p:dialog styleClass="dialogCus" resizable="false" width="450" style="overflow: initial;"
+		closeOnEscape="true" header="Nhóm sản phẩm" widgetVar="dlg1">
+		<h:form id="editdetail" style="width:100%;">
+			   <div class="col-md-12 boxCus">
+			       <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+			           <div class="row">
+			             <div class="col-md-12" style="padding-left:0px !important;padding-right: 0px !important; ">
+                              <label>Mã nhóm<span style="color:red;">*</span></label>
+                          </div>
+                          <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+                              <p:inputText value="#{promotionProductGroupBean.promotionProductGroupCrud.code}" />
+                          </div>
+			             <div class="col-md-12" style="padding-left:0px !important;padding-right: 0px !important; ">
+                              <label>Tên nhóm<span style="color:red;">*</span></label>
+                          </div>
+                          <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+                              <p:inputText value="#{promotionProductGroupBean.promotionProductGroupCrud.name}" />
+                          </div>
+                          <div class="col-md-4" style="padding-left:0px !important;padding-right: 3px !important; ">
+                              <label>ĐVT</label>
+                          </div>
+                          <div class="col-md-4" style="padding-left:2px !important;padding-right: 2px !important; ">
+                              <label>SL CarTon</label>
+                          </div>
+                          <div class="col-md-4" style="padding-left:3px !important;padding-right: 0px !important; ">
+                              <label>DVT CarTon</label>
+                          </div>
+                          <div class="col-md-4" style="padding-left:0px !important;padding-right: 3px !important; ">
+                               <p:inputText value="#{promotionProductGroupBean.promotionProductGroupCrud.unit}" />
+                          </div>
+                          <div class="col-md-4" style="padding-left:2px !important;padding-right: 2px !important; ">
+                               <p:inputText value="#{promotionProductGroupBean.promotionProductGroupCrud.carton_quantity}" />
+                          </div>
+                          <div class="col-md-4" style="padding-left:3px !important;padding-right: 0px !important; ">
+                              <p:inputText value="#{promotionProductGroupBean.promotionProductGroupCrud.carton_unit}" />
+                          </div>
+                         
+			           </div>
+			       </div>
+				</div>
+				<div class="col-md-12" style="padding:10px 0px;">
+				    <p:commandButton  value="Lưu/Cập nhật" 
+						update=":messages,menuformid:tablesp"
+						actionListener="#{promotionProductGroupBean.saveOrUpdate()}" />
+				</div>
+		</h:form>
+	</p:dialog>
+	</ui:define>
+</ui:composition>

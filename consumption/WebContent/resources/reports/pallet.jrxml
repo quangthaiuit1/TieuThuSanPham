@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pallet" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e2f40bf7-f904-44fc-a491-e64fec2c934d">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<import value="khanh.lixco.com.util.FormatHandler"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="productLix.name" class="java.lang.String"/>
+	<field name="createdDate" class="java.util.Date"/>
+	<field name="teamLix.name" class="java.lang.String"/>
+	<field name="shiftLix.shift_num" class="java.lang.Integer"/>
+	<field name="num_order" class="java.lang.Integer"/>
+	<field name="num_pallet" class="java.lang.Double"/>
+	<field name="productLix.kgbox" class="java.lang.Double"/>
+	<field name="productLix.slsp" class="java.lang.Double"/>
+	<field name="identify" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="295" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="" stretchType="RelativeToBandHeight" x="0" y="0" width="555" height="70" uuid="737220ef-fdff-403d-bff5-0e77e8699039"/>
+				<box bottomPadding="3">
+					<pen lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport" size="55" isBold="true"/>
+					<paragraph lineSpacingSize="1.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PALLET SỐ: "+$F{num_order}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="320" y="122" width="234" height="26" uuid="15df2f9b-c1ca-4757-8f68-299a3e4d024a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{createdDate}]]></textFieldExpression>
+				<patternExpression><![CDATA["dd/MM/yyyy"]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="122" width="300" height="26" uuid="c6372724-6387-490e-9187-820aa64c7a50"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NGÀY]]></text>
+			</staticText>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="320" y="148" width="235" height="26" uuid="fe437d62-8803-498c-8c4f-e72fae8fabad"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{createdDate}]]></textFieldExpression>
+				<patternExpression><![CDATA["hh:mm a"]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="148" width="300" height="26" uuid="ab75ddb5-ad7f-4076-b4a6-585aaaee1fe4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GIỜ]]></text>
+			</staticText>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="320" y="174" width="235" height="26" uuid="2e953818-6e74-4b8c-b8b6-796224f947f5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{shiftLix.shift_num}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="174" width="300" height="26" uuid="7389cb67-85b3-4acb-88a4-11464e1957d6"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CA]]></text>
+			</staticText>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="320" y="200" width="235" height="26" uuid="c1278f8c-17d7-4234-bdb0-62537799c369"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{teamLix.name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="200" width="300" height="26" uuid="4a57f545-526a-49ef-a5b2-fb249324ba0c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TỔ SẢN XUẤT]]></text>
+			</staticText>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="320" y="253" width="235" height="26" uuid="6c7db14a-6ea7-49d1-9f12-baaf8b68f8da"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[FormatHandler.getInstance().getNumberFormat($F{num_pallet},1000)]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="253" width="300" height="26" uuid="25758942-0631-4676-bb5d-0aa8ab964bbb"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SỐ THÙNG TRÊN PALLET]]></text>
+			</staticText>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="320" y="227" width="235" height="26" uuid="0921e0cd-08a2-4da3-91cc-7ec59c426402"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[FormatHandler.getInstance().getNumberFormat(($F{productLix.slsp}*$F{num_pallet}*$F{productLix.kgbox}),10000)+" Kg"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="227" width="300" height="26" uuid="2d87216e-2c3d-4c2f-a46d-653d3d459615"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[KL NETWEIGHT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="300" y="253" width="20" height="26" uuid="935e671b-f06d-447d-a87c-af492eee23c5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="300" y="227" width="20" height="26" uuid="5b09c81c-537a-4413-b5db-90b7f806c529"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="300" y="174" width="20" height="26" uuid="440899de-e47a-4198-8443-3db4ca346c62"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="300" y="200" width="20" height="26" uuid="9e26598f-e6a1-4fbc-9cb5-30a603ae31de"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="300" y="148" width="20" height="26" uuid="a28bbeba-8bf5-42ce-a56c-10a8ac2f6b9f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="300" y="122" width="20" height="26" uuid="c4e3e863-3294-41bc-abb4-2c85fbf5d5dc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="72" width="555" height="45" uuid="8e753f25-739c-49d8-9307-7bf691d5ec2f"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="FontReport" size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{productLix.name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

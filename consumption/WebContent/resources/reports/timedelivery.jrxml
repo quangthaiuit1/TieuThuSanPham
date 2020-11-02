@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="timedelivery" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e3ef53ff-3abd-4d56-8258-69e8245690ce">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="title" class="java.lang.String"/>
+	<parameter name="logo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="delivery.createdDate" class="java.util.Date"/>
+	<field name="delivery.delivery_date" class="java.util.Date"/>
+	<field name="delivery.voucher" class="java.lang.String"/>
+	<field name="delivery.teamLix.name" class="java.lang.String"/>
+	<field name="delivery.teamLix.workshopLix.name" class="java.lang.String"/>
+	<field name="delivery.shiftLix.name" class="java.lang.String"/>
+	<field name="brand_lix.id" class="java.lang.Long"/>
+	<field name="brand_lix.name" class="java.lang.String"/>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{brand_lix.id}]]></groupExpression>
+		<groupHeader>
+			<band height="40">
+				<textField>
+					<reportElement x="0" y="0" width="555" height="20" forecolor="#F72B28" uuid="27e779ee-f791-4cbd-b37e-0bab504a9963"/>
+					<box>
+						<pen lineColor="#1F0A09"/>
+						<topPen lineWidth="0.24" lineColor="#0F0706"/>
+						<leftPen lineWidth="0.24" lineColor="#0F0706"/>
+						<bottomPen lineWidth="0.24" lineColor="#0F0706"/>
+						<rightPen lineWidth="0.24" lineColor="#0F0706"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="FontReport" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{brand_lix.name}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="20" width="30" height="20" uuid="8ae5be10-caf1-45e8-bf58-107cc4c3db98"/>
+					<box>
+						<topPen lineWidth="0.33"/>
+						<leftPen lineWidth="0.33"/>
+						<bottomPen lineWidth="0.33"/>
+						<rightPen lineWidth="0.33"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="FontReport" size="12"/>
+					</textElement>
+					<text><![CDATA[STT]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="30" y="20" width="85" height="20" uuid="728c42ee-d644-451c-b56e-a5204bdfb0f6">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.33"/>
+						<leftPen lineWidth="0.33"/>
+						<bottomPen lineWidth="0.33"/>
+						<rightPen lineWidth="0.33"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="FontReport" size="12"/>
+					</textElement>
+					<text><![CDATA[Ngày tạo ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="115" y="20" width="74" height="20" uuid="1f724f7b-3d8e-4f16-899c-6ce2d66853d4"/>
+					<box>
+						<topPen lineWidth="0.33"/>
+						<leftPen lineWidth="0.33"/>
+						<bottomPen lineWidth="0.33"/>
+						<rightPen lineWidth="0.33"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="FontReport" size="12"/>
+					</textElement>
+					<text><![CDATA[Ngày ca]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="189" y="20" width="80" height="20" uuid="3c865150-22ee-4633-9914-539dbda758fe"/>
+					<box>
+						<topPen lineWidth="0.33"/>
+						<leftPen lineWidth="0.33"/>
+						<bottomPen lineWidth="0.33"/>
+						<rightPen lineWidth="0.33"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="FontReport" size="12"/>
+					</textElement>
+					<text><![CDATA[Số chứng từ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="269" y="20" width="61" height="20" uuid="44b6df4c-45f9-47a0-a477-29647b591a04"/>
+					<box>
+						<topPen lineWidth="0.33"/>
+						<leftPen lineWidth="0.33"/>
+						<bottomPen lineWidth="0.33"/>
+						<rightPen lineWidth="0.33"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="FontReport" size="12"/>
+					</textElement>
+					<text><![CDATA[Ca sản xuất]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="330" y="20" width="100" height="20" uuid="95ea5ea8-02d5-4f3e-a76c-ca8a773df62d">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.33"/>
+						<leftPen lineWidth="0.33"/>
+						<bottomPen lineWidth="0.33"/>
+						<rightPen lineWidth="0.33"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="FontReport" size="12"/>
+					</textElement>
+					<text><![CDATA[Tổ sản xuất]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="430" y="20" width="125" height="20" uuid="0e447fa3-ed60-43fe-9538-b6b9a644da38">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.33"/>
+						<leftPen lineWidth="0.33"/>
+						<bottomPen lineWidth="0.33"/>
+						<rightPen lineWidth="0.33"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="FontReport" size="12"/>
+					</textElement>
+					<text><![CDATA[Phân xưởng]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="64" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="38" width="555" height="20" uuid="45991385-273e-4ac4-8954-225124f84289"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport" size="15" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame">
+				<reportElement x="0" y="0" width="60" height="30" uuid="4031cc93-5688-4e3f-bd37-7422c35bdcd2"/>
+				<graphicElement fill="Solid"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="30" height="20" uuid="bfbbcb23-1100-42bf-bc24-0ef7860513ea">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="3">
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="30" y="0" width="85" height="20" uuid="9ec44cdf-44c3-47d1-a498-48f8adc8f6e6">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box leftPadding="3" rightPadding="3">
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{delivery.createdDate}]]></textFieldExpression>
+				<patternExpression><![CDATA["dd/MM/yyyy HH:mm"]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="115" y="0" width="74" height="20" uuid="d655d6f9-9025-4c7b-b48c-cf41245ac291"/>
+				<box leftPadding="3" rightPadding="3">
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{delivery.delivery_date}]]></textFieldExpression>
+				<patternExpression><![CDATA["dd/MM/yyyy HH:mm"]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="189" y="0" width="80" height="20" uuid="b5ead104-a0bb-41fe-a043-c4591dada72a"/>
+				<box leftPadding="3" rightPadding="3">
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{delivery.voucher}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="269" y="0" width="61" height="20" uuid="1a822d44-bfcb-48dc-8e57-1c0ce92f2366"/>
+				<box leftPadding="3" rightPadding="3">
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{delivery.shiftLix.name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="330" y="0" width="100" height="20" uuid="1315e214-63a6-4a8d-b66f-ec40bf1792eb"/>
+				<box leftPadding="3" rightPadding="3">
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{delivery.teamLix.name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="430" y="0" width="125" height="20" uuid="23d4ee55-16fc-4996-8baf-d59156fdf4f7"/>
+				<box leftPadding="3" rightPadding="3">
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{delivery.teamLix.workshopLix.name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

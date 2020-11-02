@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/home.xhtml">
+	<ui:define name="content">
+		<h3 style="margin: 0px">Kho hàng</h3>
+		<p:separator />
+		  <div class="col-md-12" style="background-color: #eeeeee;padding-top:15px;padding-bottom:15px; padding-left:15px; padding-right:15px;">
+		     <h:form id="warehouse">
+		      <div class="col-md-12">
+		        <div class="row">
+		            <div class="col-md-2" style="width:104px;height: 35px;">
+		                <span class="titleWH">Kho hàng</span>
+		            </div>
+		            <div class="col-md-6"  style="padding-right:3px !important;">
+		               <p:selectOneMenu id="s_warehouse" styleClass="selectBoxWH"
+							value="#{managerWarehouseBean.warehouseSelect}"
+							converter="abstractConverter" effect="fade" var="t"
+							style="width:100%;">
+							<f:selectItem itemLabel="--select--" value="#{null}" />
+							<f:selectItems value="#{managerWarehouseBean.listWarehouse}"
+								var="theme" itemLabel="#{theme.name}"
+								itemValue="#{theme}" />
+							<p:column>
+								<h:outputText value="#{t.code}" />
+							</p:column>
+							<p:column>
+								<h:outputText value="#{t==null ? '--select--' :t.name}" />
+							</p:column>
+							<p:ajax process="s_warehouse,@this" event="change" listener="#{managerWarehouseBean.initRowStack()}" update="rowStackForm,floorForm,posForm" />
+						</p:selectOneMenu>
+		            </div>
+		            <div class="col-md-2" style="padding-left:0px !important;">
+		                <span class="btn_icnx">
+			                 <p:commandLink process="@this" update="dlg1" action="#{managerWarehouseBean.showDialogAddWarehouse()}">
+			                    <i class="fa fa-plus" aria-hidden="true"></i>
+			                 </p:commandLink>
+			            </span>
+		            </div>
+		            <div class="col-md-2" style="padding-left:0px !important;padding-right:0px !important; width: 24.6% !important;text-align: right;">
+		               <p:commandLink  action="#{managerWarehouseBean.quickOnClick()}" update="rowStackForm,floorForm,posForm,quickForm" styleClass="btn_primmary" style="margin-left: 10px;" >
+		                    <i class="fa fa-plus" aria-hidden="true"></i><span>Thêm nhanh</span>
+		               </p:commandLink>
+		            </div>
+		        </div>
+		    </div>
+		    </h:form>
+		    <h:form id="rowStackForm">
+		    <div class="col-md-12"  style="display:#{managerWarehouseBean.quick==true ? 'none' :'block'}">
+		        <div class="clearfix" style="width: 100%;background: white; margin-top: 10px;">
+			        <p:fieldset legend="Dãy kho hàng" styleClass="fieldsetclass label12 borderfsnone" toggleable="true" toggleSpeed="500" collapsed="false" style="margin-bottom:10px;" >
+			           <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;padding-top: 10px;">
+			               <ui:repeat var="item" value="#{managerWarehouseBean.listRowStackCrud}">
+			               <div class="row" style="margin-bottom: 5px;">
+			                  <div class="col-md-4">
+			                      <p:inputText value="#{item.row_name}" placeholder="Tên dãy">
+			                          <p:ajax update="@this"/>
+			                      </p:inputText>
+			                  </div>
+			                  <div class="col-md-4">
+			                       <p:inputText value="#{item.row_code}" onblur="value=value.toUpperCase()" placeholder="Mã dãy">
+			                           <p:ajax update="@this"/>
+			                       </p:inputText>
+			                  </div>
+			                  <div class="col-md-2" style="padding-left: 0px !important;">
+			                    <p:commandLink update="rowStackForm,floorForm" action="#{managerWarehouseBean.deleteRowStack(item)}" style="color: red;font-size: 16px; margin-top: 6px;display: inline-block;">
+			                        <i class="fa fa-times" aria-hidden="true"></i>
+			                    </p:commandLink>
+			                  </div>
+			               </div>
+			               </ui:repeat>
+			               <div class="row" style="margin-top: 8px;">
+			                   <p:commandLink  update="rowStackForm,messages" process="@this" action="#{managerWarehouseBean.addNewRowStack()}" styleClass="btn_primmary" style="margin-left: 10px;background-color: #e9e9e9;color: #000000c4 !important;font-weight: 100;border: 1px solid #a59e9e;" >
+					                    <i style="font-weight:100;" class="fa fa-plus" aria-hidden="true"></i><span>Thêm dòng</span>
+					              </p:commandLink>
+			                   <p:commandLink  update="rowStackForm,floorForm,messages" process="warehouse,rowStackForm"  actionListener="#{managerWarehouseBean.saveOrUpdateRowStack()}" styleClass="btn_primmary" style="margin-left: 10px;" >
+					                    <i class="fa fa-plus" aria-hidden="true"></i><span>Lưu</span>
+					           </p:commandLink>
+			               </div>
+			           </div>  
+			        </p:fieldset>
+		        </div>
+		    </div>
+		    </h:form>
+		    <h:form id="floorForm">
+		    <div class="col-md-12" style="display:#{managerWarehouseBean.quick==true ? 'none' :'block'}">
+		        <div class="clearfix" style="width: 100%;background: white; margin-top: 10px;">
+			        <p:fieldset legend="Tầng của dãy" styleClass="fieldsetclass label12 borderfsnone" toggleable="true" toggleSpeed="500" collapsed="false" style="margin-bottom:10px;" >
+			           <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+			               <div class="row" style=" margin-bottom: 10px;">
+			                   <div class="col-md-4">
+					                <p:selectOneMenu 
+									value="#{managerWarehouseBean.rowStackSelect}"
+									converter="abstractConverter" effect="fade" var="t"
+									style="width:100%;">
+									<f:selectItem itemLabel="Chọn Dãy kho" value="#{null}" />
+									<f:selectItems value="#{managerWarehouseBean.listRowStack}"
+										var="theme" itemLabel="#{theme.row_name}"
+										itemValue="#{theme}" />
+									<p:column>
+										<h:outputText value="#{t.row_code}" />
+									</p:column>
+									<p:column>
+										<h:outputText value="#{t==null ? '--select--' :t.row_name}" />
+									</p:column>
+									<p:ajax event="change" listener="#{managerWarehouseBean.initFloor()}" update="floorForm,posForm" />
+								  </p:selectOneMenu>
+			                   </div>
+			               </div>
+			               <ui:repeat var="item1" value="#{managerWarehouseBean.listFloorCrud}">
+			                   <div class="row" style="margin-bottom: 5px;">
+				                  <div class="col-md-4">
+				                      <p:inputText value="#{item1.floor_name}" placeholder="Tên tầng">
+				                           <p:ajax update="@this"/>
+				                      </p:inputText>
+				                  </div>
+				                  <div class="col-md-4">
+				                       <p:inputText value="#{item1.floor_code}" onblur="value=value.toUpperCase()" placeholder="Mã tầng">
+				                            <p:ajax update="@this"/>
+				                       </p:inputText>
+				                  </div>
+				                  <div class="col-md-2" style="padding-left: 0px !important;">
+				                    <p:commandLink update="floorForm,posForm" action="#{managerWarehouseBean.deleteFloor(item1)}" style="color: red;font-size: 16px; margin-top: 6px;display: inline-block;">
+				                        <i class="fa fa-times" aria-hidden="true"></i>
+				                    </p:commandLink>
+				                  </div>
+			                  </div>
+			               </ui:repeat>
+			               <div class="row" style="margin-top: 8px;">
+			                   <p:commandLink update="floorForm" process="@this" action="#{managerWarehouseBean.addNewRowFloor()}" styleClass="btn_primmary" style="margin-left: 10px;background-color: #e9e9e9;color: #000000c4 !important;font-weight: 100;border: 1px solid #a59e9e;" >
+					                    <i style="font-weight:100;" class="fa fa-plus" aria-hidden="true"></i><span>Thêm dòng</span>
+					              </p:commandLink>
+			                   <p:commandLink  update="floorForm,posForm,messages"  action="#{managerWarehouseBean.saveOrUpdateFloor()}" styleClass="btn_primmary" style="margin-left: 10px;" >
+					                    <i class="fa fa-plus" aria-hidden="true"></i><span>Lưu</span>
+					              </p:commandLink>
+			               </div>
+			           </div>  
+			        </p:fieldset>
+		        </div>
+		    </div>
+		    </h:form>
+		    <h:form id="posForm">
+		    <div class="col-md-12" style="display:#{managerWarehouseBean.quick==true ? 'none' :'block'}">
+		        <div class="clearfix" style="width: 100%;background: white; margin-top: 10px;">
+			        <p:fieldset legend="Vị trí" styleClass="fieldsetclass label12 borderfsnone" toggleable="true" toggleSpeed="500" collapsed="false" style="margin-bottom:10px;" >
+			           <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+			               <div class="row" style="margin-bottom: 10px;">
+			                   <div class="col-md-4">
+					                <p:selectOneMenu 
+									value="#{managerWarehouseBean.floorSelect}"
+									converter="abstractConverter" effect="fade" var="t"
+									style="width:100%;">
+									<f:selectItem itemLabel="Chọn tầng" value="#{null}" />
+									<f:selectItems value="#{managerWarehouseBean.listFloor}"
+										var="theme" itemLabel="#{theme.floor_name}"
+										itemValue="#{theme}" />
+									<p:column>
+										<h:outputText value="#{t.floor_code}" />
+									</p:column>
+									<p:column>
+										<h:outputText value="#{t==null ? '--select--' :t.floor_name}" />
+									</p:column>
+									<p:ajax event="change" listener="#{managerWarehouseBean.initPos()}" update="posForm" />
+								  </p:selectOneMenu>
+			                   </div>
+			               </div>
+			               <ui:repeat var="item3" value="#{managerWarehouseBean.listPosCrud}">
+			               <div class="row" style="margin-bottom: 5px;">
+			                  <div class="col-md-2">
+			                      <p:inputText value="#{item3.pos_name}" placeholder="Tên vị trí">
+			                          <p:ajax update="@this"/>
+			                      </p:inputText>
+			                  </div>
+			                  <div class="col-md-2">
+			                       <p:inputText value="#{item3.pos_code}" onblur="value=value.toUpperCase()" placeholder="Mã vị trí">
+			                           <p:ajax update="@this"/>
+			                       </p:inputText>
+			                  </div>
+			                  <div class="col-md-2">
+			                       <p:inputText  value="#{item3.barcode}" readonly="true" placeholder="Mã vạch" />
+			                  </div>
+			                  <div class="col-md-2">
+			                        <p:inputNumber placeholder="SL pallet"   onclick="this.select()" value="#{item3.quantity}" style="width:100%;"
+											minValue="0" decimalPlaces="0" decimalSeparator="," maxValue="1000" emptyValue="0"
+					                 thousandSeparator=".">
+		                            </p:inputNumber>
+			                  </div>
+			                  <div class="col-md-2" style="padding-left: 0px !important;">
+			                    <p:commandLink update="posForm" action="#{managerWarehouseBean.deletePos(item3)}" style="color: red;font-size: 16px; margin-top: 6px;display: inline-block;">
+			                        <i class="fa fa-times" aria-hidden="true"></i>
+			                    </p:commandLink>
+			                  </div>
+			               </div>
+			               </ui:repeat>
+			              
+			               <div class="row" style="margin-top: 8px;">
+			                   <p:commandLink  process="@this" update="posForm"  action="#{managerWarehouseBean.addNewRowPos()}" styleClass="btn_primmary" style="margin-left: 10px;background-color: #e9e9e9;color: #000000c4 !important;font-weight: 100;border: 1px solid #a59e9e;" >
+					                    <i style="font-weight:100;" class="fa fa-plus" aria-hidden="true"></i><span>Thêm dòng</span>
+					              </p:commandLink>
+			                   <p:commandLink update="posForm,messages"  action="#{managerWarehouseBean.saveOrUpdatePos()}" styleClass="btn_primmary" style="margin-left: 10px;" >
+					                    <i class="fa fa-plus" aria-hidden="true"></i><span>Lưu</span>
+					              </p:commandLink>
+			               </div>
+			           </div>  
+			        </p:fieldset>
+		        </div>
+		    </div>
+		    </h:form>
+		    <h:form id="quickForm">
+		    <div class="col-md-12" style="display:#{managerWarehouseBean.quick==true ? 'block' :'none'}">
+		        <div class="clearfix" style="width: 100%;background: white; margin-top: 10px;">
+			        <p:fieldset legend="Dữ liệu kho" styleClass="fieldsetclass label12 borderfsnone" toggleable="true" toggleSpeed="500" collapsed="false" style="margin-bottom:10px;" >
+			           <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+			               <div class="row">
+			                   <div class="col-md-12">
+			                       <p:dataTable value="#{managerWarehouseBean.listQuickDataInfo}" lazy="true"
+										paginatorPosition="bottom" rowsPerPageTemplate="90,180,250" rowIndexVar="index"
+										paginator="true" rowKey="#{index}" style="width:100%;" styleClass="tablenhapsp"
+										 scrollable="true" id="tableq"
+										scrollHeight="370" widgetVar="tableq" resizableColumns="true"
+										var="item">
+										<p:column headerText="Cấp 1">
+											<p:inputText value="#{item.row}" placeholder="VD: Dãy 1" styleClass="inputtext_nhapsp" />
+										</p:column>
+										<p:column headerText="Cấp 2">
+											<p:inputText value="#{item.floor}" placeholder="VD: Tầng[1,5]" styleClass="inputtext_nhapsp" />
+										</p:column>
+										<p:column headerText="Các vị trí">
+											<p:inputText value="#{item.pos}" placeholder="VD: vị trí[1,4]" styleClass="inputtext_nhapsp" />
+										</p:column>
+									</p:dataTable>
+			                   </div>
+			               </div>
+			               <div class="row" style="margin-top: 8px;">
+			                   <p:commandLink    action="#" styleClass="btn_primmary" style="margin-left: 10px;background-color: #e9e9e9;color: #000000c4 !important;font-weight: 100;border: 1px solid #a59e9e;" >
+					                    <i style="font-weight:100;" class="fa fa-plus" aria-hidden="true"></i><span>Thêm dòng</span>
+					              </p:commandLink>
+			                   <p:commandLink    action="#" styleClass="btn_primmary" style="margin-left: 10px;" >
+					                    <i class="fa fa-plus" aria-hidden="true"></i><span>Lưu</span>
+					              </p:commandLink>
+			               </div>
+			           </div>  
+			        </p:fieldset>
+		        </div>
+		    </div>
+		    </h:form>
+		  </div>
+		<p:dialog styleClass="dialogCus" resizable="false" width="500" style="overflow: initial;"
+		closeOnEscape="true" header="Kho hàng" widgetVar="dlg1">
+		<h:form id="dlg1" style="width:100%;">
+		      <div class="col-md-12" style="padding-left:0px !important; padding-right:0px !important;">
+		          <div class="row">
+		              <div class="col-md-3" style="padding-right: 5px !important;"><label>Mã kho</label></div>
+		              <div class="col-md-9" style="padding-left: 5px !important;"><label>Tên kho</label></div>
+		          </div>
+		          <div class="row">
+		              <div class="col-md-3"><p:inputText readonly="true" value="#{managerWarehouseBean.warehouseCrud.code}" /> </div>
+		              <div class="col-md-9"><p:inputText value="#{managerWarehouseBean.warehouseCrud.name}" /> </div>
+		          </div>
+		          <div class="row" style="text-align: center;margin-top: 13px;">
+		                 <p:commandLink update="messages,dlg1,warehouse:s_warehouse" action="#{managerWarehouseBean.saveWareHouse()}" styleClass="btn_primmary">
+					              <i class="fa fa-plus" aria-hidden="true"></i><span>Lưu</span>
+					     </p:commandLink>
+		          </div>
+		      </div>
+		</h:form>
+	  </p:dialog>
+	</ui:define>
+</ui:composition>

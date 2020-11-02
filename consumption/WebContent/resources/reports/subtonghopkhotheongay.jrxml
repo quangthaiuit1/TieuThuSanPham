@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subtonghopkhotheongay" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="a6cc2922-8a9e-4fbd-acc5-19401b659665">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<import value="khanh.lixco.com.util.FormatHandler"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="product.name" class="java.lang.String"/>
+	<field name="amount1" class="java.lang.Double"/>
+	<field name="amount2" class="java.lang.Double"/>
+	<field name="amount3" class="java.lang.Double"/>
+	<variable name="sum_amount" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[($F{amount1}+$F{amount2}+$F{amount3})]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="20" height="30" uuid="3e06b0bd-b58d-45f6-986b-978e867d1c29"/>
+				<box>
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[STT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="0" width="180" height="30" uuid="a2d19c87-07ae-48db-8342-cc8e8dd1d402">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TÊN NHẪN HIỆU QUY CÁCH SẢN PHẨM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="0" width="21" height="30" uuid="2dd18966-187a-4a39-97e1-aa534ac9cdee"/>
+				<box>
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ĐVT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="221" y="15" width="43" height="15" uuid="cfb2d7bc-1fba-404d-b71f-15cb6c5b8261">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CA 1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="221" y="0" width="191" height="15" uuid="9353f284-4299-4fcb-8d4b-58ae12e06810">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SỐ LƯỢNG]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="15" width="43" height="15" uuid="41a2c3d8-35b2-4c15-9e34-1661a6a8016e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CA 2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="307" y="15" width="55" height="15" uuid="7a05bd04-d17e-4296-987e-fd1f25727a69">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TỔNG CỘNG]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="362" y="15" width="50" height="15" uuid="32576c3d-ade2-485d-bf23-f4cc008b6bf2"/>
+				<box>
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[THỰC NHẬP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="412" y="0" width="50" height="30" uuid="d0dd4435-ef8c-475d-a2e1-da2a90e52cae">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GIÁ ĐƠN VỊ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="462" y="0" width="56" height="30" uuid="1defbdc9-d4b0-4203-bed0-e3487e38430f"/>
+				<box>
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[THÀNH TIỀN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="518" y="0" width="37" height="30" uuid="27346967-1189-4a82-b3a3-98144b0bdcf9">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GHI CHÚ]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="20" height="20" uuid="4e1dbb34-0341-498c-a6e2-f15738576271">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="3">
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="20" y="0" width="180" height="20" uuid="62ccdea3-77bb-4b64-828b-fda2dc4a7ef6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="da4b3afa-9135-4edc-8a8b-71729c0c565f"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="3">
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{product.name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="200" y="0" width="21" height="20" uuid="724c4474-5fe4-43e6-b7de-0ed89bfc0126">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f26b81df-90e7-45d1-b055-ad633cc71b14"/>
+				</reportElement>
+				<box leftPadding="0">
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["KG"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="221" y="0" width="43" height="20" uuid="d083ffb3-8b65-410c-b762-186e3f5ca3a3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7be2493f-a226-4853-8242-9b89b856aa2f"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="FontReport" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amount1}==0.0 ? "" :FormatHandler.getInstance().getNumberFormat($F{amount1},100)]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="362" y="0" width="50" height="20" uuid="b90b3701-02f8-4660-98aa-fbb2a6201d28"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="8"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="412" y="0" width="50" height="20" uuid="8bc2c571-cd40-41de-a52f-71b5129645e3"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="8"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="462" y="0" width="56" height="20" uuid="02a641ad-4090-4064-b233-177161f3a538"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="8"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="518" y="0" width="37" height="20" uuid="423bbba1-08bc-4675-a7ac-1c742d9a1036">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="8"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="264" y="0" width="43" height="20" uuid="ef37e0a2-c2bb-4a1e-9f73-12aceeaf9a26">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7be2493f-a226-4853-8242-9b89b856aa2f"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="FontReport" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amount2}==0.0 ? "" :FormatHandler.getInstance().getNumberFormat($F{amount2},100)]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="307" y="0" width="55" height="20" uuid="0718fdea-71f4-4e68-a9e1-31f92241ebec">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7be2493f-a226-4853-8242-9b89b856aa2f"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="FontReport" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{amount1}+$F{amount2}+$F{amount3})==0.0 ? "" :FormatHandler.getInstance().getNumberFormat(($F{amount1}+$F{amount2}+$F{amount3}),100)]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="139" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="307" height="20" uuid="7f56c274-9350-41ee-a152-ec26c9be6a20"/>
+				<box>
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tổng cộng]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="307" y="0" width="55" height="20" uuid="f82b1052-bddc-4894-b808-59c31251bdde"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="FontReport" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[FormatHandler.getInstance().getNumberFormat($V{sum_amount},100)]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="362" y="0" width="193" height="20" uuid="9c2bfb1c-c289-4b74-be5b-00ea489362a2">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.24"/>
+					<leftPen lineWidth="0.24"/>
+					<bottomPen lineWidth="0.24"/>
+					<rightPen lineWidth="0.24"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="554" height="30" uuid="2fb5cbc9-06bd-4230-b387-514bf9624f1f"/>
+				<textElement>
+					<font fontName="FontReport"/>
+				</textElement>
+				<text><![CDATA[Cộng thành tiền (viết bằng chữ) : ......................................................................................................................................................................
+............................................................................................................................................................................................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="70" width="115" height="20" uuid="27e4752b-389a-41b7-a343-8a0d36068569"/>
+				<textElement>
+					<font fontName="FontReport" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[P.KẾ HOẠCH & KHO VẬN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="70" width="110" height="20" uuid="85159d67-dcf0-47e2-af65-9f34716c0757"/>
+				<textElement textAlignment="Center">
+					<font fontName="FontReport" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[THỦ KHO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="70" width="70" height="20" uuid="1667cd9f-2bb2-4bc7-8d43-875a1aa56c4c"/>
+				<textElement textAlignment="Center">
+					<font fontName="FontReport" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PXSX]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="70" width="100" height="20" uuid="7e9c6185-17ce-468a-b2e0-7162b4ee9b04"/>
+				<textElement textAlignment="Center">
+					<font fontName="FontReport" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NGƯỜI GIAO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="119" width="100" height="20" uuid="7cc1f459-1dca-4efc-965f-ed743faf6c1d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Trịnh Thị Dung]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="334" y="119" width="70" height="20" uuid="961d6912-fa02-46dd-a560-e45d7515b519"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport"/>
+				</textElement>
+				<text><![CDATA[Chu Viết Hùng]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="182" y="119" width="110" height="20" uuid="b908e69b-1eaf-46c7-985b-c83d34d09aea"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport"/>
+				</textElement>
+				<text><![CDATA[Huỳnh Văn Quốc]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="119" width="115" height="20" uuid="195dfa42-501f-481e-bd27-4ccb461945e7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport"/>
+				</textElement>
+				<text><![CDATA[Nguyễn Thị Thúy Vân]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

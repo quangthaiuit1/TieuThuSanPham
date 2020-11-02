@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/home.xhtml">
+	<ui:define name="content">
+		<h3 style="margin: 0px">Hải cảng</h3>
+		<p:separator />
+		<h:form id="menuformid">
+			<h:panelGrid columns="2" style="width:100%;" columnClasses="w50">
+				<p:panel header="Thông tin" styleClass="panelw100">
+					<h:panelGrid id="info">
+						<label>Mã cảng<span style="color:red;">*</span></label>
+						<p:inputText value="#{harborCategoryBean.harborCategoryCrud.harbor_code}"/>
+						<label>Tên cảng<span style="color:red;">*</span></label>
+						<p:inputText value="#{harborCategoryBean.harborCategoryCrud.harbor_name}"/>
+						<label>Địa chỉ</label>
+						<p:inputTextarea row ="2" value="#{harborCategoryBean.harborCategoryCrud.address}"/>
+						<label>Loại cảng</label>
+						<p:selectOneMenu 
+							value="#{harborCategoryBean.harborCategoryCrud.harbor_type}"
+							converter="integerConverter" effect="fade"
+							style="width:100%;">
+							 <f:selectItem itemLabel="Cảng Lever" itemValue="0" />
+							 <f:selectItem itemLabel="Cảng Xuất khẩu" itemValue="1" />
+						</p:selectOneMenu>
+					</h:panelGrid>
+					<p:separator />
+					<p:commandButton process="@this,info" icon="fa fa-floppy-o" 
+					  style="padding:4px !important;" action="#{harborCategoryBean.saveOrUpdate()}"  styleClass="buttonaddrow" update="menuformid:tableid" value="Lưu/Cập nhật" />
+					<p:commandButton process="@this,info" icon="fa fa-floppy-o" 
+					  style="padding:4px !important;" action="#{harborCategoryBean.createNew()}"  styleClass="buttonaddrow" update="menuformid:info"  value="Tạo mới" />
+				</p:panel>
+				<p:panel header="Danh sách" id="preview" styleClass="clearfix">
+					<h:panelGrid id="mainGrid" columns="6"
+						style="float:left; margin-bottom:5px">
+						<p:tooltip for="xoact" value="Xoá" />
+						<p:commandButton process="@this" id="xoact" action="#{harborCategoryBean.delete()}" style="padding: 3px 3px 3px 3px !important;font-size:11px !important;" styleClass="buttonaddrow"
+				      update=":messages,:menuformid" value="Xóa"   icon="fa fa-trash">
+				          <p:confirm icon="ui-icon-alert" />
+				        </p:commandButton>
+				        <p:commandButton id="idorder" icon="fa fa-search" 
+					  style="padding:4px !important;" styleClass="buttonaddrow" value="Tìm kiếm" />
+				        <p:overlayPanel id="imagePanel" for="idorder" hideEffect="fade" dismissable="false"
+								widgetVar="panelsearch" style="width:300px;">
+						<div class="col-md-12"
+											style="border: 1px solid #ccc; border-radius: 6px; margin-bottom: 5px !important;">
+							    <div class="col-md-12" style="padding-top:10px !important;padding-left: 0px !important; padding-right: 0px !important;">
+	                                   <div class="row">
+	                                       <div class="col-md-12" style="padding-left:0px !important; padding-right:0px !important;">
+	                                           <label>Mã khách hàng</label>
+	                                       </div>
+	                                       
+	                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+											   <p:selectOneMenu 
+													value="#{harborCategoryBean.harborType}"
+													converter="integerConverter" effect="fade"
+													style="width:100%;">
+													 <f:selectItem itemLabel="Tất cả" itemValue="-1" />
+													 <f:selectItem itemLabel="Cảng Lever" itemValue="0" />
+													 <f:selectItem itemLabel="Cảng Xuất khẩu" itemValue="1" />
+												</p:selectOneMenu>
+	                                       </div>
+	                                   </div>
+	                                 </div>
+						  </div>
+							<div class="col-md-12" style="padding-left: 0px !important;padding-right: 0px !important; margin-bottom: 5px;">
+							   <div class="pull-right">
+									<p:commandButton value="Tìm" process="menuformid:imagePanel" 
+									icon="ui-icon-search" oncomplete="PF('panelsearch').hide()"
+									actionListener="#{harborCategoryBean.search()}"
+									update="menuformid:tableid" />
+								</div>
+							</div>
+					  </p:overlayPanel>
+					</h:panelGrid>
+					<div style="clear: both" />
+					<p:dataTable value="#{harborCategoryBean.listHarborCategory}" lazy="true"
+						paginatorPosition="bottom" rowsPerPageTemplate="20,40,60" style="width:100%;"
+						paginator="true" rowKey="#{item.id}"  styleClass="tablenhapsp"
+						selection="#{harborCategoryBean.harborCategorySelect}" scrollable="true"
+						selectionMode="single"  id="tableid"
+						scrollHeight="370" widgetVar="datatb" resizableColumns="true"
+						var="item">
+						<p:ajax event="rowSelect" listener="#{harborCategoryBean.showEdit()}"
+							update="menuformid:info" />
+						<p:column headerText="ID" width="30">
+							<h:outputText value="#{item.id}" />
+						</p:column>
+						<p:column headerText="Mã cảng" width="50">
+							<h:outputText value="#{item.harbor_code}" />
+						</p:column>
+						<p:column headerText="Tên cảng" width="190">
+							<h:outputText style="white-space: initial;" value="#{item.harbor_name}" />
+						</p:column>
+						<p:column headerText="Địa chỉ" width="150">
+							<h:outputText  value="#{item.address}" />
+						</p:column>
+						<p:column headerText="Loại cảng" width="100">
+							<h:outputText value="#{item.harbor_type==0 ? 'Cảng Lever' :'Cảng xuất khẩu'}" />
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

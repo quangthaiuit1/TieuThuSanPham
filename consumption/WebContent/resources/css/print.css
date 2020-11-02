@@ -1,0 +1,21 @@
+.containerReport{
+	background:#fff;
+}
+.containerReport .title{
+	text-align: center;
+	font-size: 63px;
+	font-weight: 600;
+}
+.containerReport .col-pxx-1{
+	width: 3%;
+	float: left;
+}
+.containerReport .col-pxx-12{
+	width: 97%;
+	float: left;
+}
+.containerReport .title_small{
+	font-size: 31px;
+    font-weight: 600;
+    text-transform: uppercase;
+}

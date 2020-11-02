@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/home.xhtml">
+	<ui:define name="content">
+		<h3 style="margin: 0px">Loại sản phẩm</h3>
+		<p:separator />
+		<h:form id="menuformid">
+			<h:panelGrid columns="2" style="width:100%;" columnClasses="w50">
+				<p:panel header="Thông tin" styleClass="panelw100">
+					<h:panelGrid id="info">
+						<label>Mã<span style="color:red;">*</span></label>
+						<p:inputText value="#{productBrandBean.productBrandCrud.pbrand_code}"/>
+						<label>Tên thương hiệu<span style="color:red;">*</span></label>
+						<p:inputText value="#{productBrandBean.productBrandCrud.pbrand_name}"/>
+						<label>Đơn vị</label>
+						<p:inputText value="#{productBrandBean.productBrandCrud.unit}"/>
+					</h:panelGrid>
+					<p:separator />
+					<p:commandButton process="@this,info" icon="fa fa-floppy-o" 
+					  style="padding:4px !important;" action="#{productBrandBean.saveOrUpdate()}"  styleClass="buttonaddrow" update="menuformid:tableid" value="Lưu/Cập nhật" />
+					<p:commandButton process="@this,info" icon="fa fa-floppy-o" 
+					  style="padding:4px !important;"  action="#{productBrandBean.createNew()}"  styleClass="buttonaddrow" update="menuformid:info"  value="Tạo mới" />
+				</p:panel>
+				<p:panel header="Danh sách" id="preview" style="height:auto;" styleClass="clearfix">
+					<h:panelGrid id="mainGrid" columns="6"
+						style="float:left; margin-bottom:5px">
+						<p:tooltip for="xoact" value="Xoá" />
+				        <p:commandButton process="@this" id="xoact" action="#{productBrandBean.delete()}" style="padding: 3px 14px 3px 16px !important;font-size:11px !important;" styleClass="buttonaddrow"
+				      update=":messages,:menuformid"   icon="fa fa-trash">
+				          <p:confirm icon="ui-icon-alert" />
+				        </p:commandButton>
+						<p:commandButton id="idorder" icon="fa fa-search" style="padding:4px !important;" styleClass="buttonaddrow" value="Tìm kiếm" />
+						<p:commandButton process="@this" action="#{productBrandBean.showDialogUpload()}" style="padding:4px !important;" styleClass="buttonaddrow" value="Nạp Excel"
+				         icon="fa fa-upload" />
+						<p:overlayPanel id="imagePanel" for="idorder" hideEffect="fade" widgetVar="panelsearch" style="width:300px;" dismissable="false">
+							 <div class="col-md-12" style="border: 1px solid #ccc; border-radius: 6px; margin-bottom: 5px !important;">
+								    <div class="col-md-12" style="padding-top:10px !important;padding-left: 0px !important; padding-right: 0px !important;">
+		                                   <div class="row">
+		                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right:0px !important;">
+		                                           <label>Mã</label>
+		                                       </div>
+		                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+		                                          <p:inputText value="#{productBrandBean.pBrandCode}" style="width:100%" />
+		                                       </div>
+		                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right:0px !important;">
+		                                           <label>Tên thương hiệu</label>
+		                                       </div>
+		                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+		                                          <p:inputText value="#{productBrandBean.pBrandName}" style="width:100%" />
+		                                       </div>
+		                                   </div>
+		                                 </div>
+							    </div>
+								<div class="col-md-12" style="padding-left: 0px !important;padding-right: 0px !important; margin-bottom: 5px;">
+								   <div class="pull-right">
+										<p:commandButton value="Tìm" process="menuformid:imagePanel" 
+										icon="ui-icon-search" oncomplete="PF('panelsearch').hide()"
+										actionListener="#{productBrandBean.search()}"
+										update="menuformid:tableid" />
+									</div>
+								</div>
+					  </p:overlayPanel>
+					</h:panelGrid>
+					<div style="clear: both" />
+					<div class="col-md-12">
+					    <p:dataTable value="#{productBrandBean.listProductBrand}" lazy="true"
+						paginatorPosition="bottom"
+						paginator="true" rowKey="#{item.id}" paginatorTemplate="{Exporters}"
+						selection="#{productBrandBean.productBrandSelect}" scrollable="true"
+						selectionMode="single" scrollWidth="550" scrollHeight="400" id="tableid" widgetVar="datatb" resizableColumns="true"
+						var="item">
+						<f:facet name="{Exporters}">
+							  <span class="pagecurrentdisplay">
+							     <h:outputText value="(#{productBrandBean.navigationInfo.currentPage} of #{productBrandBean.navigationInfo.totalPage})" />
+							  </span>
+							  <ul class="pagination pagination-sm" style="margin: 0px 0px !important;">
+							      <li><p:commandLink disabled="#{productBrandBean.navigationInfo.currentPage ==1}" styleClass="fa fa-angle-double-left font_weightcus"  update="menuformid:tableid" actionListener="#{productBrandBean.paginatorChange(1)}" /> </li>
+							      <li><p:commandLink disabled="#{productBrandBean.navigationInfo.currentPage ==1}" styleClass="fa fa-angle-left font_weightcus"  update="menuformid:tableid" actionListener="#{productBrandBean.paginatorChange(productBrandBean.navigationInfo.currentPage-1)}" /> </li>
+								  <c:forEach var="index" items="#{productBrandBean.navigationInfo.indexList}">
+									  <li class="#{productBrandBean.navigationInfo.currentPage==index ? 'active' : ''}"><p:commandLink   update="menuformid:tableid" value="#{index}" actionListener="#{productBrandBean.paginatorChange(index)}" /> </li>
+								  </c:forEach>
+								   <li><p:commandLink disabled="#{productBrandBean.navigationInfo.currentPage ==productBrandBean.navigationInfo.totalPage}" styleClass="fa fa-angle-right font_weightcus"  update="menuformid:tableid" actionListener="#{productBrandBean.paginatorChange(productBrandBean.navigationInfo.currentPage +1)}" /> </li>
+							      <li><p:commandLink disabled="#{productBrandBean.navigationInfo.currentPage ==productBrandBean.navigationInfo.totalPage}" styleClass="fa fa-angle-double-right font_weightcus"  update="menuformid:tableid" actionListener="#{productBrandBean.paginatorChange(productBrandBean.navigationInfo.totalPage)}" /> </li>
+								</ul>
+								<span class="rowperpage">
+						        <p:selectOneMenu 
+									value="#{productBrandBean.pageSize}"
+									converter="abstractConverter" effect="fade" var="t"
+									style="width:50px;margin-left:10px !important;">
+									<f:selectItems value="#{productBrandBean.listRowPerPage}"
+										var="theme" itemLabel="#{theme}"
+										itemValue="#{theme}" />
+									<p:column>
+										<h:outputText value="#{t}" />
+									</p:column>
+									<p:ajax update="menuformid:tableid"  listener="#{productBrandBean.paginatorChange(1)}"></p:ajax>
+								</p:selectOneMenu>
+						        </span>
+					     </f:facet>
+						<p:ajax event="rowSelect" listener="#{productBrandBean.showEdit()}"
+							update="menuformid:info" />
+						<p:column headerText="ID" width="30">
+							<h:outputText value="#{item.id}" />
+						</p:column>
+						<p:column headerText="Mã" width="50">
+							<h:outputText value="#{item.pbrand_code}" />
+						</p:column>
+						<p:column headerText="Tên thương hiệu">
+							<h:outputText value="#{item.pbrand_name}" />
+						</p:column>
+						<p:column headerText="Đơn vị">
+							<h:outputText value="#{item.unit}" />
+						</p:column>
+						
+					  </p:dataTable>
+					</div>
+				</p:panel>
+			</h:panelGrid>
+		</h:form>
+		<p:dialog widgetVar="uploadpdffile" resizable="false" height="400" styleClass="dislogUpload"
+			header="Tải File">
+			<h:form id="mm" enctype="multipart/form-data">
+				<p:fileUpload style="text-align:center"
+				id="fileupload" dragDropSupport="true" 
+				label="Chọn file từ máy tính" cancelLabel="Huỷ" update=":messages,menuformid:tableid"
+				uploadLabel="Tải lên" multiple="false" 
+				fileUploadListener="#{productBrandBean.loadExcel}" mode="advanced" process="@this,mm,menuformid:tableid"/>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

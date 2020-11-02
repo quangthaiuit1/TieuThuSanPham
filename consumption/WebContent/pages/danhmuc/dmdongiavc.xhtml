@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/home.xhtml">
+	<ui:define name="content">
+		<h3 style="margin: 0px">Danh mục đơn giá vận chuyển</h3>
+		<p:separator />
+		<h:form id="menuformid">
+			<div class="col-md-12"  style="padding-left:0px !important; padding-right: 0px !important;">
+	              <div class="col-md-12">
+	                   <p:commandButton id="xoact"  process="@this"  action="#{deliveryPricingBean.delete()}" style="padding: 3px 14px 3px 16px !important;font-size:11px !important;" styleClass="buttonaddrow"
+				       update=":messages,:menuformid"   icon="fa fa-trash">
+				          <p:confirm icon="ui-icon-alert" />
+				        </p:commandButton>
+					  <p:commandButton id="idorder" icon="fa fa-search" 
+					  style="padding:4px !important;" styleClass="buttonaddrow" value="Tìm kiếm" />
+				      <p:commandButton process="@this"  action="#{deliveryPricingBean.showDialog()}" style="padding:4px !important;" styleClass="buttonaddrow" value="Thêm"
+				       update="editdetail"   icon="fa fa-plus" />
+				      <p:commandButton action="#{deliveryPricingBean.showDialogEdit}" style="padding:4px !important;" styleClass="buttonaddrow" value="Chỉnh sửa"
+				       update="editdetail"   icon="fa fa-pencil" />
+	                  <p:commandButton process="@this" action="#{deliveryPricingBean.showDialogUpload()}" style="padding:4px !important;" styleClass="buttonaddrow" value="Nạp Excel"
+				         icon="fa fa-file-excel-o" />
+	                  <p:overlayPanel id="imagePanel" for="idorder" hideEffect="fade" dismissable="false"
+								widgetVar="panelsearch" style="width:300px;">
+						<div class="col-md-12"
+											style="border: 1px solid #ccc; border-radius: 6px; margin-bottom: 5px !important;">
+							    <div class="col-md-12" style="padding-top:10px !important;padding-left: 0px !important; padding-right: 0px !important;">
+	                                   <div class="row">
+	                                       <div class="col-md-12" style="padding-left:0px !important; padding-right:0px !important;">
+	                                           <label>Mã nơi vận chuyển</label>
+	                                       </div>
+	                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+	                                          <p:inputText value="#{deliveryPricingBean.placeCodeSearch}" style="width:100%" />
+	                                       </div>
+	                                       <div class="col-md-12" style="padding-left:0px !important; padding-right:0px !important;">
+	                                           <label>Loại khách hàng</label>
+	                                       </div>
+	                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+	                                          <p:selectOneMenu 
+													value="#{deliveryPricingBean.customerTypesSearch}"
+													converter="abstractConverter" effect="fade" var="t"
+													style="width:100%;">
+													<f:selectItem itemLabel="--select--" itemValue="#{null}" />
+													<f:selectItems value="#{deliveryPricingBean.listCustomerTypes}"
+														var="theme" itemLabel="#{theme.name}"
+														itemValue="#{theme}" />
+													<p:column>
+														<h:outputText value="#{t.code}" />
+													</p:column>
+													<p:column>
+														<h:outputText value="#{t==null ? '--select--' : t.name}" />
+													</p:column>
+												</p:selectOneMenu>
+	                                       </div>
+	                                       <div class="col-md-12"  style="padding-left:0px !important; padding-right:0px !important;">
+	                                           <label>Khách hàng</label>
+	                                       </div>
+	                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+	                                           <p:autoComplete style="width:100%;"
+													value="#{deliveryPricingBean.customerSearch}" queryDelay="1000"
+													maxResults="50"
+													converter="abstractConverter" minQueryLength="2" 
+													completeMethod="#{deliveryPricingBean.completeCustomerSearch}" var="p"
+													itemLabel="#{p.customer_name}" itemValue="#{p}"
+													forceSelection="true" onclick="this.select();">
+													<p:column style="width:50px">
+													   <h:outputText value="#{p.customer_code}" />
+													</p:column>
+													<p:column style="width:150px">
+													    <h:outputText value="#{p.customer_name}" />
+													 </p:column>
+												</p:autoComplete>
+	                                       </div>
+	                                   </div>
+	                                 </div>
+						  </div>
+							<div class="col-md-12" style="padding-left: 0px !important;padding-right: 0px !important; margin-bottom: 5px;">
+							   <div class="pull-right">
+									<p:commandButton value="Tìm" process="menuformid:imagePanel" 
+									icon="ui-icon-search" oncomplete="PF('panelsearch').hide()"
+									actionListener="#{deliveryPricingBean.search()}"
+									update="menuformid:tablesp" />
+								</div>
+							</div>
+					  </p:overlayPanel>
+	              </div>
+	              <div class="col-md-12" style="margin-top: 3px;">
+	                <p:dataTable value="#{deliveryPricingBean.listDeliveryPricing}" lazy="true"
+							paginatorPosition="bottom" styleClass="tabledetail"
+							paginator="true" rowKey="#{item.id}" id="tablesp"
+							scrollable="true" scrollHeight="400"  paginatorTemplate="{Exporters}"
+							selection="#{deliveryPricingBean.deliveryPricingSelect}"
+							selectionMode="single" resizableColumns="true" var="item">
+						<f:facet name="{Exporters}">
+							  <span class="pagecurrentdisplay">
+							     <h:outputText value="(#{deliveryPricingBean.navigationInfo.currentPage} of #{deliveryPricingBean.navigationInfo.totalPage})" />
+							  </span>
+							  <ul class="pagination pagination-sm" style="margin: 0px 0px !important;">
+							      <li><p:commandLink disabled="#{deliveryPricingBean.navigationInfo.currentPage ==1}" styleClass="fa fa-angle-double-left font_weightcus"  update="menuformid:tablesp" actionListener="#{deliveryPricingBean.paginatorChange(1)}" /> </li>
+							      <li><p:commandLink disabled="#{deliveryPricingBean.navigationInfo.currentPage ==1}" styleClass="fa fa-angle-left font_weightcus"  update="menuformid:tablesp" actionListener="#{deliveryPricingBean.paginatorChange(deliveryPricingBean.navigationInfo.currentPage-1)}" /> </li>
+								  <c:forEach var="index" items="#{deliveryPricingBean.navigationInfo.indexList}">
+									  <li class="#{deliveryPricingBean.navigationInfo.currentPage==index ? 'active' : ''}"><p:commandLink   update="menuformid:tablesp" value="#{index}" actionListener="#{deliveryPricingBean.paginatorChange(index)}" /> </li>
+								  </c:forEach>
+								   <li><p:commandLink disabled="#{deliveryPricingBean.navigationInfo.currentPage ==deliveryPricingBean.navigationInfo.totalPage}" styleClass="fa fa-angle-right font_weightcus"  update="menuformid:tablesp" actionListener="#{deliveryPricingBean.paginatorChange(deliveryPricingBean.navigationInfo.currentPage +1)}" /> </li>
+							      <li><p:commandLink disabled="#{deliveryPricingBean.navigationInfo.currentPage ==deliveryPricingBean.navigationInfo.totalPage}" styleClass="fa fa-angle-double-right font_weightcus"  update="menuformid:tablesp" actionListener="#{deliveryPricingBean.paginatorChange(deliveryPricingBean.navigationInfo.totalPage)}" /> </li>
+								</ul>
+								<span class="rowperpage">
+						        <p:selectOneMenu 
+									value="#{deliveryPricingBean.pageSize}"
+									converter="abstractConverter" effect="fade" var="t"
+									style="width:50px;margin-left:10px !important;">
+									<f:selectItems value="#{deliveryPricingBean.listRowPerPage}"
+										var="theme" itemLabel="#{theme}"
+										itemValue="#{theme}" />
+									<p:column>
+										<h:outputText value="#{t}" />
+									</p:column>
+									<p:ajax update="menuformid:tablesp"  listener="#{deliveryPricingBean.paginatorChange(1)}"></p:ajax>
+								</p:selectOneMenu>
+						        </span>
+					     </f:facet>
+					     <p:ajax event="rowDblselect" listener="#{deliveryPricingBean.showDialogEdit()}"
+									 update="editdetail" />
+						    <p:column headerText="ID" width="50" styleClass="textcenter">
+								<h:outputText value="#{item.id}" />
+							</p:column>
+							<p:column headerText="MAVC" width="70">
+								<h:outputText value="#{item.place_code}" />
+							</p:column>
+							<p:column headerText="MAKH" width="70">
+								<h:outputText value="#{item.customer.customer_code}" />
+							</p:column>
+							<p:column headerText="Khách hàng" width="250">
+								<h:outputText style="white-space: initial;" value="#{item.customer.customer_name}" />
+							</p:column>
+							<p:column headerText="Nơi đến" width="250">
+								<h:outputText style="white-space: initial;" value="#{item.address}" />
+							</p:column>
+							<p:column headerText="Số KM" width="50" styleClass="textright">
+								<h:outputText value="#{deliveryPricingBean.formatHandler.getNumberFormat(item.km,1000)}"/>
+							</p:column>
+							<p:column headerText="Đơn giá" width="90" styleClass="textright" >
+								<h:outputText value="#{deliveryPricingBean.formatHandler.getNumberFormat(item.unit_price,1000)}" />
+							</p:column>
+							<p:column headerText="ĐG Không sử dụng" width="90" styleClass="textcenter">
+								<p:selectBooleanCheckbox disabled="true" value="#{item.disable}" />
+							</p:column>
+					</p:dataTable>
+	          </div>
+	           </div>
+		</h:form>
+		<p:dialog styleClass="dialogCus" resizable="false" width="640" style="overflow: initial;"
+		closeOnEscape="true" header="Đơn giá vận chuyển khách hàng" widgetVar="dlg1">
+		<h:form id="editdetail" style="width:100%;">
+			   <div class="col-md-12 boxCus">
+			       <div class="col-md-12" style="padding-left:0px !important; padding-right:0px !important;">
+			           <div class="row">
+			              <div class="col-md-6">
+			                  <label>Loại khách hàng</label>
+			              </div>
+			              <div class="col-md-6">
+			                  <label>Khách hàng</label>
+			              </div>
+			           </div>
+			           <div class="row">
+			              <div class="col-md-6">
+			                  <p:selectOneMenu 
+									value="#{deliveryPricingBean.customerTypesCrud}"
+									converter="abstractConverter" effect="fade" var="t"
+									style="width:100%;">
+									<f:selectItem itemLabel="--select--" itemValue="#{null}" />
+									<f:selectItems value="#{deliveryPricingBean.listCustomerTypes}"
+										var="theme" itemLabel="#{theme.name}"
+										itemValue="#{theme}" />
+									<p:column>
+										<h:outputText value="#{t.code}" />
+									</p:column>
+									<p:column>
+										<h:outputText value="#{t==null ? '--select--' : t.name}" />
+									</p:column>
+								</p:selectOneMenu>
+			              </div>
+			              <div class="col-md-6">
+			                  <p:autoComplete style="width:100%;"
+									value="#{deliveryPricingBean.deliveryPricingCrud.customer}" queryDelay="1000"
+									maxResults="50"
+									converter="abstractConverter" minQueryLength="2" 
+									completeMethod="#{deliveryPricingBean.completeCustomerCrud}" var="p"
+									itemLabel="#{p.customer_name}" itemValue="#{p}"
+									forceSelection="true" onclick="this.select();">
+									<p:column style="width:50px">
+									   <h:outputText value="#{p.customer_code}" />
+									</p:column>
+									<p:column style="width:150px">
+									    <h:outputText value="#{p.customer_name}" />
+									 </p:column>
+								</p:autoComplete>
+			              </div>
+			           </div>
+			       </div>
+			       <div class="col-md-12" style="padding-left:0px !important; padding-right:0px !important;">
+			           <div class="row">
+			               <div class="col-md-6">
+			                   <label>Mã nơi đến</label>
+			               </div>
+			               <div class="col-md-6">
+			                   <label>Số KM</label>
+			               </div>
+			           </div>
+			           <div class="row">
+			               <div class="col-md-6">
+			                   <p:inputText value="#{deliveryPricingBean.deliveryPricingCrud.place_code}" style="width:100%;" />
+			               </div>
+			               <div class="col-md-6">
+			                   <p:inputText value="#{deliveryPricingBean.deliveryPricingCrud.km}" style="width:100%;" />
+			               </div>
+			           </div>
+			       </div>
+			       <div class="col-md-12" style="padding-left:0px !important; padding-right:0px !important;">
+			           <div class="row">
+			               <div class="col-md-12">
+			                   <label>Nơi đến</label>
+			               </div>
+			           </div>
+			           <div class="row">
+			               <div class="col-md-12">
+			                   <p:inputTextarea rows="3" value="#{deliveryPricingBean.deliveryPricingCrud.address}" style="width:100%;" />
+			               </div>
+			           </div>
+			       </div>
+			       <div class="col-md-12" style="padding-left:0px !important; padding-right:0px !important;">
+			           <div class="row">
+			               <div class="col-md-12">
+			                   <label>Nơi đến in hóa đơn (Big C)</label>
+			               </div>
+			           </div>
+			           <div class="row">
+			               <div class="col-md-12">
+			                   <p:inputTextarea rows="2" value="#{deliveryPricingBean.deliveryPricingCrud.place_arrived}" style="width:100%;" />
+			               </div>
+			           </div>
+			       </div>
+			       <div class="col-md-12" style="padding-left:0px !important; padding-right:0px !important;">
+			           <div class="row">
+			               <div class="col-md-6">
+			                   <label>Đơn giá(đ/tấn)</label>
+			               </div>
+			               <div class="col-md-6">
+			               </div>
+			           </div>
+			           <div class="row">
+			               <div class="col-md-6">
+			                   <p:inputNumber   onclick="this.select()" value="#{deliveryPricingBean.deliveryPricingCrud.unit_price}" styleClass="intputnumcc" style="width:100%;"
+											minValue="0" decimalPlaces="3" decimalSeparator="," maxValue="1000000" emptyValue="0"
+					                 thousandSeparator="." />
+			               </div>
+			               <div class="col-md-6"> <p:selectBooleanCheckbox value="#{deliveryPricingBean.deliveryPricingCrud.disable}" itemLabel="Đơn giá không sử dụng" /></div>
+			           </div>
+			       </div>
+				</div>
+				<div class="col-md-12" style="padding:10px 0px;">
+				    <p:commandButton id="idorder" icon="fa fa-floppy-o" 
+					  style="padding:4px !important;" actionListener="#{deliveryPricingBean.saveOrUpdate()}"  styleClass="buttonaddrow" update=":messages,menuformid:tablesp" value="Lưu/Cập nhật" />
+				</div>
+		</h:form>
+	</p:dialog>
+	 <p:dialog widgetVar="uploadpdffile" resizable="false" height="400" styleClass="dislogUpload"
+			header="Tải File">
+			<h:form id="mm" enctype="multipart/form-data">
+				<p:fileUpload style="text-align:center"
+				id="fileupload" dragDropSupport="true" 
+				label="Chọn file từ máy tính" cancelLabel="Huỷ" update=":messages,menuformid:tablesp"
+				uploadLabel="Tải lên" multiple="false" 
+				fileUploadListener="#{deliveryPricingBean.loadExcel}" mode="advanced" process="@this,mm" />
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/home.xhtml">
+	<ui:define name="content">
+		<h3 style="margin: 0px">Danh mục Chủ xe</h3>
+		<p:separator />
+		<h:form id="menuformid">
+			<h:panelGrid columns="2" style="width:100%;" columnClasses="w50">
+				<p:panel header="Thông tin" styleClass="panelw100">
+					<h:panelGrid id="info">
+						<label>Mã chủ xe<span style="color:red;">*</span></label>
+						<p:inputText value="#{carOwnerBean.carOwnerCrud.code}"/>
+						<label>Tên chủ xe<span style="color:red;">*</span></label>
+						<p:inputText value="#{carOwnerBean.carOwnerCrud.name}"/>
+						<label>Điện thoại di động</label>
+						<p:inputText value="#{carOwnerBean.carOwnerCrud.cell_phone}"/>
+						<label>Điện thoại bàn</label>
+						<p:inputText value="#{carOwnerBean.carOwnerCrud.home_phone}"/>
+						<label>Địa chỉ</label>
+						<p:inputTextarea value="#{carOwnerBean.carOwnerCrud.address}" rows="3" />
+					</h:panelGrid>
+					<p:separator />
+					<p:commandButton process="@this,info" icon="fa fa-floppy-o" 
+					  style="padding:4px !important;" action="#{carOwnerBean.saveOrUpdate()}"  styleClass="buttonaddrow" update="menuformid:tableid" value="Lưu/Cập nhật" />
+					<p:commandButton process="@this,info" icon="fa fa-floppy-o" 
+					  style="padding:4px !important;" action="#{carOwnerBean.createNew()}"  styleClass="buttonaddrow" update="menuformid:info"  value="Tạo mới" />
+				</p:panel>
+				<p:panel header="Danh sách" id="preview" styleClass="clearfix">
+					<h:panelGrid id="mainGrid" columns="6"
+						style="float:left; margin-bottom:5px">
+						<p:tooltip for="xoact" value="Xoá" />
+						<p:commandButton process="@this" id="xoact" action="#{carOwnerBean.delete()}" style="padding: 3px 3px 3px 3px !important;font-size:11px !important;" styleClass="buttonaddrow"
+				      update=":messages,:menuformid" value="Xóa"   icon="fa fa-trash">
+				          <p:confirm icon="ui-icon-alert" />
+				        </p:commandButton>
+				        <p:commandButton  action="#{carOwnerBean.showDialogUpload()}" style="padding:4px !important;" styleClass="buttonaddrow" value="Nạp Excel"
+				         icon="fa fa-file-excel-o" />
+					</h:panelGrid>
+					<div style="clear: both" />
+					<p:dataTable value="#{carOwnerBean.listCarOwner}" lazy="true"
+						paginatorPosition="bottom" rowsPerPageTemplate="20,40,60" 
+						paginator="true" rowKey="#{item.id}" 
+						selection="#{carOwnerBean.carOwnerSelect}" scrollable="true"
+						selectionMode="single" scrollWidth="550" id="tableid"
+						scrollHeight="370" widgetVar="datatb" resizableColumns="true"
+						var="item">
+						<p:ajax event="rowSelect" listener="#{carOwnerBean.showEdit()}"
+							update="menuformid:info" />
+						<p:column headerText="ID" width="30">
+							<h:outputText value="#{item.id}" />
+						</p:column>
+						<p:column headerText="Mã CX" width="50">
+							<h:outputText value="#{item.code}" />
+						</p:column>
+						<p:column headerText="Tên chủ xe" width="250">
+							<h:outputText style="white-space: initial;" value="#{item.name}" />
+						</p:column>
+						<p:column headerText="Điện thoại di động" width="100">
+							<h:outputText style="white-space: initial;" value="#{item.cell_phone}" />
+						</p:column>
+						<p:column headerText="Điện thoại bàn" width="100">
+							<h:outputText style="white-space: initial;" value="#{item.home_phone}" />
+						</p:column>
+							<p:column headerText="Mã (old)" width="50">
+							<h:outputText value="#{item.old_code}" />
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+			</h:panelGrid>
+		</h:form>
+		<p:dialog widgetVar="dlgup1" resizable="false" styleClass="dislogUpload"
+			header="Tải File">
+			<h:form id="dlgup1" enctype="multipart/form-data">
+				<p:fileUpload style="text-align:center"
+				id="fileupload" dragDropSupport="true" allowTypes="/(\.|\/)(xls|xlsx)$/"
+				label="Chọn file từ máy tính" cancelLabel="Huỷ" update=":messages,menuformid:tableid"
+				uploadLabel="Tải lên" multiple="false" 
+				fileUploadListener="#{carOwnerBean.loadExcel}" mode="advanced" process="@this,dlgup1,menuformid:tableid"/>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

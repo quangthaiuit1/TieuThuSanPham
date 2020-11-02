@@ -1,0 +1,1022 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/home.xhtml">
+	<ui:define name="content">
+		<h3 style="margin: 0px">Chương trình đơn giá</h3>
+		<p:separator />
+	<div class="ui-md-12">
+		<h:form id="menuformid">
+		   <p:fieldset legend="Chương trình đơn giá" 
+							styleClass="fieldsetclass label12 borderfsnone" toggleable="true"
+							toggleSpeed="500" collapsed="false">
+		       <p:tabView id="tabview1" styleClass="clearfix tabview_lix">
+		       <p:tab id="tab1"  title="Danh sách chương trình đơn giá"  >
+		          <div class="col-md-12"  style="padding-left:0px !important; padding-right: 0px !important;">
+	              <div class="col-md-12">
+	                   <p:commandButton id="xoact"  process="@this"  action="#{pricingProgramBean.delete()}" style="padding: 3px 14px 3px 16px !important;font-size:11px !important;" styleClass="buttonaddrow"
+				       update=":messages,tablesp"   icon="fa fa-trash">
+				          <p:confirm icon="ui-icon-alert" />
+				       </p:commandButton>
+					  <p:commandButton id="idorder" icon="fa fa-search" 
+					  style="padding:4px !important;" styleClass="buttonaddrow" value="Tìm kiếm" />
+	                  <p:commandButton process="@this" action="#{pricingProgramBean.showDialogUpload()}" style="padding:4px !important;" styleClass="buttonaddrow" value="Nhập CT.Đơn giá Excel"
+				         icon="fa fa-file-excel-o" />
+	                  <p:overlayPanel id="imagePanel" for="idorder" hideEffect="fade" dismissable="false"
+								widgetVar="panelsearch" style="width:360px;">
+						<div class="col-md-12"
+											style="border: 1px solid #ccc; border-radius: 6px; margin-bottom: 5px !important;">
+							    <div class="col-md-12" style="padding-top:10px !important;padding-left: 0px !important; padding-right: 0px !important;">
+	                                   <div class="row">
+	                                       <div class="col-md-6" style="padding-left: 0px !important; padding-right: 5px !important;">
+	                                           <label>Mã chương trình</label>
+	                                       </div>
+	                                       <div class="col-md-6" style="padding-left: 5px !important; padding-right: 0px !important;">
+	                                           <label>Số chứng từ</label>
+	                                       </div>
+	                                       <div class="col-md-6" style="padding-left: 0px !important; padding-right: 5px !important; margin-bottom:5px;" >
+	                                          <p:inputText value="#{pricingProgramBean.programCode}" style="width:100%" />
+	                                       </div>
+	                                       <div class="col-md-6" style="padding-left: 5px !important; padding-right: 0px !important; margin-bottom:5px;" >
+	                                           <p:inputText value="#{pricingProgramBean.voucherCode}" style="width:100%" />
+	                                       </div>
+	                                       <div class="col-md-12" style="padding-left: 0px !important;padding-right:0px !important;">
+	                                           <label>Sản phẩm</label>
+	                                       </div>
+	                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+	                                           <p:autoComplete style="width:100%;"
+													value="#{pricingProgramBean.product}" queryDelay="900"
+													maxResults="200"
+													converter="abstractConverter" minQueryLength="2" 
+													completeMethod="#{pricingProgramBean.completeProduct}" var="p"
+													itemLabel="#{p.product_name}" itemValue="#{p}"
+													forceSelection="true" onclick="this.select();">
+													<p:column style="width:50px">
+													   <h:outputText value="#{p.product_code}" />
+													</p:column>
+													<p:column style="width:150px">
+													    <h:outputText value="#{p.product_name}" />
+													 </p:column>
+												</p:autoComplete>
+	                                       </div>
+	                                       <div class="col-md-12" style="padding-left:0px !important; padding-right:0px !important; ">
+	                                           <label>Chương trình chính</label>
+	                                       </div>
+	                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+	                                          <p:autoComplete style="width:100%;"
+													value="#{pricingProgramBean.parentPricingProgram}"
+													queryDelay="900" maxResults="200"
+													converter="abstractConverter" minQueryLength="3" 
+													completeMethod="#{pricingProgramBean.completePricingProgram}" var="p"
+													itemLabel="#{p.program_code}" itemValue="#{p}"
+													forceSelection="true" onclick="this.select();">
+													<p:column style="width:50px">
+													   <h:outputText value="#{p.program_code}" />
+													</p:column>
+													<p:column style="width:70px">
+													   <h:outputText value="#{p.effective_date}">
+														<f:convertDateTime pattern="dd/MM/yyyy"/>
+													  </h:outputText>
+													</p:column>
+													<p:column style="width:70px">
+													   <h:outputText value="#{p.expiry_date}">
+														<f:convertDateTime pattern="dd/MM/yyyy"/>
+													  </h:outputText>
+													</p:column>
+												</p:autoComplete>
+	                                       </div>
+	                                       <div class="col-md-6" style="padding-left: 0px !important;padding-right: 5px !important;">
+	                                           <label>Ngày áp dụng từ ngày</label>
+	                                       </div>
+	                                       <div class="col-md-6" style="padding-left: 5px !important; padding-right:0px !important;">
+	                                           <label>Ngày áp dụng đến ngày</label>
+	                                       </div>
+	                                       <div class="col-md-6" style="padding-left: 0px !important; padding-right: 5px !important; margin-bottom:5px;" >
+											  <p:calendar value="#{pricingProgramBean.fromDate}" pattern="dd/MM/yyyy" showOn="button" mask="99/99/9999" showButtonPanel="true"/>
+	                                       </div>
+	                                       <div class="col-md-6" style="padding-left: 5px !important; padding-right: 0px !important; margin-bottom:5px;" >
+											  <p:calendar value="#{pricingProgramBean.toDate}" pattern="dd/MM/yyyy" showOn="button" mask="99/99/9999" showButtonPanel="true"/>
+	                                       </div>
+	                                   </div>
+	                                 </div>
+						  </div>
+							<div class="col-md-12" style="padding-left: 0px !important;padding-right: 0px !important; margin-bottom: 5px;">
+							   <div class="pull-right">
+									<p:commandButton value="Tìm" process="imagePanel" 
+									icon="ui-icon-search" oncomplete="PF('panelsearch').hide()"
+									actionListener="#{pricingProgramBean.search()}"
+									update="tablesp" />
+								</div>
+							</div>
+					  </p:overlayPanel>
+	              </div>
+	              <div class="col-md-12" style="margin-top: 3px;">
+	                <p:dataTable value="#{pricingProgramBean.listPricingProgram}" lazy="true"
+							paginatorPosition="bottom" styleClass="tabledetail"
+							paginator="true" rowKey="#{item.id}" id="tablesp"
+							scrollable="true" scrollHeight="700"  paginatorTemplate="{Exporters}"
+							selection="#{pricingProgramBean.pricingProgramSelect}"
+							selectionMode="single" resizableColumns="true" var="item">
+						<f:facet name="{Exporters}">
+							  <span class="pagecurrentdisplay">
+							     <h:outputText value="(#{pricingProgramBean.navigationInfo.currentPage} of #{pricingProgramBean.navigationInfo.totalPage})" />
+							  </span>
+							  <ul class="pagination pagination-sm" style="margin: 0px 0px !important;">
+							      <li><p:commandLink disabled="#{pricingProgramBean.navigationInfo.currentPage ==1}" styleClass="fa fa-angle-double-left font_weightcus"  update="tablesp" actionListener="#{pricingProgramBean.paginatorChange(1)}" /> </li>
+							      <li><p:commandLink disabled="#{pricingProgramBean.navigationInfo.currentPage ==1}" styleClass="fa fa-angle-left font_weightcus"  update="tablesp" actionListener="#{pricingProgramBean.paginatorChange(pricingProgramBean.navigationInfo.currentPage-1)}" /> </li>
+								  <c:forEach var="index" items="#{pricingProgramBean.navigationInfo.indexList}">
+									  <li class="#{pricingProgramBean.navigationInfo.currentPage==index ? 'active' : ''}"><p:commandLink   update="tablesp" value="#{index}" actionListener="#{pricingProgramBean.paginatorChange(index)}" /> </li>
+								  </c:forEach>
+								  <li><p:commandLink disabled="#{pricingProgramBean.navigationInfo.currentPage == pricingProgramBean.navigationInfo.totalPage}" styleClass="fa fa-angle-right font_weightcus"  update="tablesp" actionListener="#{pricingProgramBean.paginatorChange(pricingProgramBean.navigationInfo.currentPage +1)}" /></li>
+							      <li><p:commandLink disabled="#{pricingProgramBean.navigationInfo.currentPage == pricingProgramBean.navigationInfo.totalPage}" styleClass="fa fa-angle-double-right font_weightcus"  update="tablesp" actionListener="#{pricingProgramBean.paginatorChange(pricingProgramBean.navigationInfo.totalPage)}" /></li>
+								</ul>
+								<span class="rowperpage">
+						        <p:selectOneMenu 
+									value="#{pricingProgramBean.pageSize}"
+									converter="abstractConverter" effect="fade" var="t"
+									style="width:50px;margin-left:10px !important;">
+									<f:selectItems value="#{pricingProgramBean.listRowPerPage}"
+										var="theme" itemLabel="#{theme}"
+										itemValue="#{theme}" />
+									<p:column>
+										<h:outputText value="#{t}" />
+									</p:column>
+									<p:ajax update="tablesp"  listener="#{pricingProgramBean.paginatorChange(1)}"></p:ajax>
+								</p:selectOneMenu>
+						        </span>
+					     </f:facet>
+					     <p:ajax event="rowSelect" listener="#{pricingProgramBean.showEdit()}" update="menuformid:tabview1:tab2real" />
+							<p:column headerText="Mã CT" width="70">
+								<h:outputText value="#{item.program_code}" />
+							</p:column>
+							<p:column headerText="Ngày hiệu lực" width="100">
+								 <h:outputText value="#{item.effective_date}">
+									<f:convertDateTime pattern="dd/MM/yyyy"/>
+								  </h:outputText>
+							</p:column>
+							<p:column headerText="Ngày kết thúc" width="100">
+								<h:outputText value="#{item.expiry_date}">
+									<f:convertDateTime pattern="dd/MM/yyyy"/>
+								  </h:outputText>
+							</p:column>
+							<p:column headerText="Người tạo" width="120" >
+								<h:outputText value="#{item.created_by}" />
+							</p:column>
+							<p:column headerText="Ngày cập nhật" width="120">
+							    <h:outputText value="#{item.last_modifed_date}">
+								   <f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+								</h:outputText>
+							</p:column>
+							<p:column headerText="CT Chính" width="70">
+							    <h:outputText value="#{item.parent_pricing_program.program_code}" />
+							</p:column>
+							<p:column headerText="Ghi chú" >
+								<h:outputText value="#{item.note }" />
+							</p:column>
+					</p:dataTable>
+	          </div>
+	           <div class="col-md-12">
+	           </div>
+	           </div>
+		       </p:tab>
+		       <p:tab id="tab2"  title="Chi tiết chương trình đơn giá" >
+		          <h:panelGroup id="tab2real">
+		          <div class="col-md-12"  style="padding-left:0px !important; padding-right: 0px !important;">
+		            <h:panelGroup id="subtop">
+		              <div class="col-md-12">
+		                  <div class="pull-right" style="color: red;position: absolute;right: 0px; top: -38px;">
+		                     <p:selectBooleanCheckbox value="#{pricingProgramBean.pricingProgramCrud.disable}" itemLabel="Không còn sử dụng">
+		                         <p:ajax update="@this"  />
+		                     </p:selectBooleanCheckbox>
+		                  </div>
+		              </div>
+		              <div class="col-md-12">
+		                 <div class="col-md-3" style="padding-left:0px !important; padding-right: 5px !important;">
+		                     <label>Mã chương trình<span style="color:red;">*</span></label>
+		                 </div>
+		                 <div class="col-md-2" style="padding-left: 5px !important; padding-right: 5px !important;">
+		                     <label>Ngày hiệu lực<span style="color:red;">*</span></label>
+		                 </div>
+		                 <div class="col-md-2" style="padding-left: 5px !important; padding-right: 5px !important;">
+		                     <label>Ngày kết thúc</label>
+		                 </div>
+		                  <div class="col-md-3" style="padding-left: 5px !important; padding-right:5px !important;">
+		                     <label>Chương trình chính</label>
+		                 </div>
+		                 <div class="col-md-2" style="padding-left: 5px !important; padding-right:0px !important;">
+		                    <label>Thời gian cập nhật</label>
+		                 </div>
+		              </div>
+		              <div class="col-md-12">
+		                 <div class="col-md-3" style="padding-left:0px !important; padding-right: 5px !important;">
+		                     <p:inputText value="#{pricingProgramBean.pricingProgramCrud.program_code}" />
+		                 </div>
+		                 <div class="col-md-2" style="padding-left: 5px !important; padding-right: 5px !important;">
+		                    <p:calendar value="#{pricingProgramBean.pricingProgramCrud.effective_date}" pattern="dd/MM/yyyy" showOn="button" mask="99/99/9999" showButtonPanel="true"/>
+		                 </div>
+		                 <div class="col-md-2" style="padding-left: 5px !important; padding-right: 5px !important;">
+		                    <p:calendar value="#{pricingProgramBean.pricingProgramCrud.expiry_date}" pattern="dd/MM/yyyy" showOn="button" mask="99/99/9999" showButtonPanel="true"/>
+		                 </div>
+		                 <div class="col-md-3" style="padding-left: 5px !important; padding-right:5px !important;">
+		                      <p:autoComplete style="width:100%;"
+									value="#{pricingProgramBean.pricingProgramCrud.parent_pricing_program}"
+									converter="abstractConverter" minQueryLength="3" 
+									queryDelay="900" maxResults="200"
+									completeMethod="#{pricingProgramBean.completePricingProgram}" var="p"
+									itemLabel="#{p.program_code}" itemValue="#{p}"
+									forceSelection="true" onclick="this.select();">
+									<p:column style="width:50px">
+									   <h:outputText value="#{p.program_code}" />
+									</p:column>
+									<p:column style="width:70px">
+									   <h:outputText value="#{p.effective_date}">
+										<f:convertDateTime pattern="dd/MM/yyyy"/>
+									  </h:outputText>
+									</p:column>
+									<p:column style="width:70px">
+									   <h:outputText value="#{p.expiry_date}">
+										<f:convertDateTime pattern="dd/MM/yyyy"/>
+									  </h:outputText>
+									</p:column>
+								</p:autoComplete>
+		                 </div>
+		                 <div class="col-md-2" style="padding-left: 5px !important; padding-right:0px !important;">
+		                    <p:calendar value="#{pricingProgramBean.pricingProgramCrud.last_modifed_date}" pattern="dd/MM/yyyy" showOn="button" mask="99/99/9999" showButtonPanel="true"/>
+		                 </div>
+		              </div>
+		              <div class="col-md-12" style="margin-top: 6px !important;">
+		                  <div class="row">
+		                      <div class="col-md-4" style="padding-left: 0px !important; padding-right:0px !important;">
+			                     <label>Ghi chú</label>
+			                  </div>
+		                  </div>
+		                  <div class="row">
+		                      <div class="col-md-4" style="padding-left: 0px !important;padding-right:0px !important;">
+		                          <p:inputTextarea rows="3" value="#{pricingProgramBean.pricingProgramCrud.note}" />
+		                      </div>
+		                      <div class="col-md-8" style="padding-right:0px !important;margin-top: -23px;">
+			                       <div class="pull-right">
+				                      <p:commandButton process="@this,subtop" action="#{pricingProgramBean.saveOrUpdate()}" update="tab2real,tablesp" style="padding:4px !important;" styleClass="buttonaddrow" value="Lưu/Cập nhật"
+						              icon="fa fa-floppy-o" />
+				                      <p:commandButton process="@this" update="tab2real" action="#{pricingProgramBean.createdNew()}" style="padding:4px !important;" styleClass="buttonaddrow" value="Tạo mới"
+						              icon="fa fa-file-text-o" />
+				                      <p:commandButton process="@this" update="tab2real" action="#{pricingProgramBean.copyCTDG()}" style="padding:4px !important;" styleClass="buttonaddrow" value="Copy CTDG"
+						              icon="fa fa-files-o" />
+				                      <p:commandButton process="@this" update="dlg4" action="#{pricingProgramBean.showDialogInBaoGia()}" style="padding:4px !important;" styleClass="buttonaddrow" value="In báo giá"
+						              icon="fa fa-bullseye" />
+				                      <p:commandButton  onclick="utility.clickFunction('menuformid:tabview1:exportExcel');"  style="padding:4px !important;" styleClass="buttonaddrow" value="Xuất Excel"
+						              icon="fa fa-file-text-o" />
+						              <p:commandButton style="display:none;" id="exportExcel" onclick="monitorDownload( showStatus , hideStatus)" action="#{pricingProgramBean.exprotExcel()}" />
+						             
+				                  </div>
+				                  <br/>
+				                  <br/>
+				                  <h:panelGroup rendered="#{pricingProgramBean.pricingProgramCrud.id==0}">
+				                      <div class="pull-right">
+				                        <p style="color:red;font-weight:bold;">Phiếu chưa được lưu</p>
+				                      </div>
+			                      </h:panelGroup>
+		                  </div>
+		                  </div>
+		                  
+		              </div>
+		              </h:panelGroup>
+		              <div class="col-md-12" style="margin-top: 10px;">
+		                  
+		                  
+		              </div>
+		          </div>
+		          <div class="col-md-8" 
+						style="padding-left: 0px !important; padding-right: 5px !important;">
+						<p:fieldset  legend="Chi tiết chương trình đơn giá" styleClass="fieldsetclass label12">
+						   <div class="col-md-12">
+						       <p:commandButton action="#{pricingProgramBean.deleteDetail()}" style="padding: 3px 14px 3px 16px !important;font-size:11px !important;" styleClass="buttonaddrow"
+						       update="tablesp1"   icon="fa fa-trash">
+						          <p:confirm icon="ui-icon-alert" />
+						        </p:commandButton>
+							  <p:commandButton id="idorder2" icon="fa fa-search" 
+							  style="padding:4px !important;" styleClass="buttonaddrow" value="Tìm kiếm" />
+						       <p:commandButton process="@this" update="editdetail" action="#{pricingProgramBean.showDialogDetail()}" style="padding:4px !important;" styleClass="buttonaddrow" value="Thêm"
+				              icon="fa fa-plus" />
+						       <p:commandButton  update="editdetail" action="#{pricingProgramBean.showDialogEditDetail()}" style="padding:4px !important;" styleClass="buttonaddrow" value="Chỉnh sửa"
+				              icon="fa fa-pencil" />
+				              <p:overlayPanel id="imagePanel2" for="idorder2" hideEffect="fade" dismissable="false"
+								widgetVar="panelsearch2" style="width:350px;">
+									<div class="col-md-12" style="border: 1px solid #ccc; border-radius: 6px; margin-bottom: 5px !important;">
+									    <div class="col-md-12" style="padding-top:10px !important;padding-left: 0px !important; padding-right: 0px !important;">
+			                                   <div class="row">
+			                                       <div class="col-md-12" style="padding-left: 0px !important;padding-right:0px !important;margin-top: 5px;">
+			                                            <label>Sản phẩm</label>
+			                                       	</div>
+			                                       <div class="col-md-12" style="padding-left: 0px !important;padding-right:0px !important;margin-bottom: 5px;">
+			                                           <p:autoComplete style="width:100%;"
+														value="#{pricingProgramBean.product2}"
+														queryDelay="900" maxResults="200"
+														converter="abstractConverter" minQueryLength="2" 
+														completeMethod="#{pricingProgramBean.completeProduct}" var="p"
+														itemLabel="#{p.product_name}" itemValue="#{p}"
+														forceSelection="true" onclick="this.select();">
+														<p:column style="width:50px">
+														   <h:outputText value="#{p.product_code}" />
+														</p:column>
+														<p:column style="width:150px">
+														    <h:outputText value="#{p.product_name}" />
+														 </p:column>
+														</p:autoComplete>
+			                                       	</div>
+			                                   </div>
+			                                 </div>
+									  </div>
+										<div class="col-md-12" style="padding-left: 0px !important;padding-right: 0px !important; margin-bottom: 5px;">
+										   <div class="pull-right">
+												<p:commandButton value="Tìm" process="imagePanel2" 
+												icon="ui-icon-search" oncomplete="PF('panelsearch2').hide()"
+												actionListener="#{pricingProgramBean.search2()}"
+												update="tablesp1" />
+											</div>
+										</div>
+								  </p:overlayPanel>
+						   </div>
+						   <div class="col-md-12" >
+						       <p:dataTable value="#{pricingProgramBean.listPricingProgramDetail}" lazy="true"
+										paginatorPosition="bottom" styleClass="tabledetail"
+										paginator="true" rowKey="#{item1.id}" id="tablesp1" style="width:100%;"
+										scrollable="true" scrollHeight="600"  paginatorTemplate="{Exporters1}"
+										selection="#{pricingProgramBean.pricingProgramDetailSelect}"
+										selectionMode="single" resizableColumns="true" var="item1">
+									<f:facet name="{Exporters1}">
+										  <span class="pagecurrentdisplay">
+										     <h:outputText value="(#{pricingProgramBean.navigationInfo2.currentPage} of #{pricingProgramBean.navigationInfo2.totalPage})" />
+										  </span>
+										  <ul class="pagination pagination-sm" style="margin: 0px 0px !important;">
+										      <li><p:commandLink disabled="#{pricingProgramBean.navigationInfo2.currentPage ==1}" styleClass="fa fa-angle-double-left font_weightcus"  update="tablesp1" actionListener="#{pricingProgramBean.paginatorChange2(1)}" /> </li>
+										      <li><p:commandLink disabled="#{pricingProgramBean.navigationInfo2.currentPage ==1}" styleClass="fa fa-angle-left font_weightcus"  update="tablesp1" actionListener="#{pricingProgramBean.paginatorChange2(pricingProgramBean.navigationInfo2.currentPage-1)}" /> </li>
+											  <c:forEach var="index1" items="#{pricingProgramBean.navigationInfo2.indexList}">
+												  <li class="#{pricingProgramBean.navigationInfo2.currentPage==index1 ? 'active' : ''}"><p:commandLink   update="tablesp1" value="#{index1}" actionListener="#{pricingProgramBean.paginatorChange2(index1)}" /> </li>
+											  </c:forEach>
+											   <li><p:commandLink disabled="#{pricingProgramBean.navigationInfo2.currentPage ==pricingProgramBean.navigationInfo2.totalPage}" styleClass="fa fa-angle-right font_weightcus"  update="tablesp1" actionListener="#{pricingProgramBean.paginatorChange2(pricingProgramBean.navigationInfo2.currentPage +1)}" /> </li>
+										      <li><p:commandLink disabled="#{pricingProgramBean.navigationInfo2.currentPage ==pricingProgramBean.navigationInfo2.totalPage}" styleClass="fa fa-angle-double-right font_weightcus"  update="tablesp1" actionListener="#{pricingProgramBean.paginatorChange2(pricingProgramBean.navigationInfo2.totalPage)}" /> </li>
+											</ul>
+											<span class="rowperpage">
+									        <p:selectOneMenu 
+												value="#{pricingProgramBean.pageSize2}"
+												converter="abstractConverter" effect="fade" var="t2"
+												style="width:50px;margin-left:10px !important;">
+												<f:selectItems value="#{pricingProgramBean.listRowPerPage2}"
+													var="theme2" itemLabel="#{theme2}"
+													itemValue="#{theme2}" />
+												<p:column>
+													<h:outputText value="#{t2}" />
+												</p:column>
+												<p:ajax update="tablesp1"  listener="#{pricingProgramBean.paginatorChange2(1)}"></p:ajax>
+											</p:selectOneMenu>
+									        </span>
+								     </f:facet>
+								     <p:ajax event="rowDblselect" listener="#{pricingProgramBean.showDialogEditDetail()}" update="editdetail" />
+										<p:column headerText="Mã SP" width="50">
+											<h:outputText value="#{item1.product.product_code}" />
+										</p:column>
+										<p:column headerText="Tên sản phẩm" width="300">
+											<h:outputText style="white-space: initial;" value="#{item1.product.product_name}" />
+										</p:column>
+										<p:column headerText="Số lượng" width="70">
+											 <h:outputText value="#{pricingProgramBean.formatHandler.getNumberFormat(item1.quantity,1000)}" />
+										</p:column>
+										<p:column headerText="Đơn giá" width="70">
+											 <h:outputText value="#{pricingProgramBean.formatHandler.getNumberFormat(item1.unit_price,1000)}" />
+										</p:column>
+										<p:column headerText="Lợi nhuận" width="80">
+											 <h:outputText value="#{pricingProgramBean.formatHandler.getNumberFormat(item1.revenue_per_ton,1000)}" />
+										</p:column>
+								</p:dataTable>
+						   </div>
+						</p:fieldset>
+				  </div>
+		          <div class="col-md-4"
+						style="padding-left: 5px !important; padding-right: 0px !important;">
+						<p:fieldset  legend="Danh sách khách hàng đã cài đặt" styleClass="fieldsetclass label12">
+						    <div class="col-md-12" style="padding-left:5px !important; padding-right:5px !important;">
+						       <p:commandButton action="#{pricingProgramBean.deleteCustomerPricingProgramSet()}" style="padding: 3px 14px 3px 16px !important;font-size:11px !important;" styleClass="buttonaddrow"
+						       update="menuformid:tabview1:tableset"   icon="fa fa-trash">
+						          <p:confirm icon="ui-icon-alert" />
+						        </p:commandButton>
+						       <p:commandButton process="@this" update="dlgset3" action="#{pricingProgramBean.showDialogCustomerPricingProgramSet()}" style="padding:4px !important;" styleClass="buttonaddrow" value="Thêm"
+				              icon="fa fa-plus" />
+				               <p:commandButton  update="dlgset3" action="#{pricingProgramBean.showDialogEditCustomerPricingProgramSet()}" style="padding:4px !important;" styleClass="buttonaddrow" value="Chỉnh sửa"
+				              icon="fa fa-pencil" />
+				            </div>
+						   <p:dataTable value="#{pricingProgramBean.listCustomerPricingProgramSet}" lazy="true"
+								paginatorPosition="bottom" rowsPerPageTemplate="40,50,60" 
+								paginator="true" rowKey="#{item.id}" style="width:100%;" 
+								selection="#{pricingProgramBean.customerPricingProgramSetSelect}" scrollable="true"
+								selectionMode="single"  id="tableset" 
+								scrollHeight="600" widgetVar="datatb" resizableColumns="true"
+								var="item">
+								<p:ajax event="rowDblselect" listener="#{pricingProgramBean.showDialogEditCustomerPricingProgramSet()}"
+									update="dlgset3" />
+								
+								<p:column headerText="Khách hàng">
+								   <span class="col-md-12">
+								      <span class="row" style="font-size: 11px;">
+								          <h:outputText style="color:#0b1755;" value="#{item.customer.customer_code}" />
+								      </span>
+								      <span class="row" style="font-size: 11px;">
+								          <h:outputText  value="#{item.customer.customer_name}" />
+								      </span>
+								      <span class="row">
+								          <span class="col-md-6" style="padding-left: 0px !important;color: red; font-style: italic;font-size: 11px;">
+								             <span>Ngày hiệu lực:</span><h:outputText  value="#{item.effective_date}"><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>
+								          </span>
+								          <span class="col-md-6" style="padding-right: 0px !important;color: red; font-style: italic;font-size: 11px;">
+								             <span style="color:red;">Ngày hết hạn:</span><h:outputText  value="#{item.expiry_date}"><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>
+								          </span>
+								          
+								      </span>
+								   </span>
+								</p:column>
+							</p:dataTable>
+						</p:fieldset>
+				   </div>
+				 
+				  </h:panelGroup>
+		       </p:tab>
+		      </p:tabView>
+		    </p:fieldset>
+		    <p:fieldset legend="Cài đặt chương trình đơn giá cho khách hàng"
+							styleClass="fieldsetclass label12 borderfsnone" toggleable="true"
+							toggleSpeed="500" collapsed="true">
+							<div class="col-md-12" style="margin-top: 5px; padding-left:0px !important; padding-right:0px !important;">
+							      <p:commandButton action="#{pricingProgramBean.deleteCustomerPricingProgram()}" style="padding: 3px 14px 3px 16px !important;font-size:11px !important;" styleClass="buttonaddrow"
+						              update="menuformid:table3"   icon="fa fa-trash">
+						          <p:confirm icon="ui-icon-alert" />
+						        </p:commandButton>
+				                 <p:commandButton id="idorder3" icon="fa fa-search" style="padding:4px !important;" styleClass="buttonaddrow" value="Tìm kiếm" />
+					             <p:commandButton process="@this" update="editdetail2" action="#{pricingProgramBean.showDialogSetting()}" style="padding:4px !important;" styleClass="buttonaddrow" value="Cài đặt khách hàng"
+				                   icon="fa fa-pencil" />
+					             <p:commandButton process="@this" update="dlg3" action="#{pricingProgramBean.showDialogAddSettings()}" style="padding:4px !important;" styleClass="buttonaddrow" value="Thêm CT"
+				                   icon="fa fa-plus" />
+					             <p:commandButton process="@this" update="dlg3" action="#{pricingProgramBean.showDbClickCustomerPricingProgram()}" style="padding:4px !important;" styleClass="buttonaddrow" value="Chỉnh sửa"
+				                   icon="fa fa-cogs" />
+				                    <p:commandButton process="@this" action="#{pricingProgramBean.showDialogUploadCDKH()}" style="padding:4px !important;" styleClass="buttonaddrow" value="Cài đặt CT.Đơn giá Khách hàng Excel"
+				                   icon="fa fa-file-excel-o" />
+	                      <p:overlayPanel id="imagePanel3" for="idorder3" hideEffect="fade" dismissable="false"
+								widgetVar="panelsearch3" style="width:360px;">
+									<div class="col-md-12" style="border: 1px solid #ccc; border-radius: 6px; margin-bottom: 5px !important;">
+										    <div class="col-md-12" style="margin-top:10px !important;padding-left: 0px !important; padding-right: 0px !important;">
+										        <div class="row">
+										           <label>Loại khách hàng</label>
+										        </div>
+										    </div>
+										    <div class="col-md-12" style="padding-left: 0px !important; padding-right:0px !important;">
+										         <div class="row">
+										            <p:selectOneMenu value="#{pricingProgramBean.customerTypesSearch3}"
+															converter="abstractConverter" effect="fade" var="t"
+															style="width:100%;" filter="true" filterMatchMode="custom"
+															filterFunction="utility.customFilter">
+															<f:selectItem value="#{null}" itemLabel="--select--" />
+															<f:selectItems value="#{pricingProgramBean.listCustomerTypes}" var="it"
+																itemLabel="#{it.code}" itemValue="#{it}" />
+															<p:column>
+																<h:outputText value="#{t != null ? t.name : '--select--' }" />
+															</p:column>
+														</p:selectOneMenu>
+										         </div>
+										    </div>
+										    <div class="col-md-12" style="margin-top:10px !important;padding-left: 0px !important; padding-right: 0px !important;">
+										        <div class="row">
+										           <label>Khách hàng</label>
+										        </div>
+										    </div>
+										    <div class="col-md-12" style="padding-left: 0px !important; padding-right:0px !important;">
+										         <div class="row">
+										            <p:autoComplete style="width:100%;" id="khachhang3"
+										                queryDelay="900" maxResults="200"
+														value="#{pricingProgramBean.customerSearch3}"
+														converter="abstractConverter" minQueryLength="2" 
+														completeMethod="#{pricingProgramBean.completeCustomerForCustomerPricing}" var="p"
+														itemLabel="#{p.customer_name}" itemValue="#{p}"
+														forceSelection="true" onclick="this.select();">
+														<p:column style="width:50px">
+														   <h:outputText value="#{p.customer_code}" />
+														</p:column>
+														<p:column style="width:150px">
+														    <h:outputText value="#{p.customer_name}" />
+														 </p:column>
+													</p:autoComplete>
+										         </div>
+										    </div>
+										    <div class="col-md-12" style="margin-top:10px !important;padding-left: 0px !important; padding-right: 0px !important;">
+										        <div class="row">
+										           <div class="col-md-6" style="padding-left: 0px !important; padding-right: 5px !important;">
+										              <label>Từ ngày</label>
+										           </div>
+										           <div class="col-md-6" style="padding-left: 5px !important; padding-right: 0px !important;">
+										               <label>Đến ngày</label>
+										           </div>
+										        </div>
+										    </div>
+										    <div class="col-md-12" style="padding-left: 0px !important; padding-right:0px !important;">
+										         <div class="row">
+										            <div class="col-md-6" style="padding-left: 0px !important; padding-right: 5px !important;">
+										                  <p:calendar value="#{pricingProgramBean.fromDateSearch3}" pattern="dd/MM/yyyy" showOn="button" mask="99/99/9999" showButtonPanel="true"/>
+										           </div>
+										           <div class="col-md-6" style="padding-left: 0px !important; padding-right: 5px !important;">
+										                <p:calendar value="#{pricingProgramBean.toDateSearch3}" pattern="dd/MM/yyyy" showOn="button" mask="99/99/9999" showButtonPanel="true"/>
+										           </div>
+										         </div>
+										    </div>
+										    <div class="col-md-12" style="margin-top:10px !important; padding-left: 0px !important; padding-right: 0px !important;">
+										        <div class="row">
+										            <label>Mã chương trình</label>
+										        </div>
+										    </div>
+										    <div class="col-md-12" style="padding-left: 0px !important; padding-right:0px !important;margin-bottom:10px !important;">
+										         <div class="row">
+										             <p:inputText  value="#{pricingProgramBean.programCodeSearch3}" />
+										         </div>
+										    </div>
+				                                      
+									  </div>
+										<div class="col-md-12" style="padding-left: 0px !important;padding-right: 0px !important; margin-bottom: 5px;">
+										   <div class="pull-right">
+												<p:commandButton value="Tìm" process="imagePanel3" 
+												icon="ui-icon-search" oncomplete="PF('panelsearch3').hide()"
+												actionListener="#{pricingProgramBean.searchCustomerPricingProgram()}"
+												update="menuformid:table3" />
+											</div>
+										</div>
+								  </p:overlayPanel>
+							</div>
+							<div class="col-md-12" style="margin-top: 3px;padding-left:0px !important;padding-right:0px !important;">
+				                <p:dataTable value="#{pricingProgramBean.listCustomerPricingProgram}" lazy="true"
+										paginatorPosition="bottom" styleClass="tabledetail"
+										paginator="true" rowKey="#{item.id}" id="table3"
+										scrollable="true" scrollHeight="700"  paginatorTemplate="{Exporters}"
+										selection="#{pricingProgramBean.customerPricingProgramSelect}"
+										selectionMode="single" resizableColumns="true" var="item">
+									<f:facet name="{Exporters}">
+										  <span class="pagecurrentdisplay">
+										     <h:outputText value="(#{pricingProgramBean.navigationInfo3.currentPage} of #{pricingProgramBean.navigationInfo3.totalPage})" />
+										  </span>
+										  <ul class="pagination pagination-sm" style="margin: 0px 0px !important;">
+										      <li><p:commandLink disabled="#{pricingProgramBean.navigationInfo3.currentPage ==1}" styleClass="fa fa-angle-double-left font_weightcus"  update="table3" actionListener="#{pricingProgramBean.paginatorChange3(1)}" /> </li>
+										      <li><p:commandLink disabled="#{pricingProgramBean.navigationInfo3.currentPage ==1}" styleClass="fa fa-angle-left font_weightcus"  update="table3" actionListener="#{pricingProgramBean.paginatorChange3(pricingProgramBean.navigationInfo3.currentPage-1)}" /> </li>
+											  <c:forEach var="index" items="#{pricingProgramBean.navigationInfo3.indexList}">
+												  <li class="#{pricingProgramBean.navigationInfo3.currentPage==index ? 'active' : ''}"><p:commandLink   update="table3" value="#{index}" actionListener="#{pricingProgramBean.paginatorChange3(index)}" /> </li>
+											  </c:forEach>
+											   <li><p:commandLink disabled="#{pricingProgramBean.navigationInfo3.currentPage ==pricingProgramBean.navigationInfo3.totalPage}" styleClass="fa fa-angle-right font_weightcus"  update="table3" actionListener="#{pricingProgramBean.paginatorChange3(pricingProgramBean.navigationInfo3.currentPage +1)}" /> </li>
+										      <li><p:commandLink disabled="#{pricingProgramBean.navigationInfo3.currentPage ==pricingProgramBean.navigationInfo3.totalPage}" styleClass="fa fa-angle-double-right font_weightcus"  update="table3" actionListener="#{pricingProgramBean.paginatorChange3(pricingProgramBean.navigationInfo3.totalPage)}" /> </li>
+											</ul>
+											<span class="rowperpage">
+									        <p:selectOneMenu 
+												value="#{pricingProgramBean.pageSize3}"
+												converter="abstractConverter" effect="fade" var="t"
+												style="width:50px;margin-left:10px !important;">
+												<f:selectItems value="#{pricingProgramBean.listRowPerPage3}"
+													var="theme" itemLabel="#{theme}"
+													itemValue="#{theme}" />
+												<p:column>
+													<h:outputText value="#{t}" />
+												</p:column>
+												<p:ajax update="table3"  listener="#{pricingProgramBean.paginatorChange3(1)}"></p:ajax>
+											</p:selectOneMenu>
+									        </span>
+								     </f:facet>
+								     <p:ajax event="rowSelect" listener="#{pricingProgramBean.showEditCustomerPricingProgram()}" update="dlg3" />
+								     <p:ajax event="rowDblselect" listener="#{pricingProgramBean.showDbClickCustomerPricingProgram()}" update="dlg3" />
+										<p:column headerText="Mã CT" width="60">
+											<h:outputText value="#{item.pricing_program.program_code}" />
+										</p:column>
+										<p:column headerText="Mã KH" width="50">
+											 <h:outputText value="#{item.customer.customer_code}" />
+										</p:column>
+										<p:column headerText="Tên khách hàng" width="250">
+											<h:outputText style="white-space: initial;" value="#{item.customer.customer_name}" />
+										</p:column>
+										<p:column headerText="Từ ngày" width="60" >
+											<h:outputText value="#{item.effective_date}">
+											    <f:convertDateTime pattern="dd/MM/yyyy"/>
+											</h:outputText>
+										</p:column>
+										<p:column headerText="Đến ngày" width="60">
+										    <h:outputText value="#{item.expiry_date}">
+											    <f:convertDateTime pattern="dd/MM/yyyy"/>
+											</h:outputText>
+										</p:column>
+										<p:column headerText="Không sử dụng" width="60" style="vertical-align: middle;text-align: center;">
+											<p:selectBooleanCheckbox disabled="true" value="#{item.disable}" />
+										</p:column>
+										<p:column headerText="Ghi Chú" width="100">
+										     <h:outputText value="#{item.note}" />
+										</p:column>
+								</p:dataTable>
+				                </div>
+					 </p:fieldset>
+		 </h:form>
+	</div>
+	<p:dialog styleClass="dialogCus" resizable="false" width="350" style="overflow: initial;"
+		closeOnEscape="true" header="Chi tiết chương trình" widgetVar="dlg1">
+		<h:form id="editdetail" style="width:100%;">
+			   <div class="col-md-12 boxCus">
+			           <div class="row">
+			              <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+                              <label>Sản phẩm<span style="color:red;">*</span></label>
+                          </div>
+                            <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+	                            <p:autoComplete style="width:100%;"
+	                                queryDelay="900" maxResults="200"
+									value="#{pricingProgramBean.pricingProgramDetailCrud.product}"
+									converter="abstractConverter" minQueryLength="2" 
+									completeMethod="#{pricingProgramBean.completeProduct}" var="p"
+									itemLabel="#{p.product_name}" itemValue="#{p}"
+									forceSelection="true" onclick="this.select();">
+										<p:column style="width:50px">
+										   <h:outputText value="#{p.product_code}" />
+										</p:column>
+										<p:column style="width:150px">
+										   <h:outputText value="#{p.product_name}" />
+										 </p:column>
+									</p:autoComplete>
+                            </div>
+                          <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+                              <label>Số lượng</label>
+                          </div>
+                           <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+                              <p:inputNumber  value="#{pricingProgramBean.pricingProgramDetailCrud.quantity}" styleClass="fix_width100"
+								minValue="0" decimalPlaces="3" decimalSeparator="," thousandSeparator="." />
+                          </div>
+                          <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+                              <label>Đơn giá<span style="color:red;">*</span></label>
+                          </div>
+                           <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+                              <p:inputNumber  value="#{pricingProgramBean.pricingProgramDetailCrud.unit_price}" styleClass="fix_width100"
+								minValue="0" decimalPlaces="3" decimalSeparator="," thousandSeparator="." />
+                          </div>
+                          <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+                              <label>Lợi nhuận</label>
+                          </div>
+                           <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+                              <p:inputNumber  value="#{pricingProgramBean.pricingProgramDetailCrud.revenue_per_ton}" styleClass="fix_width100"
+								minValue="0" decimalPlaces="3" decimalSeparator="," thousandSeparator="." />
+                          </div>
+			           </div>
+				</div>
+				<div class="col-md-12" style="padding:10px 0px !important;">
+				    <p:commandButton  value="Lưu/Cập nhật" update="menuformid:tabview1:tablesp1,editdetail" actionListener="#{pricingProgramBean.saveOrUpdateDetail()}" />
+				</div>
+		</h:form>
+	</p:dialog>
+	<p:dialog styleClass="dialogCus" resizable="false" width="900" style="overflow: initial;"
+		closeOnEscape="true" header="Cài đặt chương trình đơn giá" widgetVar="dlg2">
+		<h:form id="editdetail2" style="width:100%;">
+			   <div class="col-md-12 boxCus">
+			           <div class="row">
+			              <div class="col-md-12">
+			             </div>
+			              <div class="col-md-6"  style="padding-left:0px !important; padding-right:0px !important; margin-top: 5px;">
+			                 <label>Loại khách hàng</label>
+			              </div>
+			              <div class="col-md-6" style="padding-left:0px !important; padding-right:0px !important; margin-top: 5px;">
+			                  <label style="margin-left: 10%;">Chương trình đơn giá<span style="color:red;">*</span></label>
+			             </div>
+			              <div class="col-md-6" style="padding-left:0px !important;padding-right:0px !important; margin-bottom: 5px;">
+			                   <p:selectOneMenu value="#{pricingProgramBean.customerTypesSetting}"
+									converter="abstractConverter" effect="fade" var="t"
+									style="width:90%;" filter="true" filterMatchMode="custom"
+									filterFunction="utility.customFilter">
+									<f:selectItem value="#{null}" itemLabel="--select--" />
+									<f:selectItems value="#{pricingProgramBean.listCustomerTypes}" var="it"
+										itemLabel="#{it.name}" itemValue="#{it}" />
+									<p:column>
+										<h:outputText value="#{t != null ? t.name : '--select--' }" />
+									</p:column>
+									<p:ajax event="change" update="pickList" listener="#{pricingProgramBean.innitSourceCustomer()}"/>
+								</p:selectOneMenu>
+			              </div>
+			              <div class="col-md-6" style="padding-left:0px !important;padding-right:0px !important; margin-bottom: 5px;">
+			                  <p:autoComplete style="width:90%; margin-left:10%;"
+									value="#{pricingProgramBean.pricingProgramSetting}"
+									maxResults="200"
+									converter="abstractConverter" minQueryLength="3" queryDelay="1000" 
+									completeMethod="#{pricingProgramBean.completePricingProgram}" var="p"
+									itemLabel="#{p.program_code}" itemValue="#{p}"
+									forceSelection="true" onclick="this.select();">
+									<p:column style="width:50px">
+									   <h:outputText value="#{p.program_code}" />
+									</p:column>
+									<p:column style="width:70px">
+									   <h:outputText value="#{p.effective_date}">
+										<f:convertDateTime pattern="dd/MM/yyyy"/>
+									  </h:outputText>
+									</p:column>
+									<p:column style="width:70px">
+									   <h:outputText value="#{p.expiry_date}">
+										<f:convertDateTime pattern="dd/MM/yyyy"/>
+									  </h:outputText>
+									</p:column>
+								</p:autoComplete>
+			              </div>
+			              <div class="col-md-12" style="padding-left: 0px !important;padding-right:0px !important;">
+			                  <p:pickList value="#{pricingProgramBean.modelCustomerSetting}" var="theme" 
+						                itemValue="#{theme}" itemLabel="#{theme.customer_name}"  styleClass="pickListClass" id="pickList"
+						                 converter="pickListConverter" responsive="true">
+						        <f:facet name="sourceCaption">Danh sách khách hàng</f:facet>
+						        <f:facet name="targetCaption">Danh Sách khách hàng được chọn<span style="color:red;">*</span></f:facet>
+						       <p:ajax event="transfer" listener="#{pricingProgramBean.onTranfer}" update="@this" />
+						        <p:column >
+						             <h:outputText value="#{theme.customer_name}" />
+						        </p:column>
+						     </p:pickList>
+			              </div>
+			              <div class="col-md-6" style="margin-top: 3px; margin-bottom: 10px; padding-left: 0px !important; padding-right:0px !important;">
+			                 <p:inputText placeholder="Tìm kiếm khách hàng" value="#{pricingProgramBean.textSearch}" style="width:90%">
+			                       <p:ajax event="keyup" delay="1000" listener="#{pricingProgramBean.searchCustomerSetting()}" update="pickList" />
+			                 </p:inputText>
+			              </div>
+			              
+			           </div>
+				</div>
+				<div class="col-md-12" style="padding:10px 0px !important;">
+				    <p:commandButton  value="Cài đặt" update="menuformid:table3" actionListener="#{pricingProgramBean.settingCustomers()}" />
+				</div>
+		</h:form>
+	</p:dialog>
+	<p:dialog styleClass="dialogCus" resizable="false" width="350" style="overflow: initial;"
+		closeOnEscape="true" header="Cài đặt khách hàng" widgetVar="dlg3">
+		<h:form id="dlg3" style="width:100%;">
+			   <div class="col-md-12 boxCus">
+			           <div class="row">
+			              <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+			                 <div class="row">
+			                    <label>Khách hàng<span style="color:red;">*</span></label>
+			                 </div>
+                          </div>
+                            <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+                               <div class="row">
+                                  <p:autoComplete style="width:100%;"
+                                    queryDelay="900" maxResults="200"
+									value="#{pricingProgramBean.customerPricingProgramCrud.customer}"
+									converter="abstractConverter" minQueryLength="2" 
+									completeMethod="#{pricingProgramBean.completeCustomer}" var="p"
+									itemLabel="#{p.customer_name}" itemValue="#{p}"
+									forceSelection="true" onclick="this.select();">
+										<p:column style="width:50px">
+										   <h:outputText value="#{p.customer_code}" />
+										</p:column>
+										<p:column style="width:150px">
+										   <h:outputText value="#{p.customer_name}" />
+										 </p:column>
+									</p:autoComplete>
+                               </div>
+                            </div>
+                          <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+                              <div class="row">
+                                  <label>Chương trình đơn giá</label>
+                              </div>
+                          </div>
+                           <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+                               <div class="row">
+                                  <p:autoComplete style="width:100%;"
+									value="#{pricingProgramBean.customerPricingProgramCrud.pricing_program}"
+									converter="abstractConverter" minQueryLength="2" queryDelay="1000" 
+									maxResults="200"
+									completeMethod="#{pricingProgramBean.completePricingProgram}" var="p"
+									itemLabel="#{p.program_code}" itemValue="#{p}"
+									forceSelection="true" onclick="this.select();">
+									<p:column style="width:50px">
+									   <h:outputText value="#{p.program_code}" />
+									</p:column>
+									<p:column style="width:70px">
+									   <h:outputText value="#{p.effective_date}">
+										<f:convertDateTime pattern="dd/MM/yyyy"/>
+									  </h:outputText>
+									</p:column>
+									<p:column style="width:70px">
+									   <h:outputText value="#{p.expiry_date}">
+										<f:convertDateTime pattern="dd/MM/yyyy"/>
+									  </h:outputText>
+									</p:column>
+									 <p:ajax event="itemSelect" listener="#{pricingProgramBean.changeNgay()}" update="effdate,exdate"  />
+								  </p:autoComplete>
+                               </div>
+                          </div>
+                          <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+                              <div class="row">
+                                  <div class="col-md-6" style="padding-left: 0px !important;padding-right: 5px !important;">
+                                      <label>Ngày hiệu lực</label>
+                                  </div>
+                                  <div class="col-md-6" style="padding-left: 5px !important;padding-right: 0px !important;">
+                                       <label>Ngày hết hạn</label>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important; margin-bottom:5px;">
+                              <div class="row">
+                                  <div class="col-md-6" style="padding-left: 0px !important;padding-right: 5px !important;">
+                                     <p:calendar id="effdate" value="#{pricingProgramBean.customerPricingProgramCrud.effective_date}" pattern="dd/MM/yyyy" showOn="button" mask="99/99/9999" showButtonPanel="true"/>
+                                  </div>
+                                  <div class="col-md-6" style="padding-left: 5px !important;padding-right: 0px !important;">
+                                      <p:calendar id="exdate" value="#{pricingProgramBean.customerPricingProgramCrud.expiry_date}" pattern="dd/MM/yyyy" showOn="button" mask="99/99/9999" showButtonPanel="true"/>
+                                  </div>
+                              </div>
+                          </div>
+                           <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important;" >
+                               <div class="row">
+                                   <label>Ghi chú</label>
+                               </div>
+                          </div>
+                           <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+                               <div class="row">
+                                   <p:inputTextarea rows="3" value="#{pricingProgramBean.customerPricingProgramCrud.note}" />
+                               </div>
+                          </div>
+                          <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important;" >
+                               <div class="row">
+                                    <p:selectBooleanCheckbox value="#{pricingProgramBean.customerPricingProgramCrud.disable}" itemLabel="Không còn sử dụng" />
+                               </div>
+                          </div>
+			           </div>
+				</div>
+				<div class="col-md-12" style="padding:10px 0px !important;">
+				    <p:commandButton  value="Lưu/Cập nhật" update="dlg3,menuformid:table3" actionListener="#{pricingProgramBean.saveOrUpdateCustomerPricingProgram()}" />
+				</div>
+		</h:form>
+	</p:dialog>
+	<p:dialog styleClass="dialogCus" resizable="false" width="350" style="overflow: initial;"
+		closeOnEscape="true" header="Cài đặt khách hàng" widgetVar="dlgset3">
+		<h:form id="dlgset3" style="width:100%;">
+			   <div class="col-md-12 boxCus">
+			           <div class="row">
+			              <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+			                 <div class="row">
+			                    <label>Khách hàng<span style="color:red;">*</span></label>
+			                 </div>
+                          </div>
+                            <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+                               <div class="row">
+                                  <p:autoComplete style="width:100%;"
+									value="#{pricingProgramBean.customerPricingProgramSetCrud.customer}"
+									converter="abstractConverter" minQueryLength="2" queryDelay="900"
+									maxResults="200"
+									completeMethod="#{pricingProgramBean.completeCustomer}" var="p"
+									itemLabel="#{p.customer_name}" itemValue="#{p}"
+									forceSelection="true" onclick="this.select();">
+										<p:column style="width:50px">
+										   <h:outputText value="#{p.customer_code}" />
+										</p:column>
+										<p:column style="width:150px">
+										   <h:outputText value="#{p.customer_name}" />
+										 </p:column>
+									</p:autoComplete>
+                               </div>
+                            </div>
+                          <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+                              <div class="row">
+                                  <div class="col-md-6" style="padding-left: 0px !important;padding-right: 5px !important;">
+                                      <label>Ngày hiệu lực</label>
+                                  </div>
+                                  <div class="col-md-6" style="padding-left: 5px !important;padding-right: 0px !important;">
+                                       <label>Ngày hết hạn</label>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important; margin-bottom:5px;">
+                              <div class="row">
+                                  <div class="col-md-6" style="padding-left: 0px !important;padding-right: 5px !important;">
+                                     <p:calendar id="effdate" value="#{pricingProgramBean.customerPricingProgramSetCrud.effective_date}" pattern="dd/MM/yyyy" showOn="button" mask="99/99/9999" showButtonPanel="true"/>
+                                  </div>
+                                  <div class="col-md-6" style="padding-left: 5px !important;padding-right: 0px !important;">
+                                      <p:calendar id="exdate" value="#{pricingProgramBean.customerPricingProgramSetCrud.expiry_date}" pattern="dd/MM/yyyy" showOn="button" mask="99/99/9999" showButtonPanel="true"/>
+                                  </div>
+                              </div>
+                          </div>
+                           <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important;" >
+                               <div class="row">
+                                   <label>Ghi chú</label>
+                               </div>
+                          </div>
+                           <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+                               <div class="row">
+                                   <p:inputTextarea rows="3" value="#{pricingProgramBean.customerPricingProgramSetCrud.note}" />
+                               </div>
+                          </div>
+                          <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important;" >
+                               <div class="row">
+                                    <p:selectBooleanCheckbox value="#{pricingProgramBean.customerPricingProgramSetCrud.disable}" itemLabel="Không còn sử dụng" />
+                               </div>
+                          </div>
+			           </div>
+				</div>
+				<div class="col-md-12" style="padding:10px 0px !important;">
+				    <p:commandButton  value="Lưu/Cập nhật" update="dlgset3,menuformid:tabview1:tableset" actionListener="#{pricingProgramBean.saveOrUpdateCustomerPricingProgramSet()}" />
+				</div>
+		</h:form>
+	</p:dialog>
+	<p:dialog styleClass="dialogCus" resizable="false" width="350" style="overflow: initial;"
+		closeOnEscape="true" header="Báo giá" widgetVar="dlg4">
+		<h:form id="dlg4" style="width:100%;">
+			   <div class="col-md-12 boxCus">
+		              <div class="col-md-12">
+		                 <div class="row">
+		                     <label>Báo giá số</label>
+		                 </div>
+		              </div>
+		              <div class="col-md-12">
+		                 <div class="row">
+		                     <p:inputText value="#{pricingProgramBean.baogiaso}" />
+		                 </div>
+		              </div>
+		              <div class="col-md-12">
+		                 <div class="row">
+		                     <label>Báo giá số gốc</label>
+		                 </div>
+		              </div>
+		              <div class="col-md-12">
+		                 <div class="row">
+		                     <p:inputText value="#{pricingProgramBean.baogiasogoc}" />
+		                 </div>
+		              </div>
+		              <div class="col-md-12">
+		                 <div class="row">
+		                     <label>Tên khách hàng</label>
+		                 </div>
+		              </div>
+		              <div class="col-md-12">
+		                 <div class="row">
+		                     <p:inputText value="#{pricingProgramBean.tenkhachhang}" />
+		                 </div>
+		              </div>
+		              <div class="col-md-12">
+		                 <div class="row">
+		                     <label>Ngày báo giá</label>
+		                 </div>
+		              </div>
+		              <div class="col-md-12">
+		                 <div class="row">
+		                     <p:calendar id="effdate" value="#{pricingProgramBean.ngaybaogia}" pattern="dd/MM/yyyy" showOn="button" mask="99/99/9999" showButtonPanel="true"/>
+		                 </div>
+		              </div>
+			    </div>
+				<div class="col-md-12" style="padding:10px 0px !important;">
+				    <p:commandButton value="In bao giá"  action="#{pricingProgramBean.exportPDF()}" />
+				</div>
+		</h:form>
+	</p:dialog>
+	<p:dialog styleClass="dialogCus" resizable="false" style="overflow: initial;width:100%;max-width: min-content;min-width: 384px;"
+		closeOnEscape="true" header="Nạp file CT.Đơn giá" widgetVar="dlgup1">
+		<h:form id="dlgup1" enctype="multipart/form-data">
+			   <div class="col-md-12 boxCus">
+		              <div class="col-md-12" style="margin-bottom: 10px;">
+		                 <div class="row">
+		                     <div class="col-md-6">
+			                     <p:selectBooleanCheckbox value="#{pricingProgramBean.rewrite}" itemLabel="Ghi lại dữ liệu" />
+		                     </div>
+		                     <div class="col-md-6">
+		                         <a href="#{request.contextPath}/resources/upload/filemau/file_excel_mau.xls" style="color: #0077b3;text-decoration: underline;">Xem file excel mẫu</a>
+					         </div>
+		                 </div>
+		              </div>
+		              <div class="col-md-12">
+		                 <div class="row">
+							<p:fileUpload style="width: max-content;"
+							    dragDropSupport="true"  allowTypes="/(\.|\/)(xls|xlsx)$/"
+								label="Chọn file" cancelLabel="Huỷ" update=":messages,"
+								uploadLabel="Tải lên" multiple="false" 
+								fileUploadListener="#{pricingProgramBean.loadExcelCTDG}" mode="advanced" process=""/>
+							 
+		                 </div>
+		              </div>
+			    </div>
+		</h:form>
+	</p:dialog>
+	<p:dialog styleClass="dialogCus" resizable="false" style="overflow: initial;width:100%;max-width: min-content;min-width: 384px;"
+		closeOnEscape="true" header="Nạp file cài đặt CT.Đơn giá" widgetVar="dlgup2">
+		<h:form id="dlgup2" enctype="multipart/form-data">
+			   <div class="col-md-12 boxCus">
+		              <div class="col-md-12" style="margin-bottom: 10px;">
+		                 <div class="row">
+		                     <div class="col-md-12">
+		                         <a href="#{request.contextPath}/resources/upload/filemau/file_cai_ctdg_khach_hang.xls" style="color: #0077b3;text-decoration: underline;">Xem file excel mẫu</a>
+					         </div>
+		                 </div>
+		              </div>
+		              <div class="col-md-12">
+		                 <div class="row">
+							<p:fileUpload style="width: max-content;"
+							    dragDropSupport="true"  allowTypes="/(\.|\/)(xls|xlsx)$/"
+								label="Chọn file" cancelLabel="Huỷ" update=":messages,"
+								uploadLabel="Tải lên" multiple="false" 
+								fileUploadListener="#{pricingProgramBean.loadExcelCDCTDG}" mode="advanced" process=""/>
+							 
+		                 </div>
+		              </div>
+			    </div>
+		</h:form>
+	</p:dialog>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/home.xhtml">
+	<ui:define name="content">
+		<h3 style="margin: 0px">Ủy nhiệm chi</h3>
+		<p:separator />
+		<h:form id="menuformid">
+			<div class="col-md-12"  style="padding-left:0px !important; padding-right: 0px !important;">
+	              <div class="col-md-12">
+			        <span class="btn_icnx" style="background-color: #4bac4d !important;height:29px !important;line-height:29px !important;">
+		                 <p:commandLink style="height:29px !important;line-height:29px !important;padding-top: 7px !important;" id="xoact" update="tablesp" 
+		                   action="#{voucherPaymentBean.delete()}" title="Xóa">
+		                    <i class="fa fa-trash" aria-hidden="true"></i>
+		                     <p:confirm icon="ui-icon-alert" />
+		                 </p:commandLink>
+				    </span>
+		            <p:commandLink id="idorder" styleClass="btn_primmary" style="margin-left:5px; margin-right:0px;height:28px !important;line-height:28px !important;" >
+				            <i class="fa fa-search" aria-hidden="true"></i><span>Tìm kiếm</span>
+				    </p:commandLink>
+		            <p:commandLink process="@this"  update="dlg1"  action="#{voucherPaymentBean.showDialog()}" styleClass="btn_primmary" style="margin-left:5px; margin-right:0px;height:28px !important;line-height:28px !important;" >
+				            <i class="fa fa-plus" aria-hidden="true"></i><span>Thêm</span>
+				    </p:commandLink>
+		            <p:commandLink process="@this"  update="dlg1"  action="#{voucherPaymentBean.showDialogEdit()}" styleClass="btn_primmary" style="margin-left:5px; margin-right:0px;height:28px !important;line-height:28px !important;" >
+				            <i class="fa fa-pencil" aria-hidden="true"></i><span>Chỉnh sửa</span>
+				    </p:commandLink>
+	                <p:overlayPanel id="imagePanel" for="idorder" hideEffect="fade" dismissable="false"
+								widgetVar="panelsearch" style="width:350px;">
+						<div class="col-md-12" style="border: 1px solid #ccc; border-radius: 6px; margin-bottom: 5px !important;">
+						    <div class="col-md-12" style="padding-top:10px !important;padding-left: 0px !important; padding-right: 0px !important;">
+                                   <div class="row">
+                                       <div class="col-md-6" style="padding-left: 0px !important;padding-right:5px !important;margin-top: 5px;">
+                                            <label>Số chứng từ</label>
+                                       	</div>
+                                       <div class="col-md-6" style="padding-left: 5px !important;padding-right:0px !important;margin-top: 5px;">
+                                            <label>Số hợp đồng</label>
+                                       	</div>
+                                       	
+                                       <div class="col-md-6" style="padding-left: 0px !important;padding-right:5px !important;">
+                                            <p:inputText value="#{voucherPaymentBean.voucherCode}" style="width:100%;" />
+                                       	</div>
+                                       <div class="col-md-6" style="padding-left: 5px !important;padding-right:0px !important;">
+                                            <p:inputText value="#{voucherPaymentBean.contractVoucherCode}" style="width:100%;" />
+                                       	</div>
+                                       <div class="col-md-12" style="padding-left: 0px !important;padding-right:0px !important;margin-top: 5px;">
+                                            <label>Ngày nhập</label>
+                                       	</div>
+                                       <div class="col-md-12" style="padding-left: 0px !important;padding-right:0px !important;">
+                                              <p:calendar value="#{voucherPaymentBean.paymentDate}" pattern="dd/MM/yyyy" showOn="button" mask="99/99/9999" showButtonPanel="true"/>
+                                       	</div>
+                                       <div class="col-md-12" style="padding-left: 0px !important;padding-right:0px !important;margin-top: 5px;">
+                                            <label>Đơn vị trả</label>
+                                       	</div>
+                                       <div class="col-md-12" style="padding-left: 0px !important;padding-right:0px !important; margin-bottom: 8px;">
+                                           <div class="nhapnpp">
+									          <span class="fa fa-search"></span>
+											   <p:autoComplete style="width:100%;" placeholder="Tìm đơn vị trả"
+													value="#{voucherPaymentBean.paymentCustomer}" queryDelay="900"
+													converter="abstractConverter" minQueryLength="2" 
+													completeMethod="#{voucherPaymentBean.completeCustomer}" var="p"
+													itemLabel="#{p.customer_name}" itemValue="#{p}"
+													forceSelection="true" onclick="this.select();">
+													<p:column style="width:50px">
+													   <h:outputText value="#{p.customer_code}" />
+													</p:column>
+													<p:column style="width:150px">
+													    <h:outputText value="#{p.customer_name}" />
+													 </p:column>
+												 </p:autoComplete>
+										    </div>
+                                       	</div>
+                                   </div>
+                                 </div>
+						  </div>
+							<div class="col-md-12" style="padding-left: 0px !important;padding-right: 0px !important; margin-bottom: 5px;">
+							   <div class="pull-right">
+							         <p:commandLink  action="#{voucherPaymentBean.search()}" update="menuformid:tablesp" process="menuformid:imagePanel" oncomplete="PF('panelsearch').hide()" 
+							         styleClass="btn_primmary" style="margin-left:5px; margin-right:0px;height:28px !important;line-height:28px !important;" >
+									            <i class="fa fa-search" aria-hidden="true"></i><span>Tìm</span>
+									  </p:commandLink>
+								</div>
+							</div>
+					  </p:overlayPanel>
+	              </div>
+	              <div class="col-md-12" style="margin-top: 3px;">
+	                <p:dataTable value="#{voucherPaymentBean.listVoucherPayment}" lazy="true"
+							style="width:100%;" paginatorPosition="bottom" styleClass="tablenhapsp"
+							paginator="true" rowKey="#{item.id}" id="tablesp"
+							scrollable="true" scrollHeight="400"  paginatorTemplate="{Exporters}"
+							selection="#{voucherPaymentBean.voucherPaymentSelect}"
+							selectionMode="single" resizableColumns="true" var="item">
+						<f:facet name="{Exporters}">
+							  <span class="pagecurrentdisplay">
+							     <h:outputText value="(#{voucherPaymentBean.navigationInfo.currentPage} of #{voucherPaymentBean.navigationInfo.totalPage})" />
+							  </span>
+							  <ul class="pagination pagination-sm" style="margin: 0px 0px !important;">
+							      <li><p:commandLink disabled="#{voucherPaymentBean.navigationInfo.currentPage ==1}" styleClass="fa fa-angle-double-left font_weightcus"  update="menuformid:tablesp" actionListener="#{voucherPaymentBean.paginatorChange(1)}" /> </li>
+							      <li><p:commandLink disabled="#{voucherPaymentBean.navigationInfo.currentPage ==1}" styleClass="fa fa-angle-left font_weightcus"  update="menuformid:tablesp" actionListener="#{voucherPaymentBean.paginatorChange(voucherPaymentBean.navigationInfo.currentPage-1)}" /> </li>
+								  <c:forEach var="index" items="#{voucherPaymentBean.navigationInfo.indexList}">
+									  <li class="#{voucherPaymentBean.navigationInfo.currentPage==index ? 'active' : ''}"><p:commandLink   update="menuformid:tablesp" value="#{index}" actionListener="#{voucherPaymentBean.paginatorChange(index)}" /> </li>
+								  </c:forEach>
+								   <li><p:commandLink disabled="#{voucherPaymentBean.navigationInfo.currentPage ==voucherPaymentBean.navigationInfo.totalPage}" styleClass="fa fa-angle-right font_weightcus"  update="menuformid:tablesp" actionListener="#{voucherPaymentBean.paginatorChange(voucherPaymentBean.navigationInfo.currentPage +1)}" /> </li>
+							      <li><p:commandLink disabled="#{voucherPaymentBean.navigationInfo.currentPage ==voucherPaymentBean.navigationInfo.totalPage}" styleClass="fa fa-angle-double-right font_weightcus"  update="menuformid:tablesp" actionListener="#{voucherPaymentBean.paginatorChange(voucherPaymentBean.navigationInfo.totalPage)}" /> </li>
+								</ul>
+								<span class="rowperpage">
+						        <p:selectOneMenu 
+									value="#{voucherPaymentBean.pageSize}"
+									converter="abstractConverter" effect="fade" var="t"
+									style="width:50px;margin-left:10px !important;">
+									<f:selectItems value="#{voucherPaymentBean.listRowPerPage}"
+										var="theme" itemLabel="#{theme}"
+										itemValue="#{theme}" />
+									<p:column>
+										<h:outputText value="#{t}" />
+									</p:column>
+									<p:ajax update="menuformid:tablesp"  listener="#{voucherPaymentBean.paginatorChange(1)}"></p:ajax>
+								</p:selectOneMenu>
+						        </span>
+					     </f:facet>
+					     <p:ajax event="rowDblselect" listener="#{voucherPaymentBean.showDialogEdit()}"
+									 update="dlg1" />
+							<p:column headerText="Số c.từ" width="50">
+								<h:outputText value="#{item.voucher_code}" />
+							</p:column>
+							<p:column headerText="Ngày" width="55">
+								<h:outputText value="#{item.payment_date}">
+								   <f:convertDateTime pattern="dd/MM/yyyy"/>
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Hợp đồng" width="55">
+								<h:outputText value="#{item.contract.voucher_code}"/>
+							</p:column>
+							<p:column headerText="Đơn vị trả" width="230">
+								<h:outputText style="white-space: initial;" value="#{item.payment_customer.customer_name}" />
+							</p:column>
+							<p:column headerText="Số tiền" width="70">
+								<h:outputText value="#{voucherPaymentBean.formatHandler.getNumberFormat(item.total_amount,100000)}" />
+							</p:column>
+							<p:column headerText="Đơn vị nhận" width="140">
+								<h:outputText  style="white-space: initial;" value="#{item.receiver_customer.customer_name}"/>
+							</p:column>
+							<p:column headerText="Nội dung thanh toán" width="140" >
+								<h:outputText style="white-space: initial;" value="#{item.note}" />
+							</p:column>
+					</p:dataTable>
+	          </div>
+	           </div>
+		</h:form>
+		<p:dialog styleClass="dialogCus" resizable="false" width="450" style="overflow: initial;"
+		closeOnEscape="true" header="Chi tiết" widgetVar="dlg1" draggable="true">
+			<h:form id="dlg1" style="width:100%;">
+				   <div class="col-md-12 boxCus">
+				       <div class="col-md-12"  style="padding-left:0px !important;padding-right:0px !important;">
+				           <div class="row" >
+				               <div class="col-md-6" style="padding-left:0px !important;padding-right:5px !important;">
+				                   <label>Số chứng từ<span style="color:red;">*</span></label>
+				               </div>
+				               <div class="col-md-6" style="padding-left:5px !important;padding-right:0px !important;">
+				                   <label>Ngày<span style="color:red;">*</span></label>
+				               </div>
+				           </div>
+				           <div class="row">
+				               <div class="col-md-6" style="padding-left:0px !important;padding-right:5px !important;">
+				                   <p:inputText value="#{voucherPaymentBean.voucherPaymentCrud.voucher_code}" />
+				               </div>
+				               <div class="col-md-6" style="padding-left:5px !important;padding-right:0px !important;">
+				                    <p:calendar value="#{voucherPaymentBean.voucherPaymentCrud.payment_date}" pattern="dd/MM/yyyy" showOn="button" mask="99/99/9999" showButtonPanel="true"/>
+				               </div>
+				           </div>
+				           <div class="row" style="margin-top: 5px;">
+				               <div class="col-md-6" style="padding-left:0px !important;padding-right:5px !important;">
+				                   <label>Số hợp đồng</label>
+				               </div>
+				               <div class="col-md-6" style="padding-left:5px !important;padding-right:0px !important;">
+				                   <label>Đơn vị tiền<span style="color:red;">*</span></label>
+				               </div>
+				           </div>
+				           <div class="row">
+				               <div class="col-md-6" style="padding-left:0px !important;padding-right:5px !important;">
+				                   <div class="nhapdlg">
+							          <span class="fa fa-search"></span>
+									   <p:autoComplete style="width:100%;" placeholder="Tìm hợp đồng"
+											value="#{voucherPaymentBean.voucherPaymentCrud.contract}" queryDelay="900"
+											converter="abstractConverter" minQueryLength="2" 
+											completeMethod="#{voucherPaymentBean.completeContract}" var="p"
+											itemLabel="#{p.voucher_code}" itemValue="#{p}"
+											forceSelection="true" onclick="this.select();">
+											<p:column>
+											   <h:outputText value="#{p.voucher_code}" />
+											</p:column>
+											<p:column>
+											    <h:outputText value="#{p.contract_code}" />
+											 </p:column>
+										 </p:autoComplete>
+								    </div>
+				               </div>
+				               <div class="col-md-6" style="padding-left:5px !important;padding-right:0px !important;">
+				                  <p:selectOneMenu 
+										value="#{voucherPaymentBean.voucherPaymentCrud.currency}"
+										converter="abstractConverter" effect="fade" var="t"
+										style="width:100%;">
+										 <f:selectItem itemLabel="--select--" itemValue="#{null}" />
+										<f:selectItems value="#{voucherPaymentBean.listCurrency}"
+											var="theme" itemLabel="#{theme.currency_type}"
+											itemValue="#{theme}" />
+										<p:column>
+											<h:outputText value="#{t.currency_type}" />
+										</p:column>
+										<p:column>
+											<h:outputText value="#{t.symbol}" />
+										</p:column>
+									</p:selectOneMenu>
+				               </div>
+				           </div>
+				            <div class="row" style="margin-top: 5px;">
+				               <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+				                   <label>Đơn vị trả tiền<span style="color:red;">*</span></label>
+				               </div>
+				            </div>
+				            <div class="row">
+				               <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+				                   <div class="nhapdlg">
+							          <span class="fa fa-search"></span>
+									   <p:autoComplete style="width:100%;" placeholder="Tìm đơn vị trả tiền"
+											value="#{voucherPaymentBean.voucherPaymentCrud.payment_customer}" queryDelay="900"
+											converter="abstractConverter" minQueryLength="2" 
+											completeMethod="#{voucherPaymentBean.completeCustomer}" var="p"
+											itemLabel="#{p.customer_name}" itemValue="#{p}"
+											forceSelection="true" onclick="this.select();">
+											<p:column>
+											   <h:outputText value="#{p.customer_code}" />
+											</p:column>
+											<p:column>
+											    <h:outputText value="#{p.customer_name}" />
+											 </p:column>
+										 </p:autoComplete>
+								    </div>
+				               </div>
+				            </div>
+				            <div class="row" style="margin-top: 5px;">
+				               <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+				                   <label>Đơn vị nhận tiền<span style="color:red;">*</span></label>
+				               </div>
+				            </div>
+				            <div class="row">
+				               <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+				                   <div class="nhapdlg">
+							          <span class="fa fa-search"></span>
+									   <p:autoComplete style="width:100%;" placeholder="Tìm đơn vị nhận tiền"
+											value="#{voucherPaymentBean.voucherPaymentCrud.receiver_customer}" queryDelay="900"
+											converter="abstractConverter" minQueryLength="2" 
+											completeMethod="#{voucherPaymentBean.completeCustomer}" var="p"
+											itemLabel="#{p.customer_name}" itemValue="#{p}"
+											forceSelection="true" onclick="this.select();">
+											<p:column>
+											   <h:outputText value="#{p.customer_code}" />
+											</p:column>
+											<p:column>
+											    <h:outputText value="#{p.customer_name}" />
+											 </p:column>
+										 </p:autoComplete>
+								    </div>
+				               </div>
+				            </div>
+				            <div class="row" style="margin-top: 5px;">
+				               <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+				                   <label>Số tiền</label>
+				               </div>
+				            </div>
+				            <div class="row">
+				               <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+				                   <p:inputNumber   onclick="this.select()" value="#{voucherPaymentBean.voucherPaymentCrud.total_amount}" style="width:100%;"
+							             minValue="0" decimalPlaces="3" decimalSeparator="," thousandSeparator=".">
+                                   </p:inputNumber>
+				               </div>
+				            </div>
+				            <div class="row" style="margin-top: 5px;">
+				                 <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+				                   <label>Nội dung thanh toán</label>
+				               </div>
+				            </div>
+				            <div class="row">
+				                 <div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+				                   <p:inputTextarea rows="3" value="#{voucherPaymentBean.voucherPaymentCrud.note}" />
+				               </div>
+				            </div>
+				       </div>
+					</div>
+					<div class="col-md-12" style="padding-left:0px !important; padding-right:0px !important;  margin-top: 5px !important;">
+					    <p:commandLink  action="#{voucherPaymentBean.saveOrUpdate()}" update=":messages,menuformid:tablesp,dlg1"
+				         styleClass="btn_primmary" style="margin-left:5px; margin-right:0px;height:28px !important;line-height:28px !important;" >
+						            <i class="fa fa-search" aria-hidden="true"></i><span>Lưu/Cập nhật</span>
+						  </p:commandLink>
+					</div>
+			 </h:form>
+	   </p:dialog>
+	   </ui:define>
+</ui:composition>

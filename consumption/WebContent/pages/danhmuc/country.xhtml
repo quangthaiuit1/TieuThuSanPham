@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/home.xhtml">
+	<ui:define name="content">
+		<h3 style="margin: 0px">Danh mục quốc gia</h3>
+		<p:separator />
+		<h:form id="menuformid">
+			<h:panelGrid columns="2" style="width:100%;" columnClasses="w50">
+				<p:panel header="Thông tin" styleClass="panelw100">
+					<h:panelGrid id="info">
+						<label>Mã quốc gia<span style="color:red;">*</span></label>
+						<p:inputText value="#{countryBean.countryCrud.country_code}"/>
+						<label>Tên quốc gia<span style="color:red;">*</span></label>
+						<p:inputText value="#{countryBean.countryCrud.country_name}"/>
+						<label>Tên quốc gia(Tiếng anh)</label>
+						<p:inputText value="#{countryBean.countryCrud.en_name}"/>
+					</h:panelGrid>
+					<p:separator />
+					<p:commandButton process="@this,info" icon="fa fa-floppy-o" 
+					  style="padding:4px !important;" action="#{countryBean.saveOrUpdate()}"  styleClass="buttonaddrow" update="menuformid:tableid" value="Lưu/Cập nhật" />
+					<p:commandButton process="@this,info" icon="fa fa-floppy-o" 
+					  style="padding:4px !important;" action="#{countryBean.createNew()}"  styleClass="buttonaddrow" update="menuformid:info"  value="Tạo mới" />
+				</p:panel>
+				<p:panel header="Danh sách" id="preview" style=" height:500px">
+					<h:panelGrid id="mainGrid" columns="6"
+						style="float:left; margin-bottom:5px">
+						<p:tooltip for="xoact" value="Xoá" />
+						<p:commandButton process="@this" id="xoact" action="#{countryBean.delete()}" style="padding: 3px 14px 3px 16px !important;font-size:11px !important;" styleClass="buttonaddrow"
+				      update=":messages,:menuformid"   icon="fa fa-trash">
+				          <p:confirm icon="ui-icon-alert" />
+				        </p:commandButton>
+						<p:commandButton id="idorder" style="padding:4px !important;" styleClass="buttonaddrow" value="Tìm kiếm" icon="fa fa-search" />
+						<p:commandButton  action="#{countryBean.showDialogUpload()}" style="padding:4px !important;" styleClass="buttonaddrow" value="Nạp Excel"
+				         icon="fa fa-file-excel-o" />
+						<p:overlayPanel id="imagePanel" for="idorder" hideEffect="fade" dismissable="false"
+								widgetVar="panelsearch" style="width:300px;">
+							 <div class="col-md-12"
+												style="border: 1px solid #ccc; border-radius: 6px; margin-bottom: 5px !important;">
+								    <div class="col-md-12" style="padding-top:10px !important;padding-left: 0px !important; padding-right: 0px !important;">
+		                                   <div class="row">
+		                                       <div class="col-md-12" style="padding-left: 0px !important;padding-right:0px !important;">
+		                                           <label>Mã quốc gia</label>
+		                                       </div>
+		                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+		                                          <p:inputText value="#{countryBean.countryCode}" style="width:100%" />
+		                                       </div>
+		                                       <div class="col-md-12" style="padding-left: 0px !important;padding-right:0px !important;">
+		                                           <label>Tên quốc gia</label>
+		                                       </div>
+		                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+		                                          <p:inputText value="#{countryBean.countryName}" style="width:100%" />
+		                                       </div>
+		                                   </div>
+		                                 </div>
+							    </div>
+								<div class="col-md-12" style="padding-left: 0px !important;padding-right: 0px !important; margin-bottom: 5px;">
+								   <div class="pull-right">
+										<p:commandButton value="Tìm" process="menuformid:imagePanel"
+										icon="ui-icon-search" oncomplete="PF('panelsearch').hide()"
+										actionListener="#{countryBean.search()}"
+										update="menuformid:tableid" />
+									</div>
+								</div>
+					  </p:overlayPanel>
+					</h:panelGrid>
+					<div style="clear: both" />
+					<p:dataTable value="#{countryBean.listCountry}" lazy="true"
+						paginatorPosition="bottom"
+						paginator="true" rowKey="#{item.id}" paginatorTemplate="{Exporters}"
+						selection="#{countryBean.countrySelect}" scrollable="true"
+						selectionMode="single" scrollWidth="550" id="tableid"
+						scrollHeight="370" widgetVar="datatb" resizableColumns="true"
+						var="item">
+						<f:facet name="{Exporters}">
+							  <span class="pagecurrentdisplay">
+							     <h:outputText value="(#{countryBean.navigationInfo.currentPage} of #{countryBean.navigationInfo.totalPage})" />
+							  </span>
+							  <ul class="pagination pagination-sm" style="margin: 0px 0px !important;">
+							      <li><p:commandLink disabled="#{countryBean.navigationInfo.currentPage ==1}" styleClass="fa fa-angle-double-left font_weightcus"  update="menuformid:tableid" actionListener="#{countryBean.paginatorChange(1)}" /> </li>
+							      <li><p:commandLink disabled="#{countryBean.navigationInfo.currentPage ==1}" styleClass="fa fa-angle-left font_weightcus"  update="menuformid:tableid" actionListener="#{countryBean.paginatorChange(countryBean.navigationInfo.currentPage-1)}" /> </li>
+								  <c:forEach var="index" items="#{countryBean.navigationInfo.indexList}">
+									  <li class="#{countryBean.navigationInfo.currentPage==index ? 'active' : ''}"><p:commandLink   update="menuformid:tableid" value="#{index}" actionListener="#{countryBean.paginatorChange(index)}" /> </li>
+								  </c:forEach>
+								   <li><p:commandLink disabled="#{countryBean.navigationInfo.currentPage ==countryBean.navigationInfo.totalPage}" styleClass="fa fa-angle-right font_weightcus"  update="menuformid:tableid" actionListener="#{countryBean.paginatorChange(countryBean.navigationInfo.currentPage +1)}" /> </li>
+							      <li><p:commandLink disabled="#{countryBean.navigationInfo.currentPage ==countryBean.navigationInfo.totalPage}" styleClass="fa fa-angle-double-right font_weightcus"  update="menuformid:tableid" actionListener="#{countryBean.paginatorChange(countryBean.navigationInfo.totalPage)}" /> </li>
+								</ul>
+								<span class="rowperpage">
+						        <p:selectOneMenu 
+									value="#{countryBean.pageSize}"
+									converter="abstractConverter" effect="fade" var="t"
+									style="width:50px;margin-left:10px !important;">
+									<f:selectItems value="#{countryBean.listRowPerPage}"
+										var="theme" itemLabel="#{theme}"
+										itemValue="#{theme}" />
+									<p:column>
+										<h:outputText value="#{t}" />
+									</p:column>
+									<p:ajax update="menuformid:tableid"  listener="#{countryBean.paginatorChange(1)}"></p:ajax>
+								</p:selectOneMenu>
+						        </span>
+					     </f:facet>
+						<p:ajax event="rowSelect" listener="#{countryBean.showEdit()}"
+							update="menuformid:info" />
+						<p:column headerText="ID" width="30">
+							<h:outputText value="#{item.id}" />
+						</p:column>
+						<p:column headerText="Mã quốc gia" width="80">
+							<h:outputText value="#{item.country_code}" />
+						</p:column>
+						<p:column headerText="Tên quốc gia" width="150">
+							<h:outputText value="#{item.country_name}" />
+						</p:column>
+						<p:column headerText="Tên quốc gia(en)" width="150">
+							<h:outputText value="#{item.en_name}" />
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+			</h:panelGrid>
+		</h:form>
+		<p:dialog widgetVar="uploadpdffile" resizable="false" height="400" styleClass="dislogUpload"
+			header="Tải File">
+			<h:form id="mm" enctype="multipart/form-data">
+				<p:fileUpload style="text-align:center"
+				id="fileupload" dragDropSupport="true" 
+				label="Chọn file từ máy tính" cancelLabel="Huỷ" update=":messages,menuformid:tableid"
+				uploadLabel="Tải lên" multiple="false" 
+				fileUploadListener="#{countryBean.loadExcel}" mode="advanced" process="@this,mm,menuformid:tableid"/>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="theodoicongno" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="40" rightMargin="40" topMargin="20" bottomMargin="20" uuid="e9b1514c-c64f-4744-8333-46123f45e0fb">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<import value="lixco.com.common.FormatHandler"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Dataset1" uuid="fcbe8b7b-974f-470d-8bf0-cddae3535e7b">
+		<parameter name="ref_total_quantity" class="java.lang.Double"/>
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="voucher_code" class="java.lang.String"/>
+		<field name="payment_date" class="java.util.Date"/>
+		<field name="note" class="java.lang.String"/>
+		<field name="total_amount" class="java.lang.Double"/>
+		<variable name="total_payment" class="java.lang.Double" calculation="Sum">
+			<variableExpression><![CDATA[$F{total_amount}]]></variableExpression>
+		</variable>
+		<group name="Group1"/>
+	</subDataset>
+	<parameter name="logo" class="java.lang.String"/>
+	<parameter name="customer_name" class="java.lang.String"/>
+	<parameter name="total_quantity" class="java.lang.Double"/>
+	<parameter name="voucher_code" class="java.lang.String"/>
+	<parameter name="list_detail" class="java.util.List"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="142" splitType="Stretch">
+			<image scaleImage="FillFrame">
+				<reportElement x="0" y="2" width="70" height="32" uuid="fa7fe584-3f4d-46cd-b798-e9744818a5f0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<graphicElement fill="Solid"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="70" y="3" width="445" height="27" uuid="92f128c3-b782-470b-af0f-6ba2c7c6d38c"/>
+				<box leftPadding="8"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CÔNG TY CỔ PHẦN BỘT GIẶT LIX]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="36" width="515" height="23" forecolor="#DB0C09" uuid="9ed23696-3de8-4ca7-b0d5-9f13840585ee"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[THEO DÕI CÔNG NỢ KHÁCH HÀNG]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="73" width="80" height="23" forecolor="#100AAB" uuid="a5289194-af67-4e6d-abab-87b3bd0244e6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="10"/>
+				</textElement>
+				<text><![CDATA[KHÁCH HÀNG:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="96" width="80" height="23" forecolor="#100AAB" uuid="25d05530-a162-486f-930c-cb53f37e81ea">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="10"/>
+				</textElement>
+				<text><![CDATA[TỔNG GIÁ TRỊ:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="119" width="80" height="23" forecolor="#100AAB" uuid="fbc3ef19-6158-4b86-aafa-d10874bb4ea9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="10"/>
+				</textElement>
+				<text><![CDATA[SỔ HỢP ĐỒNG:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="130" y="73" width="385" height="23" forecolor="#100AAB" uuid="e8167dcc-7717-474a-b37b-d9ad5207ce0f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{customer_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="96" width="385" height="23" forecolor="#100AAB" uuid="67c82210-3658-49c7-9bed-b8d4d4d058e2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{total_quantity}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="119" width="385" height="23" forecolor="#100AAB" uuid="43bd24eb-1b1a-4699-8430-5190085be452">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="FontReport" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{voucher_code}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="108" splitType="Stretch">
+			<componentElement>
+				<reportElement x="10" y="0" width="515" height="95" uuid="5527af07-bcdc-4e20-8408-94a94de5ba99">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="Dataset1" uuid="19f405ae-5b09-410f-a189-d87198eeb76f">
+						<datasetParameter name="ref_total_quantity">
+							<datasetParameterExpression><![CDATA[$P{total_quantity}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[new  net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list_detail})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="75" uuid="eb53f139-38e8-4c1f-978e-1eb6a7eaa5ec">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:groupFooter groupName="Group1">
+							<jr:cell height="45" rowSpan="1">
+								<box>
+									<topPen lineWidth="0.22"/>
+									<leftPen lineWidth="0.22"/>
+									<bottomPen lineWidth="0.22"/>
+									<rightPen lineWidth="0.22"/>
+								</box>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader height="25" rowSpan="1">
+							<box>
+								<topPen lineWidth="0.25"/>
+								<leftPen lineWidth="0.25"/>
+								<bottomPen lineWidth="0.25"/>
+								<rightPen lineWidth="0.25"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="75" height="25" uuid="21e29cab-3ca6-4943-8423-2cbc7cf3e535"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="FontReport" size="8"/>
+								</textElement>
+								<text><![CDATA[SỐ CT]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="25">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<box>
+								<topPen lineWidth="0.22"/>
+								<leftPen lineWidth="0.22"/>
+								<bottomPen lineWidth="0.22"/>
+								<rightPen lineWidth="0.22"/>
+							</box>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="75" height="25" uuid="a36dfcf9-49b8-46c6-b071-24476c0c3146"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="FontReport" size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{voucher_code}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="75" uuid="cba1e9b6-ba74-4189-ad05-09ec568f9834">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:groupFooter groupName="Group1">
+							<jr:cell height="45" rowSpan="1">
+								<box>
+									<topPen lineWidth="0.22"/>
+									<leftPen lineWidth="0.22"/>
+									<bottomPen lineWidth="0.22"/>
+									<rightPen lineWidth="0.22"/>
+								</box>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader height="25" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<box>
+								<topPen lineWidth="0.25"/>
+								<leftPen lineWidth="0.25"/>
+								<bottomPen lineWidth="0.25"/>
+								<rightPen lineWidth="0.25"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="75" height="25" uuid="8c445b25-ca44-4343-82dc-14f59d84b2d7"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="FontReport" size="8"/>
+								</textElement>
+								<text><![CDATA[NGÀY]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="25">
+							<box>
+								<topPen lineWidth="0.22"/>
+								<leftPen lineWidth="0.22"/>
+								<bottomPen lineWidth="0.22"/>
+								<rightPen lineWidth="0.22"/>
+							</box>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="75" height="25" uuid="ffee122f-7b06-4d07-bb3b-52e8aa745716"/>
+								<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="FontReport" size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{payment_date}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="240" uuid="5f65b77e-dcbd-406d-a5be-78900d39754b">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+						<jr:groupFooter groupName="Group1">
+							<jr:cell height="45" rowSpan="1">
+								<box>
+									<topPen lineWidth="0.22"/>
+									<leftPen lineWidth="0.22"/>
+									<bottomPen lineWidth="0.22"/>
+									<rightPen lineWidth="0.22"/>
+								</box>
+								<staticText>
+									<reportElement x="0" y="0" width="240" height="23" uuid="7cb9fa81-3cf7-450a-bc7c-687258652ad7"/>
+									<box leftPadding="47"/>
+									<textElement verticalAlignment="Middle">
+										<font fontName="FontReport" size="9"/>
+									</textElement>
+									<text><![CDATA[Cộng ]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="23" width="240" height="22" forecolor="#1113A6" uuid="fbcddcdd-1164-4a39-b6ba-845cfeabcd85"/>
+									<box leftPadding="47"/>
+									<textElement verticalAlignment="Middle">
+										<font fontName="FontReport" size="9"/>
+									</textElement>
+									<text><![CDATA[Còn lại]]></text>
+								</staticText>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader height="25" rowSpan="1">
+							<box>
+								<topPen lineWidth="0.25"/>
+								<leftPen lineWidth="0.25"/>
+								<bottomPen lineWidth="0.25"/>
+								<rightPen lineWidth="0.25"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="240" height="25" uuid="4f378a67-90d1-46aa-aa98-94dc91ea5850"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="FontReport" size="8"/>
+								</textElement>
+								<text><![CDATA[NỘI DUNG]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="25">
+							<box>
+								<topPen lineWidth="0.22"/>
+								<leftPen lineWidth="0.22"/>
+								<bottomPen lineWidth="0.22"/>
+								<rightPen lineWidth="0.22"/>
+							</box>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="240" height="25" uuid="a3656783-3272-4db0-8da0-3b6d555ea43e"/>
+								<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="FontReport" size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{note}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="125" uuid="fcabdc24-ebca-40cd-9cc0-444833cc6770">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+						<jr:groupFooter groupName="Group1">
+							<jr:cell height="45" rowSpan="1">
+								<box>
+									<topPen lineWidth="0.22"/>
+									<leftPen lineWidth="0.22"/>
+									<bottomPen lineWidth="0.22"/>
+									<rightPen lineWidth="0.22"/>
+								</box>
+								<textField>
+									<reportElement x="0" y="0" width="125" height="23" uuid="c8f97c2c-3a1e-4671-a95b-f529e3b2e704"/>
+									<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3"/>
+									<textElement textAlignment="Right" verticalAlignment="Middle">
+										<font fontName="FontReport" size="9"/>
+									</textElement>
+									<textFieldExpression><![CDATA[FormatHandler.getInstance().getNumberFormat($V{total_payment},1000)]]></textFieldExpression>
+								</textField>
+								<textField>
+									<reportElement x="0" y="23" width="125" height="22" forecolor="#1113A6" uuid="a671604c-ae0d-4dbc-b224-0584cf841cfb"/>
+									<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3"/>
+									<textElement textAlignment="Right" verticalAlignment="Middle">
+										<font fontName="FontReport" size="9"/>
+									</textElement>
+									<textFieldExpression><![CDATA[FormatHandler.getInstance().getNumberFormat($P{ref_total_quantity}-$V{total_payment},1000)]]></textFieldExpression>
+								</textField>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader height="25" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<box>
+								<topPen lineWidth="0.25"/>
+								<leftPen lineWidth="0.25"/>
+								<bottomPen lineWidth="0.25"/>
+								<rightPen lineWidth="0.25"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="125" height="25" uuid="14f99aa9-e725-4a7b-b9fc-4cc07a8691b3"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="FontReport" size="8"/>
+								</textElement>
+								<text><![CDATA[SỐ TIỀN]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="25">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<box>
+								<topPen lineWidth="0.22"/>
+								<leftPen lineWidth="0.22"/>
+								<bottomPen lineWidth="0.22"/>
+								<rightPen lineWidth="0.22"/>
+							</box>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="125" height="25" uuid="2763529b-ec90-4854-a041-197575bd3a69"/>
+								<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font fontName="FontReport" size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[FormatHandler.getInstance().getNumberFormat($F{total_amount},1000)]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+		<band height="36">
+			<staticText>
+				<reportElement x="80" y="6" width="178" height="30" uuid="fa285e7e-9d1c-4d7a-9c0c-2e0e9ff95d94"/>
+				<textElement>
+					<font fontName="FontReport" size="8"/>
+				</textElement>
+				<text><![CDATA[P.KH & KV]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="6" width="145" height="30" uuid="5a3dc72f-30f5-4848-a843-830102b80ab9"/>
+				<textElement>
+					<font fontName="FontReport" size="8"/>
+				</textElement>
+				<text><![CDATA[NGƯỜI LẬP]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

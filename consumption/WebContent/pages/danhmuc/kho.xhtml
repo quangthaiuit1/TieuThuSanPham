@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/home.xhtml">
+	<ui:define name="content">
+		<h3 style="margin: 0px">Danh mục kho</h3>
+		<p:separator />
+		<h:form id="menuformid">
+			<h:panelGrid columns="2" style="width:100%;" columnClasses="w50">
+				<p:panel header="Thông tin" styleClass="panelw100">
+					<h:panelGrid id="info">
+						<label>Mã kho<span style="color:red;">*</span></label>
+						<p:inputText value="#{warehouseBean.warehouseCrud.code}"/>
+						<label>Tên kho<span style="color:red;">*</span></label>
+						<p:inputText value="#{warehouseBean.warehouseCrud.name}"/>
+					</h:panelGrid>
+					<p:separator />
+					<p:commandButton process="@this,info" icon="fa fa-floppy-o" 
+					  style="padding:4px !important;" action="#{warehouseBean.saveOrUpdate()}"  styleClass="buttonaddrow" update="menuformid:tableid" value="Lưu/Cập nhật" />
+					<p:commandButton process="@this,info" icon="fa fa-floppy-o" 
+					  style="padding:4px !important;" action="#{warehouseBean.createNew()}"  styleClass="buttonaddrow" update="menuformid:info"  value="Tạo mới" />
+				</p:panel>
+				<p:panel header="Danh sách" id="preview" styleClass="clearfix">
+					<h:panelGrid id="mainGrid" columns="6"
+						style="float:left; margin-bottom:5px">
+						<p:tooltip for="xoact" value="Xoá" />
+						<p:commandButton process="@this" id="xoact" action="#{warehouseBean.delete()}" style="padding: 3px 3px 3px 3px !important;font-size:11px !important;" styleClass="buttonaddrow"
+				      update=":messages,:menuformid" value="Xóa"   icon="fa fa-trash">
+				          <p:confirm icon="ui-icon-alert" />
+				        </p:commandButton>
+				        <p:commandButton  action="#{warehouseBean.showDialogUpload()}" style="padding:4px !important;" styleClass="buttonaddrow" value="Nạp Excel"
+				         icon="fa fa-file-excel-o" />
+					</h:panelGrid>
+					<div style="clear: both" />
+					<p:dataTable value="#{warehouseBean.listWarehouse}" lazy="true"
+						paginatorPosition="bottom" rowsPerPageTemplate="20,40,60" 
+						paginator="true" rowKey="#{item.id}" 
+						selection="#{warehouseBean.warehouseSelect}" scrollable="true"
+						selectionMode="single" scrollWidth="550" id="tableid"
+						scrollHeight="370" widgetVar="datatb" resizableColumns="true"
+						var="item">
+						<p:ajax event="rowSelect" listener="#{warehouseBean.showEdit()}"
+							update="menuformid:info" />
+						<p:column headerText="ID" width="50">
+							<h:outputText value="#{item.id}" />
+						</p:column>
+						<p:column headerText="Mã kho" width="50">
+							<h:outputText value="#{item.code}" />
+						</p:column>
+						<p:column headerText="Tên kho">
+							<h:outputText style="white-space: initial;" value="#{item.name}" />
+						</p:column>
+						<p:column headerText="Mã (old)" width="50">
+							<h:outputText value="#{item.old_code}" />
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+			</h:panelGrid>
+		</h:form>
+		<p:dialog widgetVar="dlgup1" resizable="false" styleClass="dislogUpload"
+			header="Tải File">
+			<h:form id="dlgup1" enctype="multipart/form-data">
+				<p:fileUpload style="text-align:center"
+				id="fileupload" dragDropSupport="true" allowTypes="/(\.|\/)(xls|xlsx)$/"
+				label="Chọn file từ máy tính" cancelLabel="Huỷ" update=":messages,menuformid:tableid"
+				uploadLabel="Tải lên" multiple="false" 
+				fileUploadListener="#{warehouseBean.loadExcel}" mode="advanced" process="@this,dlgup1,menuformid:tableid"/>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

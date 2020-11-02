@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/home.xhtml">
+	<ui:define name="content">
+		<h3 style="margin: 0px">Hợp đồng tiêu thụ sản phẩm (vt)</h3>
+		<p:separator />
+		<div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+			<h:form id="menuformid">
+				<p:tabView id="tabview1" styleClass="clearfix label12 tabview_lix">
+					<p:tab id="tab1" title="Nhập chi tiết hợp đồng">
+					    <h:panelGroup id="group1">
+						<div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important;background-color: #eeeeee;">
+						    <div class="col-md-9" style="padding-left: 0px !important; padding-right: 0px !important;background-color: #eeeeee;">
+						        <div class="row" style="margin-top:18px;">
+							        <div class="col-md-9" style="padding-left: 15px !important; padding-right: 0px !important;margin-bottom: 2px;">
+							             <p:commandLink update="dlg1,messages" process="@this"  action="#{contractBean.showDialogAddContractDetail()}" styleClass="btn_primmary" style="margin-left:0px; margin-right:3px; height:29px !important;line-height:29px !important;" >
+							                    <i class="fa fa-plus" aria-hidden="true"></i><span>Thêm</span>
+							             </p:commandLink>
+							             <p:commandLink process="@this" update="dlg1,messages" action="#{contractBean.showDialogEditContractDetail()}" styleClass="btn_primmary" style="margin-left:3px; margin-right:10px;height:29px !important;line-height:29px !important;" >
+							                    <i class="fa fa-pencil" aria-hidden="true"></i><span>Chỉnh sửa</span>
+							              </p:commandLink>
+							              <h:panelGroup rendered="#{contractBean.contractCrud !=null and contractBean.contractCrud.id==0 and contractBean.listContractDetail !=null and contractBean.listContractDetail.size()>0}">
+							                  <h6 style="color: #ca1717;font-weight: bold;display: inline-block;">Phiếu copy chưa được lưu bấm lưu/cập nhật</h6>
+							              </h:panelGroup>
+							        </div>
+							        <div class="col-md-3" style="padding-left: 0px !important; padding-right: 15px !important;text-align: right; margin-bottom: 2px;">
+							            <span class="btn_icnx" style="background-color: #07a800 !important;">
+							                 <p:commandLink  ajax="false" action="#{contractBean.exportExcel()}" title="Xuất file excel">
+							                    <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+							                 </p:commandLink>
+							            </span>
+							            <span class="btn_icnx" style="background-color: #807a7aeb !important;">
+							                 <p:commandLink  action="#{contractBean.copyContract()}" title="Sao chép hợp đồng" update="menuformid:tabview1:group1">
+							                    <i class="fa fa-files-o" aria-hidden="true"></i>
+							                 </p:commandLink>
+							            </span>
+							            <span class="btn_icnx" style="background-color: #807a7aeb !important;">
+							                 <p:commandLink action="#{contractBean.createNew()}" title="Tạo mới hợp đồng" update="menuformid:tabview1:group1">
+							                    <i class="fa fa-file-o" aria-hidden="true"></i>
+							                 </p:commandLink>
+							            </span>
+							        </div>
+							    </div>
+							    <div class="row" style=" margin-bottom: 20px;">
+							        <p:dataTable value="#{contractBean.listContractDetail}" lazy="false"
+										paginatorPosition="bottom" rowsPerPageTemplate="90,180,250" selectionMode="single"
+										 styleClass="tablenhapsp"  scrollHeight="500"  selection="#{contractBean.contractDetailSelect}"
+										paginator="true" rowKey="#{item.id}"  scrollable="true" id="tablect"
+										 widgetVar="tablect" resizableColumns="true" filteredValue="#{contractBean.listContractDetailFillter}"
+										var="item">
+										<p:ajax event="rowDblselect" listener="#{contractBean.showDialogEditContractDetail()}" update="dlg1" />
+										<p:column headerText="" width="30" styleClass="textcenter">
+											<p:commandLink update="tablect,messages,menuformid:tabview1:tongtien" styleClass="trash_del" process="@this" actionListener="#{contractBean.deleteContactDetail(item)}">
+											   <span class="fa fa-trash-o"></span>
+											    <p:confirm icon="ui-icon-alert" />
+											</p:commandLink>
+										</p:column>
+										<p:column headerText="ID" width="30" styleClass="textcenter">
+											<h:outputText value="#{item.id}" />
+										</p:column>
+										<p:column headerText="MASP" width="40" filterBy="#{item.product.product_code}" filterMatchMode="contains">
+											<h:outputText value="#{item.product.product_code}" />
+										</p:column>
+										<p:column headerText="Sản phẩm" width="270" filterBy="#{contractBean.formatHandler.converViToEn(item.product.product_name)}"  filterMatchMode="contains" >
+											<h:outputText style="white-space: initial;" value="#{item.product.product_name}" />
+										</p:column>
+										<p:column headerText="Số lượng" width="50">
+										   <h:outputText value="#{contractBean.formatHandler.getNumberFormat(item.quantity,100000)}" />
+										</p:column>
+										<p:column headerText="Đơn giá" width="70">
+											  <h:outputText value="#{contractBean.formatHandler.getNumberFormat(item.unit_price,1000000)}" />
+										</p:column>
+										<p:column headerText="Thành tiền" width="70" styleClass="textright">
+											<h:outputText  value="#{(item.quantity* item.unit_price)==0 ? '' :contractBean.formatHandler.getNumberFormat(item.quantity* item.unit_price,1000000)}" />
+										</p:column>
+										<p:column headerText="Lợi nhuận" width="60" styleClass="textright">
+											<h:outputText  value="#{item.profit==0? '' : contractBean.formatHandler.getNumberFormat(item.profit,1000)}" />
+										</p:column>
+										<p:column headerText="Khuyến mãi" width="60" styleClass="textcenter">
+										    <p:selectBooleanCheckbox value="#{item.promotion}">
+										        <p:ajax update="messages" process="@this" listener="#{contractBean.updateContractDetail(item)}" />
+										    </p:selectBooleanCheckbox>
+										</p:column>
+									</p:dataTable>
+							    </div>
+						    </div>
+						    <div class="col-md-3" style="padding-left: 10px !important; padding-right:0px !important; height: 641px;background-color: white;">
+						        <div class="row" style="margin-top: 20px;">
+						           <div class="col-md-6" style="padding-left: 0px !important; padding-right:3px !important;">
+							            <label>Mã hợp đồng</label>
+						            </div>
+						            <div class="col-md-6" style="padding-left: 3px !important; padding-right:0px !important;">
+						               <label>Số hợp đồng</label>
+						            </div>
+						        </div>
+						        <div class="row">
+						           <div class="col-md-6" style="padding-left: 0px !important; padding-right:3px !important;">
+							            <p:inputText readonly="true"  value="#{contractBean.contractCrud.contract_code}" />
+						            </div>
+						            <div class="col-md-6" style="padding-left: 3px !important; padding-right:0px !important;">
+						                <p:inputText readonly="false" value="#{contractBean.contractCrud.voucher_code}" />
+						            </div>
+						        </div>
+						        <div class="row" style="margin-top: 10px;">
+						           <div class="col-md-12" style="padding-left: 0px !important; padding-right:0px !important;">
+							           <label>Khách hàng</label>
+						            </div>
+						           <div class="col-md-12" style="padding-left: 0px !important; padding-right:0px !important;">
+							                <div class="nhapnpp">
+									          <span class="fa fa-search"></span>
+											  <p:autoComplete style="width:100%;"
+								                placeholder="Tìm khách hàng"
+												value="#{contractBean.contractCrud.customer}" queryDelay="900"
+												maxResults="200"
+												converter="abstractConverter" minQueryLength="2" 
+												completeMethod="#{contractBean.completeCustomer}" var="p"
+												itemLabel="#{p.customer_name}" itemValue="#{p}"
+												forceSelection="true" onclick="this.select();">
+												<p:column style="width:50px">
+												   <h:outputText value="#{p.customer_code}" />
+												</p:column>
+												<p:column style="width:150px">
+												    <h:outputText value="#{p.customer_name}" />
+												 </p:column>
+											   </p:autoComplete>
+										    </div>
+						            </div>
+						        </div>
+						        <div class="row" style="margin-top: 10px;">
+						            <div class="col-md-6" style="padding-left: 0px !important; padding-right:3px !important;">
+						                <label>Ngày bắt đầu</label>
+						            </div>
+						            <div class="col-md-6" style="padding-left: 3px !important; padding-right:0px !important;">
+						                <label>Ngày kết thúc</label>
+						            </div>
+						            <div class="col-md-6" style="padding-left: 0px !important; padding-right:3px !important;">
+						                <p:calendar value="#{contractBean.contractCrud.effective_date}" pattern="dd/MM/yyyy" showOn="button" mask="99/99/9999" showButtonPanel="true" />
+						            </div>
+						            <div class="col-md-6" style="padding-left: 3px !important; padding-right:0px !important;">
+						                <p:calendar value="#{contractBean.contractCrud.expiry_date}" pattern="dd/MM/yyyy" showOn="button" mask="99/99/9999" showButtonPanel="true"/>
+						            </div>
+						        </div>
+						        <div class="row" style="margin-top: 10px;">
+						           <div class="col-md-6" style="padding-left: 0px !important; padding-right:3px !important;">
+							            <label>Ngày hợp đồng</label>
+						            </div>
+						            <div class="col-md-6" style="padding-left: 3px !important; padding-right:0px !important;">
+						               <label>Đơn vị tiền</label>
+						            </div>
+						        </div>
+						        <div class="row">
+						           <div class="col-md-6" style="padding-left: 0px !important; padding-right:3px !important;">
+							            <p:calendar value="#{contractBean.contractCrud.contract_date}" pattern="dd/MM/yyyy" showOn="button" mask="99/99/9999" showButtonPanel="true" />
+						            </div>
+						            <div class="col-md-6" style="padding-left: 3px !important; padding-right:0px !important;">
+						                <p:selectOneMenu 
+											value="#{contractBean.contractCrud.currency}"
+											converter="abstractConverter" effect="fade" var="t"
+											style="width:100%;">
+											 <f:selectItem itemLabel="--select--" itemValue="#{null}" />
+											<f:selectItems value="#{contractBean.listCurrency}"
+												var="theme" itemLabel="#{theme.currency_type}"
+												itemValue="#{theme}" />
+											<p:column>
+												<h:outputText value="#{t.currency_type}" />
+											</p:column>
+											<p:column>
+												<h:outputText value="#{t.symbol}" />
+											</p:column>
+										</p:selectOneMenu>
+						            </div>
+						        </div>
+						        <div class="row" style="margin-top: 10px;">
+						            <div class="col-md-12" style="padding-left: 0px !important; padding-right:0px !important;">
+						                <p:selectBooleanCheckbox style="font-size: 14px;color: #a10808;" value="#{contractBean.contractCrud.liquidated}" itemLabel="Đã thanh lý">
+						                   <p:ajax update="@this" listener="#{contractBean.updateContract()}" />
+						                </p:selectBooleanCheckbox>
+						            </div>
+						        </div>
+						        <div class="row" style="margin-top: 20px;">
+						            <div class="col-md-12" style="padding-left: 0px !important; padding-right:0px !important;">
+						                 <div style="width: 230px;margin:0 auto;">
+					                         <p:fieldset id="tongtien" legend="Tổng tiền" 
+										          styleClass="fieldsetclass2 label12 classfixtopfieldset">
+										          <span>#{contractBean.formatHandler.getNumberFormat(contractBean.sumContract(),10000000)}</span>
+										      </p:fieldset>
+					                      </div>
+						            </div>
+						        </div>
+						        <div class="row" style="position: absolute;bottom:12px;">
+						            <span class="btn_luutam">
+						              <p:commandLink action="#{contractBean.saveOrUpdate()}" update="menuformid:tabview1:group1,menuformid:tabview1:tablenc">
+						                  <i class="fa fa-floppy-o" aria-hidden="true"></i><br />Lưu/Cập nhật
+						              </p:commandLink>
+						            </span>
+						            <span class="btn_tcong">
+						              <p:commandLink action="#{contractBean.debtTracking()}" update="menuformid:tabview1:group1">
+						                 <i class="fa fa-chevron-down" aria-hidden="true"></i><br />Theo dõi công nợ
+						              </p:commandLink>
+						            </span>
+						        </div>
+						    </div>
+						</div>
+						</h:panelGroup>
+					</p:tab>
+					<p:tab id="tab2" title="Danh sách hợp đồng">
+					    <div class="col-md-12" style="padding-left: 0px !important; padding-right:0px !important; background-color: #eeeeee; ">
+					        <div class="row" style="margin-top: 25px; margin-left: 16px !important; background: white;margin-right: 16px !important; height: 40px;padding-top: 6px;padding-left: 5px;">
+							    <span class="btn_icnx" style="background-color: #4bac4d !important;height:30px !important;line-height:30px !important;">
+					                 <p:commandLink style="height:30px !important;line-height:30px !important;padding-top: 7px !important;" id="xoact" update="messages,menuformid:tabview1:tablenc" action="#{contractBean.deleteContract()}" title="Xóa hợp đồng">
+					                    <i class="fa fa-trash" aria-hidden="true"></i>
+					                     <p:confirm icon="ui-icon-alert" />
+					                 </p:commandLink>
+							    </span>
+					            <p:commandLink id="idorder" styleClass="btn_primmary" style="margin-left:0px; margin-right:0px;height:29px !important;line-height:29px !important;" >
+							                    <i class="fa fa-search" aria-hidden="true"></i><span>Tìm kiếm</span>
+							      </p:commandLink>
+					            
+	                            <p:overlayPanel id="imagePanel" for="idorder" hideEffect="fade" dismissable="false" widgetVar="panelsearch" style="width:360px;">
+						           <div class="col-md-12" style="border: 1px solid #ccc; border-radius: 6px; margin-bottom: 5px !important;">
+						              
+						               <div class="row" style="margin-top: 10px">
+						                   <div class="col-md-12"  style="padding-left: 0px !important; padding-right:0px !important;">
+						                       <label>Khách hàng</label>
+						                   </div>
+						               </div>
+						               <div class="row">
+						                   <div class="col-md-12"  style="padding-left: 0px !important; padding-right:0px !important;">
+						                       <div class="nhapnpp">
+									             <span class="fa fa-search"></span>
+												  <p:autoComplete style="width:100%;"
+									                placeholder="Tìm khách hàng"
+													value="#{contractBean.customerSearch}" queryDelay="900"
+													maxResults="200"
+													converter="abstractConverter" minQueryLength="2" 
+													completeMethod="#{contractBean.completeCustomer}" var="p"
+													itemLabel="#{p.customer_name}" itemValue="#{p}"
+													forceSelection="true" onclick="this.select();">
+													<p:column style="width:50px">
+													   <h:outputText value="#{p.customer_code}" />
+													</p:column>
+													<p:column style="width:150px">
+													    <h:outputText value="#{p.customer_name}" />
+													 </p:column>
+												   </p:autoComplete>
+										       </div>
+						                   </div>
+						               </div>
+						               <div class="row" style="margin-top: 5px;">
+						                   <div class="col-md-12"  style="padding-left: 0px !important; padding-right:0px !important;">
+						                       <label>số hợp đồng</label>
+						                   </div>
+						               </div>
+						               <div class="row">
+						                   <div class="col-md-12"  style="padding-left: 0px !important; padding-right:0px !important;">
+						                       <p:inputText value="#{contractBean.voucherCodeSearch}" />
+						                   </div>
+						               </div>
+						               <div class="row" style="margin-top: 5px;">
+						                   <div class="col-md-6"  style="padding-left: 0px !important; padding-right:5px !important;">
+						                       <label>Từ ngày</label>
+						                   </div>
+						                   <div class="col-md-6" style="padding-left: 5px !important; padding-right:0px !important;">
+						                       <label>Đến ngày</label>
+						                   </div>
+						               </div>
+						               <div class="row">
+						                   <div class="col-md-6"  style="padding-left: 0px !important; padding-right:5px !important;">
+						                       <p:calendar value="#{contractBean.fromDateSearch}" pattern="dd/MM/yyyy" showOn="button" mask="99/99/9999" showButtonPanel="true" />
+						                   </div>
+						                   <div class="col-md-6" style="padding-left: 5px !important; padding-right:0px !important;">
+						                       <p:calendar value="#{contractBean.toDateSearch}" pattern="dd/MM/yyyy" showOn="button" mask="99/99/9999" showButtonPanel="true" />
+						                   </div>
+						               </div>
+						               <div class="row"  style="margin-top: 5px;">
+						                   <label>Trạng thái thanh lý</label>
+						               </div>
+						               <div class="row" style="margin-bottom: 10px;">
+					                       <p:selectOneMenu 
+											value="#{contractBean.liquidatedSearch}"
+											converter="integerConverter" effect="fade" var="t"
+											style="width:100%;">
+											 <f:selectItem itemLabel="--select--" itemValue="-1" />
+											 <f:selectItem itemLabel="Đã thanh lý" itemValue="1" />
+											 <f:selectItem itemLabel="Chưa thanh lý" itemValue="0" />
+										  </p:selectOneMenu>
+									   </div>
+						           </div>
+						           <div class="col-md-12" style="padding-left: 0px !important; padding-right:0px !important; margin-bottom: 10px;">
+						               <p:commandLink process="imagePanel" update="menuformid:tabview1:tablenc" action="#{contractBean.search()}" styleClass="btn_primmary" style="margin-left:0px; margin-right:0px;height:29px !important;line-height:29px !important;" >
+							                    <i class="fa fa-search" aria-hidden="true"></i><span>Tìm</span>
+							            </p:commandLink>
+						           </div>
+					            </p:overlayPanel>
+					        </div>
+					        <div class="row" style="margin-top: 5px;margin-bottom: 25px; margin-left: 16px !important;margin-right: 16px !important;">
+					            <p:dataTable value="#{contractBean.listContract}" lazy="true" style="width:100%;"
+										paginatorPosition="bottom" styleClass="tablenhapsp"
+										paginator="true" rowKey="#{item.id}" id="tablenc" widgetVar="tablenc"
+										scrollable="true" scrollHeight="400"  paginatorTemplate="{Exporters}"
+										selection="#{contractBean.contractSelect}"
+										selectionMode="single" resizableColumns="true" var="item">
+									<f:facet name="{Exporters}">
+										  <span class="pagecurrentdisplay">
+										     <h:outputText value="(#{contractBean.navigationInfo.currentPage} of #{contractBean.navigationInfo.totalPage})" />
+										  </span>
+										  <ul class="pagination pagination-sm" style="margin: 0px 0px !important;">
+										      <li><p:commandLink disabled="#{contractBean.navigationInfo.currentPage ==1}" styleClass="fa fa-angle-double-left font_weightcus"  update="tablenc" actionListener="#{contractBean.paginatorChange(1)}" /> </li>
+										      <li><p:commandLink disabled="#{contractBean.navigationInfo.currentPage ==1}" styleClass="fa fa-angle-left font_weightcus"  update="tablenc" actionListener="#{contractBean.paginatorChange(contractBean.navigationInfo.currentPage-1)}" /> </li>
+											  <c:forEach var="index" items="#{contractBean.navigationInfo.indexList}">
+												  <li class="#{contractBean.navigationInfo.currentPage==index ? 'active' : ''}"><p:commandLink   update="tablenc" value="#{index}" actionListener="#{contractBean.paginatorChange(index)}" /> </li>
+											  </c:forEach>
+											   <li><p:commandLink disabled="#{contractBean.navigationInfo.currentPage ==contractBean.navigationInfo.totalPage}" styleClass="fa fa-angle-right font_weightcus"  update="tablenc" actionListener="#{contractBean.paginatorChange(contractBean.navigationInfo.currentPage +1)}" /> </li>
+										      <li><p:commandLink disabled="#{contractBean.navigationInfo.currentPage ==contractBean.navigationInfo.totalPage}" styleClass="fa fa-angle-double-right font_weightcus"  update="tablenc" actionListener="#{contractBean.paginatorChange(contractBean.navigationInfo.totalPage)}" /> </li>
+											</ul>
+											<span class="rowperpage">
+									        <p:selectOneMenu 
+												value="#{contractBean.pageSize}"
+												converter="abstractConverter" effect="fade" var="t"
+												style="width:50px;margin-left:10px !important;">
+												<f:selectItems value="#{contractBean.listRowPerPage}"
+													var="theme" itemLabel="#{theme}"
+													itemValue="#{theme}" />
+												<p:column>
+													<h:outputText value="#{t}" />
+												</p:column>
+												<p:ajax update="tablenc"  listener="#{contractBean.paginatorChange(1)}"></p:ajax>
+											</p:selectOneMenu>
+									        </span>
+								     </f:facet>
+								     <p:ajax event="rowSelect" listener="#{contractBean.showContract()}"
+												 update="menuformid:tabview1:group1" />
+									<p:column headerText="Mã hợp đồng" width="45" styleClass="textcenter">
+										<h:outputText value="#{item.contract_code}" />
+									</p:column>
+									<p:column headerText="Số chứng từ" width="40" styleClass="textcenter">
+										<h:outputText value="#{item.voucher_code}" />
+									</p:column>
+									<p:column headerText="Mã KH" width="40" styleClass="textcenter">
+										<h:outputText value="#{item.customer.customer_code}" />
+									</p:column>
+									 <p:column headerText="Khách hàng" width="190">
+										<h:outputText style="white-space: initial;" value="#{item.customer.customer_name}" />
+									</p:column>
+									<p:column headerText="Ngày hợp đồng" width="60" >
+										<h:outputText value="#{item.contract_date}">
+										   <f:convertDateTime pattern="dd/MM/yyyy"/>
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Tiền tệ" width="30" >
+										<h:outputText value="#{item.currency.currency_type}" />
+									</p:column>
+									<p:column headerText="Ngày hiệu lực" width="60">
+										<h:outputText value="#{item.effective_date}">
+										   <f:convertDateTime pattern="dd/MM/yyyy"/>
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Ngày hết hạn" width="60">
+										<h:outputText value="#{item.expiry_date}">
+										   <f:convertDateTime pattern="dd/MM/yyyy"/>
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Trạng thái" width="80" styleClass="textcenter">
+										<h:outputText style="white-space: initial;color:#{item.liquidated ?'#4bac4d' :'red'};" value="#{item.liquidated ?  'Đã thanh lý' :'Chưa thanh lý'}" />
+									</p:column>
+								</p:dataTable>
+					        </div>
+					    </div>
+					    <div class="col-md-12" style="padding-left: 0px !important; padding-right:0px !important;">
+					    </div>
+					</p:tab>
+					<p:tab id="tab3" title="Kiểm tra thực hiện hợp đồng">
+					     <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important;background-color: #eeeeee;">
+						        <div class="row" style="margin-top:18px;">
+							        <div class="col-md-9" style="padding-left: 15px !important; padding-right: 0px !important;margin-bottom: 2px;">
+							             <p:commandLink update="menuformid:tabview1:tablekt" process="@this"  action="#{contractBean.checkProcessContract()}" styleClass="btn_primmary" style="margin-left:0px; margin-right:3px; height:29px !important;line-height:29px !important;" >
+							                    <i class="fa fa-check-square-o" aria-hidden="true"></i><span>Kiểm tra thực hiện hợp đồng</span>
+							             </p:commandLink>
+							             <p:commandLink process="@this"  action="#{contractBean.printPDFProcessContract()}" styleClass="btn_printtt" style="margin-left:0px; margin-right:3px; height:29px !important;line-height:29px !important;" >
+							                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i><span>Xuất pdf</span>
+							             </p:commandLink>
+							        </div>
+							        <div class="col-md-3" style="padding-left: 0px !important; padding-right: 15px !important;text-align: right; margin-bottom: 2px;">
+							            
+							        </div>
+							    </div>
+							    <div class="row" style=" margin-bottom: 20px;">
+							        <p:dataTable value="#{contractBean.listProcessContract}" lazy="true"
+										paginatorPosition="bottom" rowsPerPageTemplate="90,180,250" 
+										 styleClass="tablenhapsp"  scrollHeight="500"
+										paginator="true" rowKey="#{item.contract_detail.id}"  scrollable="true" id="tablekt"
+										 widgetVar="tablekt" resizableColumns="true"
+										var="item">
+										<p:column headerText="MASP" width="40">
+											<h:outputText value="#{item.contract_detail.product.product_code}" />
+										</p:column>
+										<p:column headerText="Sản phẩm" width="270"  >
+											<h:outputText style="white-space: initial;" value="#{item.contract_detail.product.product_name}" />
+										</p:column>
+										<p:column headerText="Số lượng HĐ KG" width="50">
+										   <h:outputText value="#{contractBean.formatHandler.getNumberFormat(item.contract_detail.quantity*item.contract_detail.product.factor,100000)}" />
+										</p:column>
+										<p:column headerText="Đã thực hiện" width="50">
+										   <h:outputText value="#{contractBean.formatHandler.getNumberFormat(item.quantity_process_kg,100000)}" />
+										</p:column>
+										<p:column headerText="Còn lại" width="50">
+										   <h:outputText value="#{contractBean.formatHandler.getNumberFormat(item.quantity_remain,100000)}" />
+										</p:column>
+										<p:column headerText="Đơn giá" width="70">
+											  <h:outputText value="#{contractBean.formatHandler.getNumberFormat(item.contract_detail.unit_price,1000000)}" />
+										</p:column>
+										<p:column headerText="Thành tiền" width="70" styleClass="textright">
+											<h:outputText  value="#{(item.contract_detail.quantity*item.contract_detail.unit_price)==0 ? '' :contractBean.formatHandler.getNumberFormat(item.contract_detail.quantity*item.contract_detail.unit_price,1000000)}" />
+										</p:column>
+									</p:dataTable>
+							    </div>
+						    </div>
+					</p:tab>
+				</p:tabView>
+			</h:form>
+		</div>
+		<p:dialog styleClass="dialogCus" resizable="false" width="500" style="overflow: initial;"
+		closeOnEscape="true" header="Chi tiết đơn hàng" widgetVar="dlg1">
+		<h:form id="dlg1" style="width:100%;">
+		   <div class="col-md-12 boxCus">
+	          <div class="col-md-12" style="padding-left:0px !important; padding-right:0px !important;margin-top: 5px;">
+		         <div class="row">
+		             <label>Sản phẩm</label>
+		         </div>
+		         <div class="row">
+		           <div class="nhapnpp">
+					 <span class="fa fa-search"></span>
+		             <p:autoComplete style="width:100%;" placeholder="Tìm sản phẩm"
+						value="#{contractBean.contractDetailCrud.product}"
+						queryDelay="900" maxResults="200"
+						converter="abstractConverter" minQueryLength="2" 
+						completeMethod="#{contractBean.completeProduct}" var="p"
+						itemLabel="#{p.product_name}" itemValue="#{p}"
+						forceSelection="true" onclick="this.select();">
+						<p:column style="width:50px">
+						   <h:outputText value="#{p.product_code}" />
+						</p:column>
+						<p:column style="width:150px">
+						    <h:outputText value="#{p.product_name}" />
+						 </p:column>
+					</p:autoComplete>
+					</div>
+		         </div>
+		      </div>
+		      <div class="col-md-12" style="padding-left:0px !important; padding-right:0px !important;margin-top: 5px;">
+		         <div class="row">
+		            <div class="col-md-6"  style="padding-left:0px !important; padding-right:5px !important;">
+		              <label>Số lượng</label>
+		            </div>
+		            <div class="col-md-6"  style="padding-left:5px !important; padding-right:0px !important;">
+		              <label>Đơn Giá</label>
+		            </div>
+		         </div>
+		         <div class="row">
+		           <div class="col-md-6"  style="padding-left:0px !important; padding-right:5px !important;">
+		              <p:inputNumber  value="#{contractBean.contractDetailCrud.quantity}" styleClass="fix_width100"
+							minValue="0" decimalPlaces="3" decimalSeparator="," thousandSeparator=".">
+							<p:ajax delay="900" event="keyup" update="thanhtienedit" />
+					   </p:inputNumber>
+		            </div>
+		            <div class="col-md-6"  style="padding-left:5px !important; padding-right:0px !important;">
+		               <p:inputNumber   value="#{contractBean.contractDetailCrud.unit_price}" styleClass="fix_width100"
+							minValue="0" decimalPlaces="6" decimalSeparator="," thousandSeparator=".">
+							<p:ajax delay="900" event="keyup" update="thanhtienedit" />
+					    </p:inputNumber>
+		            </div>
+		         </div>
+		      </div>
+		      <div class="col-md-12" style="padding-left:0px !important; padding-right:0px !important;margin-top: 5px;">
+		         <div class="row">
+		            <div class="col-md-6"  style="padding-left:0px !important; padding-right:5px !important;">
+		              <label>Thành tiền</label>
+		            </div>
+		            <div class="col-md-6"  style="padding-left:5px !important; padding-right:0px !important;">
+		              <label>Lợi nhuận</label>
+		            </div>
+		         </div>
+		         <div class="row">
+		           <div class="col-md-6"  style="padding-left:0px !important; padding-right:5px !important;">
+		               <p:inputText id="thanhtienedit" readonly="true" value="#{contractBean.formatHandler.getNumberFormat(contractBean.contractDetailCrud.quantity*contractBean.contractDetailCrud.unit_price,1000000)}" />
+		           </div>
+		           <div class="col-md-6"  style="padding-left:5px !important; padding-right:0px !important;">
+		               <p:inputNumber   value="#{contractBean.contractDetailCrud.profit}" styleClass="fix_width100"
+							minValue="0" decimalPlaces="3" decimalSeparator="," thousandSeparator="." />
+		           </div>
+		         </div>
+		      </div>
+		      <div class="col-md-12" style="padding-left:0px !important; padding-right:0px !important; margin-top: 5px;margin-bottom: 5px;">
+		         <div class="row">
+		                <p:selectBooleanCheckbox style="font-size: 14px !important;color: #b50f0f;" value="#{contractBean.contractDetailCrud.promotion}" itemLabel="Khuyến mãi" />
+		         </div>
+		      </div>
+		   </div>
+		   <div class="col-md-12" style="padding:10px 0px !important;">
+		         <p:commandLink process="dlg1" update="dlg1,messages,menuformid:tabview1:tablect,menuformid:tabview1:tongtien" action="#{contractBean.saveOrUpdateDetail()}" styleClass="btn_primmary" style="margin-left:0px; margin-right:0px;height:29px !important;line-height:29px !important;" >
+		                <i class="fa fa-search" aria-hidden="true"></i><span>Lưu/cập nhật</span>
+		          </p:commandLink>
+			</div>
+		</h:form>
+	</p:dialog>
+	</ui:define>
+</ui:composition>

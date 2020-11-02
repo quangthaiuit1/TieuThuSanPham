@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/home.xhtml">
+	<ui:define name="content">
+		<h3 style="margin: 0px">Thành phố</h3>
+		<p:separator />
+		<h:form id="menuformid">
+			<h:panelGrid columns="2" style="width:100%;" columnClasses="w50">
+				<p:panel header="Thông tin" styleClass="panelw100">
+					<h:panelGrid id="info">
+						<label>Mã thành phố<span style="color:red;">*</span></label>
+						<p:inputText value="#{cityBean.cityCrud.city_code}"/>
+						<label>Tên thành phố<span style="color:red;">*</span></label>
+						<p:inputText value="#{cityBean.cityCrud.city_name}"/>
+						<label>Tên thành phố(Tiếng anh)</label>
+						<p:inputText value="#{cityBean.cityCrud.en_name}"/>
+						<label>Quốc gia<span style="color:red;">*</span></label>
+						<p:autoComplete style="width:100%;"
+							value="#{cityBean.cityCrud.country}"
+							converter="abstractConverter" minQueryLength="2" queryDelay="1000"
+							completeMethod="#{cityBean.completeCountry}" var="p"
+							itemLabel="#{p.country_name}" itemValue="#{p}"
+							forceSelection="true" onclick="this.select();">
+							<p:column style="width:50px">
+							   <h:outputText value="#{p.country_code}" />
+							</p:column>
+							<p:column style="width:150px">
+				                  <h:outputText value="#{p.country_name}" />
+				           </p:column>
+							<p:column style="width:150px">
+				                  <h:outputText value="#{p.en_name}" />
+				           </p:column>
+						</p:autoComplete>
+						<label>Khu vực<span style="color:red;">*</span></label>
+					   <p:selectOneMenu value="#{cityBean.cityCrud.area}"
+							converter="abstractConverter" effect="fade" var="t"
+							style="width:100%;" filter="true" filterMatchMode="custom"
+							filterFunction="utility.customFilter">
+							<f:selectItem value="#{null}" itemLabel="--select--" />
+							<f:selectItems value="#{cityBean.listArea}" var="it"
+								itemLabel="#{it.area_name}" itemValue="#{it}" />
+							<p:column>
+								<h:outputText value="#{t != null ? t.area_code : '' }" />
+							</p:column>
+							<p:column>
+								<h:outputText value="#{t != null ? t.area_name : '--select--' }" />
+							</p:column>
+						</p:selectOneMenu>
+						
+					</h:panelGrid>
+					<p:separator />
+					<p:commandButton process="@this,info" icon="fa fa-floppy-o" 
+					  style="padding:4px !important;" action="#{cityBean.saveOrUpdate()}"  styleClass="buttonaddrow" update="menuformid:tableid" value="Lưu/Cập nhật" />
+					<p:commandButton process="@this,info" icon="fa fa-floppy-o" 
+					  style="padding:4px !important;" action="#{cityBean.createNew()}"  styleClass="buttonaddrow" update="menuformid:info"  value="Tạo mới" />
+				</p:panel>
+				<p:panel header="Danh sách" id="preview" styleClass="clearfix">
+					<h:panelGrid id="mainGrid" columns="6"
+						style="float:left; margin-bottom:5px">
+						<p:tooltip for="xoact" value="Xoá" />
+						<p:commandButton process="@this" id="xoact" action="#{cityBean.delete()}" style="padding: 3px 14px 3px 16px !important;font-size:11px !important;" styleClass="buttonaddrow"
+				      update=":messages,:menuformid"   icon="fa fa-trash">
+				          <p:confirm icon="ui-icon-alert" />
+				        </p:commandButton>
+						<p:commandButton id="idorder" style="padding:4px !important;" styleClass="buttonaddrow" value="Tìm kiếm" icon="fa fa-search" />
+						<p:commandButton  action="#{cityBean.showDialogUpload()}" style="padding:4px !important;" styleClass="buttonaddrow" value="Nạp Excel"
+				         icon="fa fa-file-excel-o" />
+						<p:overlayPanel id="imagePanel" for="idorder" hideEffect="fade" dismissable="false"
+								widgetVar="panelsearch" style="width:300px;">
+							 <div class="col-md-12"
+												style="border: 1px solid #ccc; border-radius: 6px; margin-bottom: 5px !important;">
+								    <div class="col-md-12" style="padding-top:10px !important;padding-left: 0px !important; padding-right: 0px !important;">
+		                                   <div class="row">
+		                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important;">
+		                                           <label>Mã thành phố</label>
+		                                       </div>
+		                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+		                                          <p:inputText value="#{cityBean.cityCode}" style="width:100%" />
+		                                       </div>
+		                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important;">
+		                                           <label>Tên thành phố</label>
+		                                       </div>
+		                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+		                                          <p:inputText value="#{cityBean.cityName}" style="width:100%" />
+		                                       </div>
+		                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important;">
+		                                           <label>Quốc gia</label>
+		                                       </div>
+		                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+													<p:autoComplete style="width:100%;"
+														value="#{cityBean.country}"
+														converter="abstractConverter" minQueryLength="2" queryDelay="1000"
+														completeMethod="#{cityBean.completeCountry}" var="p"
+														itemLabel="#{p.country_name}" itemValue="#{p}"
+														forceSelection="true" onclick="this.select();">
+														<p:column style="width:50px">
+														   <h:outputText value="#{p.country_code}" />
+														</p:column>
+														<p:column style="width:150px">
+											                  <h:outputText value="#{p.country_name}" />
+											           </p:column>
+														<p:column style="width:150px">
+											                  <h:outputText value="#{p.en_name}" />
+											           </p:column>
+													</p:autoComplete>
+		                                       </div>
+		                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important;">
+		                                           <label>Khu vực</label>
+		                                       </div>
+		                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+		                                          <p:selectOneMenu value="#{cityBean.area}"
+														converter="abstractConverter" effect="fade" var="t"
+														style="width:100%;" filter="true" filterMatchMode="custom"
+														filterFunction="utility.customFilter">
+														<f:selectItem value="#{null}" itemLabel="--select--" />
+														<f:selectItems value="#{cityBean.listArea}" var="it"
+															itemLabel="#{it.area_name}" itemValue="#{it}" />
+														<p:column>
+															<h:outputText value="#{t != null ? t.area_code : '' }" />
+														</p:column>
+														<p:column>
+															<h:outputText value="#{t != null ? t.area_name : '--select--' }" />
+														</p:column>
+													</p:selectOneMenu>
+		                                       </div>
+		                                   </div>
+		                                 </div>
+							    </div>
+								<div class="col-md-12" style="padding-left: 0px !important;padding-right: 0px !important; margin-bottom: 5px;">
+								   <div class="pull-right">
+										<p:commandButton value="Tìm" process="menuformid:imagePanel"
+										icon="ui-icon-search" oncomplete="PF('panelsearch').hide()"
+										actionListener="#{cityBean.search()}"
+										update="menuformid:tableid" />
+									</div>
+								</div>
+					  </p:overlayPanel>
+					</h:panelGrid>
+					<div style="clear: both" />
+					<p:dataTable value="#{cityBean.listCity}" lazy="true"
+						paginatorPosition="bottom"
+						paginator="true" rowKey="#{item.id}" paginatorTemplate="{Exporters}"
+						selection="#{cityBean.citySelect}" scrollable="true"
+						selectionMode="single" scrollWidth="550" id="tableid"
+						scrollHeight="370" widgetVar="datatb" resizableColumns="true"
+						var="item">
+						<f:facet name="{Exporters}">
+							  <span class="pagecurrentdisplay">
+							     <h:outputText value="(#{cityBean.navigationInfo.currentPage} of #{cityBean.navigationInfo.totalPage})" />
+							  </span>
+							  <ul class="pagination pagination-sm" style="margin: 0px 0px !important;">
+							      <li><p:commandLink disabled="#{cityBean.navigationInfo.currentPage ==1}" styleClass="fa fa-angle-double-left font_weightcus"  update="menuformid:tableid" actionListener="#{cityBean.paginatorChange(1)}" /> </li>
+							      <li><p:commandLink disabled="#{cityBean.navigationInfo.currentPage ==1}" styleClass="fa fa-angle-left font_weightcus"  update="menuformid:tableid" actionListener="#{cityBean.paginatorChange(cityBean.navigationInfo.currentPage-1)}" /> </li>
+								  <c:forEach var="index" items="#{cityBean.navigationInfo.indexList}">
+									  <li class="#{cityBean.navigationInfo.currentPage==index ? 'active' : ''}"><p:commandLink   update="menuformid:tableid" value="#{index}" actionListener="#{cityBean.paginatorChange(index)}" /> </li>
+								  </c:forEach>
+								   <li><p:commandLink disabled="#{cityBean.navigationInfo.currentPage ==cityBean.navigationInfo.totalPage}" styleClass="fa fa-angle-right font_weightcus"  update="menuformid:tableid" actionListener="#{cityBean.paginatorChange(cityBean.navigationInfo.currentPage +1)}" /> </li>
+							      <li><p:commandLink disabled="#{cityBean.navigationInfo.currentPage ==cityBean.navigationInfo.totalPage}" styleClass="fa fa-angle-double-right font_weightcus"  update="menuformid:tableid" actionListener="#{cityBean.paginatorChange(cityBean.navigationInfo.totalPage)}" /> </li>
+								</ul>
+								<span class="rowperpage">
+						        <p:selectOneMenu 
+									value="#{cityBean.pageSize}"
+									converter="abstractConverter" effect="fade" var="t"
+									style="width:50px;margin-left:10px !important;">
+									<f:selectItems value="#{cityBean.listRowPerPage}"
+										var="theme" itemLabel="#{theme}"
+										itemValue="#{theme}" />
+									<p:column>
+										<h:outputText value="#{t}" />
+									</p:column>
+									<p:ajax update="menuformid:tableid"  listener="#{cityBean.paginatorChange(1)}"></p:ajax>
+								</p:selectOneMenu>
+						        </span>
+					     </f:facet>
+						<p:ajax event="rowSelect" listener="#{cityBean.showEdit()}"
+							update="menuformid:info" />
+						<p:column headerText="ID" width="30">
+							<h:outputText value="#{item.id}" />
+						</p:column>
+						<p:column headerText="MTP" width="50">
+							<h:outputText value="#{item.city_code}" />
+						</p:column>
+						<p:column headerText="Tên thành phố" width="180">
+							<h:outputText value="#{item.city_name}" />
+						</p:column>
+						<p:column headerText="Khu vực" width="150">
+							<h:outputText value="#{item.area.area_name}" />
+						</p:column>
+						<p:column headerText="Quốc gia" width="150">
+							<h:outputText value="#{item.country.country_name}" />
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+			</h:panelGrid>
+		</h:form>
+		<p:dialog widgetVar="uploadpdffile" resizable="false" height="400" styleClass="dislogUpload"
+			header="Tải File">
+			<h:form id="mm" enctype="multipart/form-data">
+				<p:fileUpload style="text-align:center"
+				id="fileupload" dragDropSupport="true" allowTypes="/(\.|\/)(xls|xlsx)$/"
+				label="Chọn file từ máy tính" cancelLabel="Huỷ" update=":messages,menuformid:tableid"
+				uploadLabel="Tải lên" multiple="false" 
+				fileUploadListener="#{cityBean.loadExcel}" mode="advanced" process="@this,mm,menuformid:tableid"/>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

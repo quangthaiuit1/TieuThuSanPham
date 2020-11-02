@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/home.xhtml">
+	<ui:define name="content">
+		<h3 style="margin: 0px">Danh mục khách hàng</h3>
+		<p:separator />
+		<h:form id="menuformid">
+			<div class="col-md-12"  style="padding-left:0px !important; padding-right: 0px !important;">
+	              <div class="col-md-12">
+	                   <p:commandButton id="xoact"  process="@this"  action="#{customerBean.delete()}" style="padding: 3px 14px 3px 16px !important;font-size:11px !important;" styleClass="buttonaddrow"
+				       update=":messages,:menuformid"   icon="fa fa-trash">
+				          <p:confirm icon="ui-icon-alert" />
+				        </p:commandButton>
+					  <p:commandButton id="idorder" icon="fa fa-search" 
+					  style="padding:4px !important;" styleClass="buttonaddrow" value="Tìm kiếm" />
+				      <p:commandButton process="@this"  action="#{customerBean.showDialog()}" style="padding:4px !important;" styleClass="buttonaddrow" value="Thêm"
+				       update="editdetail"   icon="fa fa-plus" />
+				      <p:commandButton action="#{customerBean.showDialogEdit}" style="padding:4px !important;" styleClass="buttonaddrow" value="Chỉnh sửa"
+				       update="editdetail"   icon="fa fa-pencil" />
+	                  <p:commandButton process="@this" action="#{customerBean.showDialogUpload()}" style="padding:4px !important;" styleClass="buttonaddrow" value="Nạp Excel"
+				         icon="fa fa-file-excel-o" />
+	                  <p:overlayPanel id="imagePanel" for="idorder" hideEffect="fade" dismissable="false"
+								widgetVar="panelsearch" style="width:300px;">
+						<div class="col-md-12"
+											style="border: 1px solid #ccc; border-radius: 6px; margin-bottom: 5px !important;">
+							    <div class="col-md-12" style="padding-top:10px !important;padding-left: 0px !important; padding-right: 0px !important;">
+	                                   <div class="row">
+	                                       <div class="col-md-12" style="padding-left:0px !important; padding-right:0px !important;">
+	                                           <label>Mã khách hàng</label>
+	                                       </div>
+	                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+	                                          <p:inputText value="#{customerBean.customerCode}" style="width:100%" />
+	                                       </div>
+	                                       <div class="col-md-12"  style="padding-left:0px !important; padding-right:0px !important;">
+	                                           <label>Tên khách hàng</label>
+	                                       </div>
+	                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+	                                           <p:inputText value="#{customerBean.customerName}" style="width:100%" />
+	                                       </div>
+	                                       <div class="col-md-12"  style="padding-left:0px !important; padding-right:0px !important;">
+	                                           <label>Hệ số thuế</label>
+	                                       </div>
+	                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+	                                           <p:inputText value="#{customerBean.taxCode}" style="width:100%" />
+	                                       </div>
+	                                       <div class="col-md-12"  style="padding-left:0px !important; padding-right:0px !important;">
+	                                           <label>Số điện thoại</label>
+	                                       </div>
+	                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+	                                           <p:inputText value="#{customerBean.taxCode}" style="width:100%" />
+	                                       </div>
+	                                       <div class="col-md-12"  style="padding-left:0px !important; padding-right:0px !important;">
+	                                           <label>Loại khách hàng</label>
+	                                       </div>
+	                                       <div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;" >
+											   <p:selectOneMenu value="#{customerBean.customerTypes}"
+													converter="abstractConverter" effect="fade" var="t"
+													style="width:100%;" filter="true" filterMatchMode="custom"
+													filterFunction="utility.customFilter">
+													<f:selectItem value="#{null}" itemLabel="--select--" />
+													<f:selectItems value="#{customerBean.listCustomerTypes}" var="it"
+														itemLabel="#{it.name}" itemValue="#{it}" />
+													<p:column>
+														<h:outputText value="#{t != null ? t.code : '' }" />
+													</p:column>
+													<p:column>
+														<h:outputText value="#{t != null ? t.name : '--select--' }" />
+													</p:column>
+												</p:selectOneMenu>
+	                                       </div>
+	                                   </div>
+	                                 </div>
+						  </div>
+							<div class="col-md-12" style="padding-left: 0px !important;padding-right: 0px !important; margin-bottom: 5px;">
+							   <div class="pull-right">
+									<p:commandButton value="Tìm" process="menuformid:imagePanel" 
+									icon="ui-icon-search" oncomplete="PF('panelsearch').hide()"
+									actionListener="#{customerBean.search()}"
+									update="menuformid:tablesp" />
+								</div>
+							</div>
+					  </p:overlayPanel>
+	              </div>
+	              <div class="col-md-12" style="margin-top: 3px;">
+	                <p:dataTable value="#{customerBean.listCustomer}" lazy="true"
+							paginatorPosition="bottom" styleClass="tabledetail"
+							paginator="true" rowKey="#{item.id}" id="tablesp"
+							scrollable="true" scrollHeight="400"  paginatorTemplate="{Exporters}"
+							selection="#{customerBean.customerSelect}"
+							selectionMode="single" resizableColumns="true" var="item">
+						<f:facet name="{Exporters}">
+							  <span class="pagecurrentdisplay">
+							     <h:outputText value="(#{customerBean.navigationInfo.currentPage} of #{customerBean.navigationInfo.totalPage})" />
+							  </span>
+							  <ul class="pagination pagination-sm" style="margin: 0px 0px !important;">
+							      <li><p:commandLink disabled="#{customerBean.navigationInfo.currentPage ==1}" styleClass="fa fa-angle-double-left font_weightcus"  update="menuformid:tablesp" actionListener="#{customerBean.paginatorChange(1)}" /> </li>
+							      <li><p:commandLink disabled="#{customerBean.navigationInfo.currentPage ==1}" styleClass="fa fa-angle-left font_weightcus"  update="menuformid:tablesp" actionListener="#{customerBean.paginatorChange(customerBean.navigationInfo.currentPage-1)}" /> </li>
+								  <c:forEach var="index" items="#{customerBean.navigationInfo.indexList}">
+									  <li class="#{customerBean.navigationInfo.currentPage==index ? 'active' : ''}"><p:commandLink   update="menuformid:tablesp" value="#{index}" actionListener="#{customerBean.paginatorChange(index)}" /> </li>
+								  </c:forEach>
+								   <li><p:commandLink disabled="#{customerBean.navigationInfo.currentPage ==customerBean.navigationInfo.totalPage}" styleClass="fa fa-angle-right font_weightcus"  update="menuformid:tablesp" actionListener="#{customerBean.paginatorChange(customerBean.navigationInfo.currentPage +1)}" /> </li>
+							      <li><p:commandLink disabled="#{customerBean.navigationInfo.currentPage ==customerBean.navigationInfo.totalPage}" styleClass="fa fa-angle-double-right font_weightcus"  update="menuformid:tablesp" actionListener="#{customerBean.paginatorChange(customerBean.navigationInfo.totalPage)}" /> </li>
+								</ul>
+								<span class="rowperpage">
+						        <p:selectOneMenu 
+									value="#{customerBean.pageSize}"
+									converter="abstractConverter" effect="fade" var="t"
+									style="width:50px;margin-left:10px !important;">
+									<f:selectItems value="#{customerBean.listRowPerPage}"
+										var="theme" itemLabel="#{theme}"
+										itemValue="#{theme}" />
+									<p:column>
+										<h:outputText value="#{t}" />
+									</p:column>
+									<p:ajax update="menuformid:tablesp"  listener="#{customerBean.paginatorChange(1)}"></p:ajax>
+								</p:selectOneMenu>
+						        </span>
+					     </f:facet>
+					     <p:ajax event="rowDblselect" listener="#{customerBean.showDialogEdit()}"
+									 update="editdetail" />
+						    <p:column headerText="ID" width="50" styleClass="textcenter">
+								<h:outputText value="#{item.id}" />
+							</p:column>
+							<p:column headerText="MAKH" width="70">
+								<h:outputText value="#{item.customer_code}" />
+							</p:column>
+							<p:column headerText="Tên khách hàng" width="250">
+								<h:outputText style="white-space: initial;" value="#{item.customer_name}" />
+							</p:column>
+							<p:column headerText="Đơn vị" width="180">
+								<h:outputText style="white-space: initial;" value="#{item.company_name}" />
+							</p:column>
+							<p:column headerText="Địa chỉ" width="150">
+								<h:outputText value="#{item.address}"/>
+							</p:column>
+							<p:column headerText="ĐT Di động" width="90" >
+								<h:outputText value="#{item.cell_phone }" />
+							</p:column>
+							<p:column headerText="ĐT bàn" width="90">
+								<h:outputText value="#{item.home_phone}" />
+							</p:column>
+							<p:column headerText="Fax" width="90">
+								<h:outputText value="#{item.fax}" />
+							</p:column>
+							<p:column headerText="Mã số thuế" width="120">
+								<h:outputText value="#{item.tax_code}" />
+							</p:column>
+							<p:column headerText="Email" width="120">
+								<h:outputText value="#{item.email}" />
+							</p:column>
+							<p:column headerText="Loại khách hàng" styleClass="textright" width="150">
+							   <h:outputText value="#{item.customer_types.name}" />
+							</p:column>
+					</p:dataTable>
+	          </div>
+	           </div>
+		</h:form>
+		<p:dialog styleClass="dialogCus" resizable="false" width="640" style="overflow: initial;"
+		closeOnEscape="true" header="Chỉnh sửa" widgetVar="dlg1">
+		<h:form id="editdetail" style="width:100%;">
+			   <div class="col-md-12 boxCus">
+			       <div class="col-md-12">
+			           <div class="row">
+			              <div class="col-md-3" style="padding-left: 0px !important;padding-right: 5px !important;">
+			                  <label>Mã khách hàng<span style="color:red;">*</span></label>
+			              </div>
+			              <div class="col-md-9" style="padding-left: 5px !important;padding-right: 0px !important;">
+			                  <label>Tên khách hàng<span style="color:red;">*</span></label>
+			              </div>
+			              <div class="col-md-3" style="padding-left: 0px !important;padding-right: 5px !important;">
+			                 <p:inputText value="#{customerBean.customerCrud.customer_code}" />
+			              </div>
+			              <div class="col-md-9" style="padding-left: 5px !important;padding-right: 0px !important;">
+			                  <p:inputText value="#{customerBean.customerCrud.customer_name}" />
+			              </div>
+			              <div class="col-md-6" style="padding-left: 0px !important;padding-right: 5px !important; margin-top: 5px;">
+			                  <label>Đơn vị</label>
+			              </div>
+			               <div class="col-md-6" style="padding-left: 5px !important;padding-right: 0px !important;margin-top: 5px;">
+			                  <label>Loại khách hàng<span style="color:red;">*</span></label>
+			              </div>
+			              <div class="col-md-6" style="padding-left: 0px !important;padding-right: 5px !important;">
+			                  <p:inputText value="#{customerBean.customerCrud.company_name}"  />
+			              </div>
+			              <div class="col-md-6" style="padding-left: 5px !important;padding-right: 0px !important;">
+							   <p:selectOneMenu value="#{customerBean.customerCrud.customer_types}"
+									converter="abstractConverter" effect="fade" var="t"
+									style="width:100%;" filter="true" filterMatchMode="custom"
+									filterFunction="utility.customFilter">
+									<f:selectItem value="#{null}" itemLabel="--select--" />
+									<f:selectItems value="#{customerBean.listCustomerTypes}" var="it"
+										itemLabel="#{it.name}" itemValue="#{it}" />
+									<p:column>
+										<h:outputText value="#{t != null ? t.name : '--select--' }" />
+									</p:column>
+								</p:selectOneMenu>
+			              </div>
+			              <div class="col-md-6" style="padding-left: 0px !important;padding-right: 5px !important;margin-top: 5px;">
+			                  <label>Điện thoại di động</label>
+			              </div>
+			              <div class="col-md-6" style="padding-left: 5px !important;padding-right: 0px !important;margin-top: 5px;">
+			                  <label>Điện thoại bàn</label>
+			              </div>
+			              <div class="col-md-6" style="padding-left: 0px !important;padding-right: 5px !important;">
+			                  <p:inputText value="#{customerBean.customerCrud.cell_phone}"  />
+			              </div>
+			              <div class="col-md-6" style="padding-left: 5px !important;padding-right: 0px !important;">
+			                   <p:inputText value="#{customerBean.customerCrud.home_phone}"  />
+			              </div>
+			              <div class="col-md-6" style="padding-left: 0px !important;padding-right: 5px !important;margin-top: 5px;">
+			                  <label>Email</label>
+			              </div>
+			              <div class="col-md-6" style="padding-left: 5px !important;padding-right: 0px !important;margin-top: 5px;">
+			                  <label>Fax</label>
+			              </div>
+			              <div class="col-md-6" style="padding-left: 0px !important;padding-right: 5px !important;">
+			                  <p:inputText value="#{customerBean.customerCrud.email}"  />
+			              </div>
+			              <div class="col-md-6" style="padding-left: 5px !important;padding-right: 0px !important;">
+			                   <p:inputText value="#{customerBean.customerCrud.fax}"  />
+			              </div>
+			              <div class="col-md-6" style="padding-left: 0px !important;padding-right: 5px !important;margin-top: 5px;">
+			                  <label>Thành phố</label>
+			              </div>
+			              <div class="col-md-6" style="padding-left: 5px !important;padding-right: 0px !important;margin-top: 5px;">
+			                  <label>Mã số thuế</label>
+			              </div>
+			              <div class="col-md-6" style="padding-left: 0px !important;padding-right: 5px !important;">
+			                  <p:autoComplete style="width:100%;"
+								value="#{customerBean.customerCrud.city}"
+								converter="abstractConverter" minQueryLength="2" 
+								completeMethod="#{customerBean.completeCity}" var="p"
+								itemLabel="#{p.city_name}" itemValue="#{p}"
+								forceSelection="true" onclick="this.select();">
+									<p:column style="width:50px">
+									   <h:outputText value="#{p.city_code}" />
+									</p:column>
+									<p:column style="width:150px">
+									   <h:outputText value="#{p.city_name}" />
+									 </p:column>
+								</p:autoComplete>
+			              </div>
+			              <div class="col-md-6" style="padding-left: 5px !important;padding-right: 0px !important;">
+			                   <p:inputText value="#{customerBean.customerCrud.tax_code}"  />
+			              </div>
+			              <div class="col-md-6" style="padding-left: 0px !important;padding-right: 5px !important;margin-top: 5px;">
+			                  <label>Địa chỉ</label>
+			              </div>
+			              <div class="col-md-6" style="padding-left: 5px !important;padding-right: 0px !important;margin-top: 5px;">
+			                  <label>Địa chỉ giao hàng</label>
+			              </div>
+			              <div class="col-md-6" style="padding-left: 0px !important;padding-right: 5px !important;">
+			                  <p:inputTextarea value="#{customerBean.customerCrud.address}" rows="3" />
+			              </div>
+			              <div class="col-md-6" style="padding-left: 5px !important;padding-right: 0px !important;">
+			                   <p:inputTextarea value="#{customerBean.customerCrud.location_delivery}" rows="3" />
+			              </div>
+			              <div class="col-md-6" style="padding-left: 0px !important;padding-right: 5px !important;margin-top: 5px;">
+			                  <label>Mã số NCC</label>
+			              </div>
+			              <div class="col-md-6" style="padding-left: 5px !important;padding-right: 0px !important;margin-top: 5px;">
+			                  <label>Số ngày nợ</label>
+			              </div>
+			              <div class="col-md-6" style="padding-left: 0px !important;padding-right: 5px !important;">
+			                  <p:inputText value="#{customerBean.customerCrud.supplier_code}"  />
+			              </div>
+			              <div class="col-md-6" style="padding-left: 5px !important;padding-right: 0px !important;">
+			                    <p:inputNumber  value="#{customerBean.customerCrud.days_debt_quantity}" styleClass="fix_width100"
+								minValue="0" decimalPlaces="3" decimalSeparator="," thousandSeparator="." />
+			              </div>
+			              <div class="col-md-6" style="padding-left: 0px !important;padding-right: 5px !important;margin-top: 5px;">
+			                  <label>Tỉ lệ khuyến khích ttsp TPHCM</label>
+			              </div>
+			              <div class="col-md-6" style="padding-left: 5px !important;padding-right: 0px !important;margin-top: 5px;">
+			                  <label>Tỉ lệ hoa hồng bột giặt</label>
+			              </div>
+			              <div class="col-md-6" style="padding-left: 0px !important;padding-right: 5px !important;">
+			                 <p:inputNumber  value="#{customerBean.customerCrud.encourage_rate}" styleClass="fix_width100"
+								minValue="0" decimalPlaces="3" decimalSeparator="," thousandSeparator="." />
+			              </div>
+			              <div class="col-md-6" style="padding-left: 5px !important;padding-right: 0px !important;">
+			                    <p:inputNumber  value="#{customerBean.customerCrud.commission_value}" styleClass="fix_width100"
+								minValue="0" decimalPlaces="3" decimalSeparator="," thousandSeparator="." />
+			              </div>
+			              <div class="col-md-6" style="padding-left: 0px !important;padding-right: 5px !important;margin-top: 5px;">
+			                  <label>Tỉ lệ hoa hồng NTRL</label>
+			              </div>
+			              <div class="col-md-6" style="padding-left: 5px !important;padding-right: 0px !important;margin-top: 5px;">
+			                  <label>Số tiền NPP chuyển</label>
+			              </div>
+			              <div class="col-md-6" style="padding-left: 0px !important;padding-right: 5px !important;">
+			                 <p:inputNumber  value="#{customerBean.customerCrud.commission_ntrl_value}" styleClass="fix_width100"
+								minValue="0" decimalPlaces="3" decimalSeparator="," thousandSeparator="." />
+			              </div>
+			              <div class="col-md-6" style="padding-left: 5px !important;padding-right: 0px !important;">
+			                    <p:inputNumber  value="#{customerBean.customerCrud.amount_npp}" styleClass="fix_width100"
+								minValue="0" decimalPlaces="3" decimalSeparator="," thousandSeparator="." />
+			              </div>
+			               <div class="col-md-6" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;margin-top:10px;" >
+                              <p:selectBooleanCheckbox style="color:#0a144d;" value="#{customerBean.customerCrud.disable}" itemLabel="Khách hàng không còn bán"/>
+                          </div>
+                           <div class="col-md-6" style="padding-left: 0px !important; padding-right: 0px !important; margin-bottom:5px;margin-top:10px;" >
+                              <p:selectBooleanCheckbox style="color:#0a144d;" value="#{customerBean.customerCrud.not_print_customer_name}" itemLabel="Không in tên khách hàng trên hóa đơn"/>
+                          </div>
+			           </div>
+			       </div>
+				</div>
+				<div class="col-md-12" style="padding:10px 0px;">
+				    <p:commandButton id="idorder" icon="fa fa-floppy-o" 
+					  style="padding:4px !important;" actionListener="#{customerBean.saveOrUpdate()}"  styleClass="buttonaddrow" update=":messages,menuformid:tablesp" value="Lưu/Cập nhật" />
+				</div>
+		</h:form>
+	</p:dialog>
+	 <p:dialog widgetVar="uploadpdffile" resizable="false" height="400" styleClass="dislogUpload"
+			header="Tải File">
+			<h:form id="mm" enctype="multipart/form-data">
+				<p:fileUpload style="text-align:center"
+				id="fileupload" dragDropSupport="true" 
+				label="Chọn file từ máy tính" cancelLabel="Huỷ" update=":messages,menuformid:tablesp"
+				uploadLabel="Tải lên" multiple="false" 
+				fileUploadListener="#{customerBean.loadExcel}" mode="advanced" process="@this,mm" />
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

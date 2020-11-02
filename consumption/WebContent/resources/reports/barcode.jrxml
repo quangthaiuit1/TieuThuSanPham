@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="barcode" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9c0edd33-005f-4f22-b53f-eeb1a40c82c0">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="barcode" class="java.lang.String"/>
+	<field name="shift" class="java.lang.String"/>
+	<field name="product" class="java.lang.String"/>
+	<field name="team" class="java.lang.String"/>
+	<field name="gam" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="115" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="22" width="280" height="40" uuid="e1004da6-e0ec-47a2-bb93-f2cb82d0d131"/>
+				<textElement textAlignment="Center">
+					<font fontName="BarcodeCus" size="40"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{barcode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="71" width="280" height="20" uuid="a06e026b-fbd3-4ed4-92a0-39df3f21b91d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="FontReport"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{shift} +"  "+  $F{team}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="50" width="280" height="20" uuid="12896e74-11bd-4d7e-a21e-7207d46da190"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="FontReport"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{product}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="260" y="2" width="240" height="60" uuid="0b3e0ef3-9a90-463c-b638-e437021dc931"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="FontReport" size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gam}+"g"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="30" y="2" width="220" height="20" uuid="7efb8281-5bef-4208-9d8b-5025ec3aad26"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="FontReport"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{barcode}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="100" width="555" height="14" uuid="3016269f-02bc-40c0-829f-ffa81dc8bf85"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>
