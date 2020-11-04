@@ -47,7 +47,7 @@ import trong.lixco.com.util.Notify;
 
 @Named
 @ViewScoped
-public class CarBean extends AbstractBean  {
+public class CarBean extends AbstractBean {
 	private static final long serialVersionUID = 1L;
 	@Inject
 	private Logger logger;
@@ -70,15 +70,13 @@ public class CarBean extends AbstractBean  {
 	private NavigationInfo navigationInfo;
 	private List<Integer> listRowPerPage;
 	private Account account;
-	
-	
-	
+
 	@Override
 	protected void initItem() {
-		try{
-			listCarOwner=new ArrayList<>();
+		try {
+			listCarOwner = new ArrayList<>();
 			carOwnerService.selectAll(listCarOwner);
-			listCarType=new ArrayList<>();
+			listCarType = new ArrayList<>();
 			carTypeService.selectAll(listCarType);
 			navigationInfo = new NavigationInfo();
 			navigationInfo.setCurrentPage(1);
@@ -87,8 +85,8 @@ public class CarBean extends AbstractBean  {
 			HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
 			account = SessionHelper.getInstance().getSession("account", request, Account.class);
 			createNew();
-		}catch(Exception e){
-			logger.error("CarBean.initItem:"+e.getMessage(),e);
+		} catch (Exception e) {
+			logger.error("CarBean.initItem:" + e.getMessage(), e);
 		}
 	}
 
@@ -96,17 +94,21 @@ public class CarBean extends AbstractBean  {
 	protected Logger getLogger() {
 		return logger;
 	}
+
 	public void search() {
 		try {
 			initRowPerPage();
 			navigationInfo.setLimit(pageSize);
 			navigationInfo.setMaxIndices(5);
 			listCar = new ArrayList<Car>();
-			/*{ car_info:{car_owner_id:0,car_type_id:0,license_plate:'',phone_number:''}, page:{page_index:0, page_size:0}}*/
+			/*
+			 * { car_info:{car_owner_id:0,car_type_id:0,license_plate:'',
+			 * phone_number:''}, page:{page_index:0, page_size:0}}
+			 */
 			PagingInfo page = new PagingInfo();
 			JsonObject jsonInfo = new JsonObject();
-			jsonInfo.addProperty("car_owner_id", carOwnerSearch==null ? 0 :carOwnerSearch.getId());
-			jsonInfo.addProperty("car_type_id", carTypeSearch==null ? 0 : carTypeSearch.getId());
+			jsonInfo.addProperty("car_owner_id", carOwnerSearch == null ? 0 : carOwnerSearch.getId());
+			jsonInfo.addProperty("car_type_id", carTypeSearch == null ? 0 : carTypeSearch.getId());
 			jsonInfo.addProperty("license_plate", licensePlateSearch);
 			jsonInfo.addProperty("phone_number", phoneNumberSearch);
 			JsonObject jsonPage = new JsonObject();
@@ -137,15 +139,18 @@ public class CarBean extends AbstractBean  {
 
 	public void paginatorChange(int currentPage) {
 		try {
-			/*{ car_info:{car_owner_id:0,car_type_id:0,license_plate:'',phone_number:''}, page:{page_index:0, page_size:0}}*/
+			/*
+			 * { car_info:{car_owner_id:0,car_type_id:0,license_plate:'',
+			 * phone_number:''}, page:{page_index:0, page_size:0}}
+			 */
 			navigationInfo.setLimit(pageSize);
 			navigationInfo.setMaxIndices(5);
 			listCar = new ArrayList<Car>();
 			PagingInfo page = new PagingInfo();
 			// thông tin phân trang
 			JsonObject jsonInfo = new JsonObject();
-			jsonInfo.addProperty("car_owner_id", carOwnerSearch==null ? 0 :carOwnerSearch.getId());
-			jsonInfo.addProperty("car_type_id", carTypeSearch==null ? 0 : carTypeSearch.getId());
+			jsonInfo.addProperty("car_owner_id", carOwnerSearch == null ? 0 : carOwnerSearch.getId());
+			jsonInfo.addProperty("car_type_id", carTypeSearch == null ? 0 : carTypeSearch.getId());
 			jsonInfo.addProperty("license_plate", licensePlateSearch);
 			jsonInfo.addProperty("phone_number", phoneNumberSearch);
 			JsonObject jsonPage = new JsonObject();
@@ -170,36 +175,36 @@ public class CarBean extends AbstractBean  {
 				if (licensePlate != null && !"".equals(licensePlate)) {
 					CarReqInfo t = new CarReqInfo(carCrud);
 					if (carCrud.getId() == 0) {
-						//check code đã tồn tại chưa
-						if(allowSave(new Date())){
+						// check code đã tồn tại chưa
+						if (allowSave(new Date())) {
 							carCrud.setCreated_date(new Date());
 							carCrud.setCreated_by(account.getMember().getName());
-							if(carService.insert(t)!=-1){
-								current.executeScript("swaldesigntimer('Thành công!', 'Thêm thành công!','success',2000);");
-								listCar.add(0,carCrud.clone());
-							}else{
+							if (carService.insert(t) != -1) {
 								current.executeScript(
-										"swaldesigntimer('Thất bại!', 'Thêm thất bại!','error',2000);");
+										"swaldesigntimer('Thành công!', 'Thêm thành công!','success',2000);");
+								listCar.add(0, carCrud.clone());
+							} else {
+								current.executeScript("swaldesigntimer('Thất bại!', 'Thêm thất bại!','error',2000);");
 							}
-							
-						}else{
+
+						} else {
 							current.executeScript(
 									"swaldesigntimer('Cảnh báo!', 'Tài khoản này không có quyền thực hiện hoặc tháng đã khoá!','error',2000);");
 						}
-					}else{
-						//check code update đã tồn tại chưa
-						if(allowUpdate(new Date())){
+					} else {
+						// check code update đã tồn tại chưa
+						if (allowUpdate(new Date())) {
 							carCrud.setLast_modifed_by(account.getMember().getName());
 							carCrud.setLast_modifed_date(new Date());
-							if(carService.update(t)!=-1){
+							if (carService.update(t) != -1) {
 								current.executeScript(
 										"swaldesigntimer('Thành công!', 'Cập nhật thành công!','success',2000);");
-								listCar.set(listCar.indexOf(carCrud),t.getCar());
-							}else{
+								listCar.set(listCar.indexOf(carCrud), t.getCar());
+							} else {
 								current.executeScript(
 										"swaldesigntimer('Thất bại!', 'Cập nhật thất bại!','error',2000);");
 							}
-						}else{
+						} else {
 							current.executeScript(
 									"swaldesigntimer('Cảnh báo!', 'Tài khoản này không có quyền thực hiện hoặc tháng đã khoá!','error',2000);");
 						}
@@ -213,52 +218,54 @@ public class CarBean extends AbstractBean  {
 			logger.error("CarBean.saveOrUpdate:" + e.getMessage(), e);
 		}
 	}
-	public void showEdit(){
-		try{
-			carCrud=carSelect.clone();
-		}catch(Exception e){
-			logger.error("CarBean.showEdit:"+e.getMessage(),e);
+
+	public void showEdit() {
+		try {
+			carCrud = carSelect.clone();
+		} catch (Exception e) {
+			logger.error("CarBean.showEdit:" + e.getMessage(), e);
 		}
 	}
-	public void createNew(){
-		carCrud=new Car();
+
+	public void createNew() {
+		carCrud = new Car();
 	}
-	public void delete(){
-		PrimeFaces current=PrimeFaces.current();
-		try{
-			if(carSelect !=null){
-				if(allowDelete(new Date())){
-					if(carService.deleteById(carSelect.getId())!=-1){
-						current.executeScript(
-								"swaldesigntimer('Thành công!', 'Xóa thành công!','success',2000);");
+
+	public void delete() {
+		PrimeFaces current = PrimeFaces.current();
+		try {
+			if (carSelect != null) {
+				if (allowDelete(new Date())) {
+					if (carService.deleteById(carSelect.getId()) != -1) {
+						current.executeScript("swaldesigntimer('Thành công!', 'Xóa thành công!','success',2000);");
 						listCar.remove(carSelect);
-					}else{
-						current.executeScript(
-								"swaldesigntimer('Thất bại!', 'Không xóa được!','error',2000);");
+					} else {
+						current.executeScript("swaldesigntimer('Thất bại!', 'Không xóa được!','error',2000);");
 					}
-				}else{
+				} else {
 					current.executeScript(
 							"swaldesigntimer('Cảnh báo!', 'Tài khoản này không có quyền thực hiện hoặc tháng đã khoá!','error',2000);");
 				}
-			}else{
-				current.executeScript(
-						"swaldesigntimer('Cảnh báo!', 'Chưa chọn dòng để xóa!','warning',2000);");
+			} else {
+				current.executeScript("swaldesigntimer('Cảnh báo!', 'Chưa chọn dòng để xóa!','warning',2000);");
 			}
-		}catch(Exception e){
-			logger.error("CarBean.delete:"+e.getMessage(),e);
+		} catch (Exception e) {
+			logger.error("CarBean.delete:" + e.getMessage(), e);
 		}
 	}
-	public void showDialogUpload(){
-		try{
+
+	public void showDialogUpload() {
+		try {
 			PrimeFaces current = PrimeFaces.current();
 			current.executeScript("PF('dlgup1').show();");
-		}catch(Exception e){
-			logger.error("CarBean.showDialogUpload:"+e.getMessage(),e);
+		} catch (Exception e) {
+			logger.error("CarBean.showDialogUpload:" + e.getMessage(), e);
 		}
 	}
-	public void loadExcel(FileUploadEvent event){
+
+	public void loadExcel(FileUploadEvent event) {
 		Notify notify = new Notify(FacesContext.getCurrentInstance());
-		try{
+		try {
 			if (event.getFile() != null) {
 				UploadedFile part = event.getFile();
 				byte[] byteFile = event.getFile().getContents();
@@ -271,7 +278,7 @@ public class CarBean extends AbstractBean  {
 					rows.remove();
 					break;
 				}
-				lv1:while (rows.hasNext()) {
+				lv1: while (rows.hasNext()) {
 					Row row = rows.next();
 					Iterator<Cell> cells = row.cellIterator();
 					Car lix = new Car();
@@ -304,9 +311,9 @@ public class CarBean extends AbstractBean  {
 							try {
 								// nhóm xe
 								String manhomxe = Objects.toString(getCellValue(cell), null);
-								if(manhomxe !=null && !"".equals(manhomxe)){
-									CarTypeReqInfo ct=new CarTypeReqInfo();
-									carTypeService.selectByCodeOld(manhomxe,ct );
+								if (manhomxe != null && !"".equals(manhomxe)) {
+									CarTypeReqInfo ct = new CarTypeReqInfo();
+									carTypeService.selectByCodeOld(manhomxe, ct);
 									lix.setCar_type(ct.getCar_type());
 								}
 							} catch (Exception e) {
@@ -316,9 +323,9 @@ public class CarBean extends AbstractBean  {
 							try {
 								// chủ xe
 								String chuxe = Objects.toString(getCellValue(cell), null);
-								if(chuxe !=null && !"".equals(chuxe)){
-									CarOwnerReqInfo co=new CarOwnerReqInfo();
-									carOwnerService.selectByCodeOld(chuxe,co );
+								if (chuxe != null && !"".equals(chuxe)) {
+									CarOwnerReqInfo co = new CarOwnerReqInfo();
+									carOwnerService.selectByCodeOld(chuxe, co);
 									lix.setCar_owner(co.getCar_owner());
 								}
 							} catch (Exception e) {
@@ -348,10 +355,11 @@ public class CarBean extends AbstractBean  {
 				search();
 				notify.success();
 			}
-		}catch(Exception e){
-			logger.error("CarBean.loadExcel:"+e.getMessage(),e);
+		} catch (Exception e) {
+			logger.error("CarBean.loadExcel:" + e.getMessage(), e);
 		}
 	}
+
 	private Workbook getWorkbook(InputStream inputStream, String excelFilePath) throws IOException {
 		Workbook workbook = null;
 		if (excelFilePath.endsWith("xlsx")) {
@@ -364,6 +372,7 @@ public class CarBean extends AbstractBean  {
 
 		return workbook;
 	}
+
 	private Object getCellValue(Cell cell) {
 		switch (cell.getCellType()) {
 		case Cell.CELL_TYPE_STRING:

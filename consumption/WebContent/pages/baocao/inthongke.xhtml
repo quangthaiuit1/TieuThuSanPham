@@ -7,447 +7,213 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/home.xhtml">
+
+
 	<ui:define name="content">
-		<h3 style="margin: 0px">Nhập hàng</h3>
+		<style>
+.ui-datatable-scrollable-body {
+	outline: none;
+}
+</style>
+		<h3 style="margin: 0px">In thống kê</h3>
 		<p:separator />
-		<div class="col-md-12" style="padding-left:0px !important;padding-right:0px !important;">
+		<div class="col-md-12"
+			style="padding-left: 0px !important; padding-right: 0px !important;">
+			<p:growl id="growlInThongKe" showDetail="true" sticky="false" />
 			<h:form id="menuformid">
-				<p:tabView id="tabview1" styleClass="clearfix label12 tabview_lix">
-					<p:tab id="tab1" title="Nhập hàng">
-					    <h:panelGroup id="group1">
-						<div class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important;background-color: #eeeeee;">
-						    <div class="col-md-9" style="padding-left: 0px !important; padding-right: 0px !important;background-color: #eeeeee;">
-							    <div class="row" style="margin-top:10px;">
-						           <div class="col-md-2" style="text-align: right;padding-left: 0px !important; padding-right: 0px !important;width: 12%;">
-						                <span class="labelnhapsp">Nhập hàng</span>
-						            </div>
-						           <div class="col-md-6">
-						               <div class="nhapsp">
-										  <span class="fa fa-search"></span>
-										  <p:autoComplete style="width:100%;" id="completesp"
-							                placeholder="Tìm kiếm sản phẩm"
-											value="#{goodsReceiptNoteBean.goodsReceiptNoteDetailCrud.product}" queryDelay="900"
-											maxResults="200"
-											converter="abstractConverter" minQueryLength="2" 
-											completeMethod="#{goodsReceiptNoteBean.completeProduct}" var="p"
-											itemLabel="#{p.product_name}" itemValue="#{p}"
-											forceSelection="true" onclick="this.select();">
-											<p:column style="width:50px">
-											   <h:outputText value="#{p.product_code}" />
-											</p:column>
-											<p:column style="width:150px">
-											    <h:outputText value="#{p.product_name}" />
-											 </p:column>
-											<p:ajax process="maLoHangId,@this"  event="itemSelect" listener="#{goodsReceiptNoteBean.addGoodsReceiptNoteDetail()}" update="tablect,menuformid:tabview1:napExcel,@this,messages"  />
-										   </p:autoComplete>
-										</div>
-						           </div>
-						           <div class="col-md-2">
-						               <div class="nhapsp">
-						                  <p:inputText id="maLoHangId" style="text-indent:12px !important;" placeholder="Mã lô hàng"  value="#{goodsReceiptNoteBean.goodsReceiptNoteDetailCrud.batch_code}" />
-						               </div>
-						           </div>
-							        <div class="col-md-2" style="padding-left: 0px !important; padding-right: 0px !important; text-align: right;width: 19.666%;">
-							            <span class="btn_icnx" style="background-color: #a50808!important;">
-							                 <p:commandLink action="#{goodsReceiptNoteBean.exportGoodsReceiptNew()}" title="xuất pdf">
-							                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-							                 </p:commandLink>
-							            </span>
-							            <span class="btn_icnx" style="background-color: #807a7aeb !important;">
-							                 <p:commandLink action="#{goodsReceiptNoteBean.createNew()}" update="menuformid:tabview1:group1" title="Tạo mới" >
-							                    <i class="fa fa-refresh" aria-hidden="true"></i>
-							                 </p:commandLink>
-							            </span>
-							        </div>
-							    </div>
-							    <div class="row" style="margin-top: 15px; margin-bottom: 20px;">
-							        <p:dataTable value="#{goodsReceiptNoteBean.listGoodsReceiptNoteDetail}" lazy="true"
-										paginatorPosition="bottom" rowsPerPageTemplate="90,180,250" rowIndexVar="index"
-										 styleClass="tablenhapsp"  scrollHeight="500"  
-										paginator="true" rowKey="#{item.id}"  scrollable="true" id="tablect"
-										 widgetVar="tablect" resizableColumns="true" 
-										var="item">
-										<p:column headerText="" width="30" styleClass="textcenter">
-											<p:commandLink update="tablect,menuformid:tabview1:napExcel,messages" styleClass="trash_del" process="@this" actionListener="#{goodsReceiptNoteBean.deleteGoodsReceiptNoteDetail(item)}">
-											   <span class="fa fa-trash-o"></span>
-											   <p:confirm icon="ui-icon-alert" />
-											</p:commandLink>
-										</p:column>
-										<p:column headerText="STT" width="30" styleClass="textcenter">
-											<h:outputText value="#{index+1}" />
-										</p:column>
-										<p:column headerText="MASP" width="40">
-											<h:outputText value="#{item.product.product_code}" />
-										</p:column>
-										<p:column headerText="Sản phẩm" width="270" filterBy="#{item.product.product_name}" filterMatchMode="contains"  >
-											<h:outputText style="white-space: initial;" value="#{item.product.product_name}" />
-										</p:column>
-										<p:column headerText="Số lượng" width="50">
-										    <p:inputNumber   onclick="this.select()" value="#{item.quantity}" styleClass="inputtext_nhapsp" style="width:100%;"
-											minValue="0" decimalPlaces="0" decimalSeparator="," maxValue="10000000" emptyValue="0"
-					                 thousandSeparator=".">
-					                            <p:ajax update="@this" />
-					                         </p:inputNumber>
-										</p:column>
-										<p:column headerText="mã lô hàng" width="60" styleClass="textcenter" filterBy="#{item.batch_code}" filterMatchMode="contains">
-											<h:outputText  value="#{item.batch_code}" />
-										</p:column>
-									</p:dataTable>
-									<h:panelGroup id="napExcel" style="display:#{goodsReceiptNoteBean.listGoodsReceiptNoteDetail.size()==0 ?'block' :'none'};">
-									   <div class="con_napexcel">
-									     <span class="title1">Thêm sản phẩm từ file excel</span><br/>
-									     <span class="title2">(Tải về file mẫu <a target="true" href="#{request.contextPath}/resources/upload/filemau/file_mau_nhap_hang.xlsx">file mẫu</a>)</span><br/>
-									     <span class="btn_napexcel">
-							              <i class="fa fa-file-excel-o" aria-hidden="true"></i>
-							              <p:commandLink action="#{goodsReceiptNoteBean.showDialogUpload()}" update="dlgup1" value="Chọn file dữ liệu" />
-							            </span>
-									    </div>
-									</h:panelGroup>
-							    </div>
-							    <div class="row">
-							    </div>
-						    </div>
-						    <div class="col-md-3" style="padding-left: 10px !important; padding-right:0px !important;height: 645px;background-color: white;">
-						        <div class="row" style="margin-top: 10px;">
-						           <div class="col-md-7" style="padding-left: 0px !important; padding-right:3px !important;">
-							            <label>Mã đơn hàng</label>
-						            </div>
-						            <div class="col-md-5" style="padding-left: 3px !important; padding-right:0px !important;">
-						               <label>Số chứng từ</label>
-						            </div>
-						        </div>
-						        <div class="row">
-						           <div class="col-md-7" style="padding-left: 0px !important; padding-right:3px !important;">
-							            <p:inputText readonly="true"  value="#{goodsReceiptNoteBean.goodsReceiptNoteCrud.receipt_code}" />
-						            </div>
-						            <div class="col-md-5" style="padding-left: 3px !important; padding-right:0px !important;">
-						                <p:inputText  value="#{goodsReceiptNoteBean.goodsReceiptNoteCrud.voucher_code}" />
-						            </div>
-						        </div>
-						        <div class="row" style="margin-top: 10px;">
-						           <div class="col-md-7" style="padding-left: 0px !important; padding-right:3px !important;">
-							            <div class="usernhapsp">
-							                <span class="fa fa-user-circle-o"></span>
-							                <p:inputText readonly="true"  value="#{goodsReceiptNoteBean.goodsReceiptNoteCrud.created_by}" />
-							            </div>
-						            </div>
-						            <div class="col-md-5" style="padding-left: 3px !important; padding-right:0px !important;">
-						               <p:calendar value="#{goodsReceiptNoteBean.goodsReceiptNoteCrud.import_date}" pattern="dd/MM/yyyy" showOn="button" mask="99/99/9999" showButtonPanel="true"/>
-						            </div>
-						        </div>
-						        <div class="row" style="margin-top: 10px;">
-						            <div class="nhapnpp">
-										  <span class="fa fa-search"></span>
-										  <p:autoComplete style="width:100%;"
-							                placeholder="Tìm nhà cung cấp"
-											value="#{goodsReceiptNoteBean.goodsReceiptNoteCrud.customer}" queryDelay="900"
-											maxResults="200"
-											converter="abstractConverter" minQueryLength="2" 
-											completeMethod="#{goodsReceiptNoteBean.completeCustomer}" var="p"
-											itemLabel="#{p.customer_name}" itemValue="#{p}"
-											forceSelection="true" onclick="this.select();">
-											<p:column style="width:50px">
-											   <h:outputText value="#{p.customer_code}" />
-											</p:column>
-											<p:column style="width:150px">
-											    <h:outputText value="#{p.customer_name}" />
-											 </p:column>
-										   </p:autoComplete>
-										</div>
-						        </div>
-						        <div class="row" style="margin-top: 10px;">
-						            <div class="col-md-12" style="padding-left: 0px !important; padding-right:0px !important;">
-						                <label>Loại nhập</label>
-						            </div>
-						            <div class="col-md-12" style="padding-left: 0px !important; padding-right:0px !important;">
-						                 <p:selectOneMenu 
-												value="#{goodsReceiptNoteBean.goodsReceiptNoteCrud.ie_categories}"
-												converter="abstractConverter" effect="fade" var="t"
-												style="width:100%;">
-												 <f:selectItem itemLabel="Tất cả" itemValue="#{null}" />
-												<f:selectItems value="#{goodsReceiptNoteBean.listIECategories}"
-													var="theme" itemLabel="#{theme.content}"
-													itemValue="#{theme}" />
-												<p:column>
-													<h:outputText value="#{t.code}" />
-												</p:column>
-												<p:column>
-													<h:outputText value="#{t==null ? 'Tất cả' : t.content}" />
-												</p:column>
-											</p:selectOneMenu>
-						            </div>
-						        </div>
-						        <div class="row" style="margin-top: 10px;">
-						            <div class="col-md-12" style="padding-left: 0px !important; padding-right:0px !important;">
-						                <label>Kho hàng</label>
-						            </div>
-						            <div class="col-md-12" style="padding-left: 0px !important; padding-right:0px !important;">
-						                 <p:selectOneMenu 
-												value="#{goodsReceiptNoteBean.goodsReceiptNoteCrud.warehouse}"
-												converter="abstractConverter" effect="fade" var="t"
-												style="width:100%;">
-												 <f:selectItem itemLabel="Tất cả" itemValue="#{null}" />
-												<f:selectItems value="#{goodsReceiptNoteBean.listWarehouse}"
-													var="theme" itemLabel="#{theme.name}"
-													itemValue="#{theme}" />
-												<p:column>
-													<h:outputText value="#{t.code}" />
-												</p:column>
-												<p:column>
-													<h:outputText value="#{t==null ? 'Tất cả' : t.name}" />
-												</p:column>
-											</p:selectOneMenu>
-						            </div>
-						        </div>
-						        <div class="row" style="margin-top: 10px;">
-						            <div class="col-md-6" style="padding-left: 0px !important; padding-right:5px !important;">
-						                <label>Số xe</label>
-						            </div>
-						            <div class="col-md-6" style="padding-left: 5px !important; padding-right:0px !important;">
-						                <label>Lệnh điều động</label>
-						            </div>
-						            <div class="col-md-6" style="padding-left: 0px !important; padding-right:5px !important;">
-						                 <p:inputText value="#{goodsReceiptNoteBean.goodsReceiptNoteCrud.license_plate}" />
-						            </div>
-						            <div class="col-md-6" style="padding-left: 5px !important; padding-right:0px !important;">
-						                 <p:inputText value="#{goodsReceiptNoteBean.goodsReceiptNoteCrud.movement_commands}" />
-						            </div>
-						        </div>
-						        <div class="row" style="margin-top: 10px;">
-						            <div class="col-md-6" style="padding-left: 0px !important; padding-right:5px !important;">
-						                <label>TK nợ</label>
-						            </div>
-						            <div class="col-md-6" style="padding-left: 5px !important; padding-right:0px !important;">
-						                <label>TK có</label>
-						            </div>
-						            <div class="col-md-6" style="padding-left: 0px !important; padding-right:5px !important;">
-						                 <p:inputText value="#{goodsReceiptNoteBean.goodsReceiptNoteCrud.tk_1}" />
-						            </div>
-						            <div class="col-md-6" style="padding-left: 5px !important; padding-right:0px !important;">
-						                 <p:inputText value="#{goodsReceiptNoteBean.goodsReceiptNoteCrud.tk_2}" />
-						            </div>
-						        </div>
-						        <div class="row" style="margin-top: 10px;">
-						            <div class="col-md-12" style="padding-left: 0px !important; padding-right:0px !important;">
-						                <label>Ghi chú</label>
-						            </div>
-						            <div class="col-md-12" style="padding-left: 0px !important; padding-right:0px !important;">
-						                 <p:inputTextarea rows="3" value="#{goodsReceiptNoteBean.goodsReceiptNoteCrud.note}" />
-						            </div>
-						        </div>
-						        <div class="row" style="margin-top: 10px;">
-						            <div class="col-md-12" style="padding-left: 0px !important; padding-right:5px !important;">
-						                <label>Trạng thái:</label>
-						                <h:outputText style="color:red;margin-left:10px;font-weight: bold;" value="#{goodsReceiptNoteBean.goodsReceiptNoteCrud.status==0 ? 'Lưu tạm' : ''}" />
-						                <h:outputText style="color:#4bac4d;font-weight: bold;" value="#{goodsReceiptNoteBean.goodsReceiptNoteCrud.status==1 ? 'Hoàn thành' : ''}" />
-						            </div>
-						        </div>
-						        <div class="row" style="position: absolute;bottom:12px;">
-						            <span class="btn_luutam">
-						              <p:commandLink action="#{goodsReceiptNoteBean.saveOrUpdateReceiptNote(0)}" update="menuformid:tabview1:group1,menuformid:tabview1:tablect,menuformid:tabview1:tablenc">
-						                  <i class="fa fa-floppy-o" aria-hidden="true"></i><br />Lưu tạm
-						              </p:commandLink>
-						            </span>
-						            <span class="btn_tcong">
-						              <p:commandLink action="#{goodsReceiptNoteBean.saveOrUpdateReceiptNote(1)}" update="menuformid:tabview1:group1,menuformid:tabview1:tablect,menuformid:tabview1:tablenc">
-						                 <i class="fa fa-chevron-down" aria-hidden="true"></i><br />Hoàn thành
-						              </p:commandLink>
-						            </span>
-						        </div>
-						    </div>
+
+				<div class="col-md-12"
+					style="padding-left: 0px !important; padding-right: 0px !important; background-color: #eeeeee; height: 100%">
+					<div class="col-md-6"
+						style="border: 1px solid black; border-radius: 5px; padding-left: 0px !important; padding-right: 0px !important; background-color: #eeeeee; height: 100%">
+						<div class="row"
+							style="margin-top: 20px; width: 100%; border-radius: 5px; text-align: center">
+
+							<h:outputText value="Chọn khu vực: "
+								style="font-weight:bold;margin-right:5px" />
+							<p:selectOneMenu value="#{baoCaoInThongKe.citySelected}"
+								converter="abstractConverter" effect="fade" var="t" id="kdgtc"
+								style="width:150px;" filter="true" filterMatchMode="custom"
+								filterFunction="customFilter">
+								<p:ajax process="@this"
+									listener="#{baoCaoInThongKe.ajaxHandleShowCustomerByCity()}"
+									update="dtKhachHang,growlInThongKe" />
+								<f:selectItems value="#{baoCaoInThongKe.allCity}" var="loop"
+									itemLabel="#{loop.city_name}" itemValue="#{loop}" />
+								<p:column>
+									<h:outputText value="#{t.city_name}" />
+								</p:column>
+							</p:selectOneMenu>
+							<br />
+							<p:dataTable var="item"
+								value="#{baoCaoInThongKe.customersByCity}"
+								selection="#{baoCaoInThongKe.selectedsCustomer}"
+								rowKey="#{item.id}" id="dtKhachHang" scrollHeight="500"
+								scrollable="true" paginatorPosition="bottom"
+								style="margin-top:20px;width:100%"
+								rowsPerPageTemplate="100,150,200" paginator="true" rows="100">
+								<p:column selectionMode="multiple"
+									style="width:10%;text-align:center" />
+								<p:column headerText="Mã khách hàng"
+									style="text-align:center;width:25%">
+									<h:outputText value="#{item.customer_code}" />
+								</p:column>
+								<p:column headerText="Tên khách hàng"
+									style="text-align:center;width:63%"
+									filterBy="#{item.customer_name}"
+									filterFunction="#{abstractCustomFilter.filterByText}">
+									<h:outputText value="#{item.customer_name}" />
+								</p:column>
+
+							</p:dataTable>
 						</div>
-						</h:panelGroup>
-					</p:tab>
-					<p:tab id="tab2" title="Danh sách phiếu nhập">
-					    <div class="col-md-12" style="padding-left: 0px !important; padding-right:0px !important; background-color: #eeeeee; ">
-					        <div class="row" style="margin-top: 25px; margin-left: 16px !important; background: white;margin-right: 16px !important; height: 40px;padding-top: 6px;padding-left: 5px;">
-					  			<span class="btn_icnx" style="background-color: #4bac4d !important;height:30px !important;line-height:30px !important;">
-					                 <p:commandLink process="@this" style="height:30px !important;line-height:30px !important;padding-top: 7px !important;" id="xoact" update="menuformid:tabview1:tablenc,messages" action="#{goodsReceiptNoteBean.deleteGoodsReceiptNote()}" title="Xóa phiếu nhập">
-					                    <i class="fa fa-trash" aria-hidden="true"></i>
-					                     <p:confirm icon="ui-icon-alert" />
-					                 </p:commandLink>
-							    </span>
-					            <p:commandLink id="idorder" styleClass="btn_primmary" style="margin-left:0px; margin-right:0px;height:29px !important;line-height:29px !important;" >
-							                    <i class="fa fa-search" aria-hidden="true"></i><span>Tìm kiếm</span>
-							      </p:commandLink>
-	                            <p:overlayPanel id="imagePanel" for="idorder" hideEffect="fade" dismissable="false" widgetVar="panelsearch" style="width:360px;">
-						           <div class="col-md-12" style="border: 1px solid #ccc; border-radius: 6px; margin-bottom: 5px !important;">
-						               <div class="row" style="margin-top: 10px">
-						                   <div class="col-md-6"  style="padding-left: 0px !important; padding-right:5px !important;">
-						                       <label>Từ ngày</label>
-						                   </div>
-						                   <div class="col-md-6" style="padding-left: 5px !important; padding-right:0px !important;">
-						                       <label>Đến ngày</label>
-						                   </div>
-						               </div>
-						               <div class="row">
-						                   <div class="col-md-6"  style="padding-left: 0px !important; padding-right:5px !important;">
-						                       <p:calendar value="#{goodsReceiptNoteBean.fromDateSearch}" pattern="dd/MM/yyyy" showOn="button" mask="99/99/9999" showButtonPanel="true"/>
-						                   </div>
-						                   <div class="col-md-6" style="padding-left: 5px !important; padding-right:0px !important;">
-						                       <p:calendar value="#{goodsReceiptNoteBean.toDateSearch}" pattern="dd/MM/yyyy" showOn="button" mask="99/99/9999" showButtonPanel="true"/>
-						                   </div>
-						               </div>
-						               <div class="row"  style="margin-top: 5px">
-						                   <label>Nhà cung cấp</label>
-						               </div>
-						               <div class="row">
-						                    <div class="nhapdlg">
-									           <span class="fa fa-search"></span>
-											   <p:autoComplete style="width:100%;"  placeholder="Tìm nhà cung cấp"
-												value="#{goodsReceiptNoteBean.customerSearch}" maxResults="200"
-												converter="abstractConverter" minQueryLength="2" queryDelay="900"
-												completeMethod="#{goodsReceiptNoteBean.completeCustomer}" var="p"
-												itemLabel="#{p.customer_name}" itemValue="#{p}"
-												forceSelection="true" onclick="this.select();">
-												<p:column style="width:50px">
-												   <h:outputText value="#{p.customer_code}" />
-												</p:column>
-												<p:column style="width:150px">
-												    <h:outputText value="#{p.customer_name}" />
-												 </p:column>
-												</p:autoComplete>
-											 </div>
-									   </div>
-						               <div class="row" style="margin-top: 5px">
-						                   <label>Loại nhập</label>
-						               </div>
-						               <div class="row">
-						                    <p:selectOneMenu 
-												value="#{goodsReceiptNoteBean.ieCategoriesSearch}"
-												converter="abstractConverter" effect="fade" var="t"
-												style="width:100%;">
-												 <f:selectItem itemLabel="Tất cả" itemValue="#{null}" />
-												<f:selectItems value="#{goodsReceiptNoteBean.listIECategories}"
-													var="theme" itemLabel="#{theme.content}"
-													itemValue="#{theme}" />
-												<p:column>
-													<h:outputText value="#{t.code}" />
-												</p:column>
-												<p:column>
-													<h:outputText value="#{t==null ? 'Tất cả' : t.content}" />
-												</p:column>
-											</p:selectOneMenu>   
-						               </div>
-						               <div class="row" style="margin-top: 5px;">
-						                   <label>Kho hàng</label>
-						               </div>
-						               <div class="row" style="margin-bottom: 10px;">
-						                    <p:selectOneMenu 
-												value="#{goodsReceiptNoteBean.ieCategoriesSearch}"
-												converter="abstractConverter" effect="fade" var="t"
-												style="width:100%;">
-												 <f:selectItem itemLabel="Tất cả" itemValue="#{null}" />
-												<f:selectItems value="#{goodsReceiptNoteBean.listIECategories}"
-													var="theme" itemLabel="#{theme.content}"
-													itemValue="#{theme}" />
-												<p:column>
-													<h:outputText value="#{t.code}" />
-												</p:column>
-												<p:column>
-													<h:outputText value="#{t==null ? 'Tất cả' : t.content}" />
-												</p:column>
-											</p:selectOneMenu>  
-						               </div>
-						               <div class="row" style="margin-top: 5px;">
-						                   <label>Trạng thái</label>
-						               </div>
-						               <div class="row" style="margin-bottom: 10px;">
-						                    <p:selectOneMenu 
-												value="#{goodsReceiptNoteBean.statusSearch}"
-												converter="integerConverter" effect="fade" 
-												style="width:100%;">
-												 <f:selectItem itemLabel="Tất cả" itemValue="-1" />
-												 <f:selectItem itemLabel="Lưu tạm" itemValue="0" />
-												 <f:selectItem itemLabel="Hoàn thành" itemValue="1" />
-											</p:selectOneMenu>  
-						               </div>
-						           </div>
-						           <div class="col-md-12" style="padding-left: 0px !important; padding-right:0px !important; margin-bottom: 10px;">
-						               <p:commandButton process="imagePanel" update="menuformid:tabview1:tablenc" action="#{goodsReceiptNoteBean.searchReceiptNote()}" icon="fa fa-search" style="padding:4px !important;padding-right:10px !important; padding-left:10px !important;" styleClass="buttonaddrow" value="Tìm" />
-						           </div>
-					            </p:overlayPanel>
-					        </div>
-					        <div class="row" style="margin-top: 5px;margin-bottom: 25px; margin-left: 16px !important;margin-right: 16px !important;">
-					            <p:dataTable value="#{goodsReceiptNoteBean.listGoodsReceiptNote}" lazy="true"
-										paginatorPosition="bottom" styleClass="tablenhapsp" style="width:100%;"
-										paginator="true" rowKey="#{item.id}" id="tablenc" widgetVar="tablenc"
-										scrollable="true" scrollHeight="400"  paginatorTemplate="{Exporters}"
-										selection="#{goodsReceiptNoteBean.goodsReceiptNoteSelect}"
-										selectionMode="single" resizableColumns="true" var="item">
-									<f:facet name="{Exporters}">
-										  <span class="pagecurrentdisplay">
-										     <h:outputText value="(#{goodsReceiptNoteBean.navigationInfo.currentPage} of #{goodsReceiptNoteBean.navigationInfo.totalPage})" />
-										  </span>
-										  <ul class="pagination pagination-sm" style="margin: 0px 0px !important;">
-										      <li><p:commandLink disabled="#{goodsReceiptNoteBean.navigationInfo.currentPage ==1}" styleClass="fa fa-angle-double-left font_weightcus"  update="tablenc" actionListener="#{goodsReceiptNoteBean.paginatorChange(1)}" /> </li>
-										      <li><p:commandLink disabled="#{goodsReceiptNoteBean.navigationInfo.currentPage ==1}" styleClass="fa fa-angle-left font_weightcus"  update="tablenc" actionListener="#{goodsReceiptNoteBean.paginatorChange(goodsReceiptNoteBean.navigationInfo.currentPage-1)}" /> </li>
-											  <c:forEach var="index" items="#{goodsReceiptNoteBean.navigationInfo.indexList}">
-												  <li class="#{goodsReceiptNoteBean.navigationInfo.currentPage==index ? 'active' : ''}"><p:commandLink   update="tablenc" value="#{index}" actionListener="#{goodsReceiptNoteBean.paginatorChange(index)}" /> </li>
-											  </c:forEach>
-											   <li><p:commandLink disabled="#{goodsReceiptNoteBean.navigationInfo.currentPage ==goodsReceiptNoteBean.navigationInfo.totalPage}" styleClass="fa fa-angle-right font_weightcus"  update="tablenc" actionListener="#{goodsReceiptNoteBean.paginatorChange(goodsReceiptNoteBean.navigationInfo.currentPage +1)}" /> </li>
-										      <li><p:commandLink disabled="#{goodsReceiptNoteBean.navigationInfo.currentPage ==goodsReceiptNoteBean.navigationInfo.totalPage}" styleClass="fa fa-angle-double-right font_weightcus"  update="tablenc" actionListener="#{goodsReceiptNoteBean.paginatorChange(goodsReceiptNoteBean.navigationInfo.totalPage)}" /> </li>
-											</ul>
-											<span class="rowperpage">
-									        <p:selectOneMenu 
-												value="#{goodsReceiptNoteBean.pageSize}"
-												converter="abstractConverter" effect="fade" var="t"
-												style="width:50px;margin-left:10px !important;">
-												<f:selectItems value="#{goodsReceiptNoteBean.listRowPerPage}"
-													var="theme" itemLabel="#{theme}"
-													itemValue="#{theme}" />
-												<p:column>
-													<h:outputText value="#{t}" />
-												</p:column>
-												<p:ajax update="tablenc"  listener="#{goodsReceiptNoteBean.paginatorChange(1)}"></p:ajax>
-											</p:selectOneMenu>
-									        </span>
-								     </f:facet>
-								     <p:ajax event="rowSelect" listener="#{goodsReceiptNoteBean.loadGoodsReceiptNote()}"
-												 update="menuformid:tabview1:group1" />
-									    <p:column headerText="ID" width="30" styleClass="textcenter">
-										<h:outputText value="#{item.id}" />
-									</p:column>
-									<p:column headerText="Mã nhập" width="50" styleClass="textcenter">
-										<h:outputText value="#{item.receipt_code}" />
-									</p:column>
-									<p:column headerText="Số chứng từ" width="60" styleClass="textcenter">
-										<h:outputText value="#{item.voucher_code}" />
-									</p:column>
-									<p:column headerText="Ngày nhập" width="60" >
-										<h:outputText value="#{item.import_date}">
-										   <f:convertDateTime pattern="dd/MM/yyyy"/>
-										</h:outputText>
-									</p:column>
-									<p:column headerText="Khách hàng" width="190">
-										<h:outputText style="white-space: initial;" value="#{item.customer.customer_name}" />
-									</p:column>
-									<p:column headerText="Kho hàng" width="120">
-										<h:outputText style="white-space: initial;" value="#{item.warehouse.name}" />
-									</p:column>
-									<p:column headerText="Loại nhập xuất" width="120">
-										<h:outputText style="white-space: initial;" value="#{item.ie_categories.content}" />
-									</p:column>
-									<p:column headerText="Trạng thái" width="80" styleClass="textcenter">
-										<h:outputText style="white-space: initial;color:#{item.status==1 ?'#4bac4d' :'red'};" value="#{item.status==0 ? 'Lưu tạm' :'Hoàn thành'}" />
-									</p:column>
-								</p:dataTable>
-					        </div>
-					    </div>
-					    <div class="col-md-12" style="padding-left: 0px !important; padding-right:0px !important;">
-					    </div>
-					</p:tab>
-				</p:tabView>
+					</div>
+					<div class="col-md-6"
+						style="padding-left: 0px !important; padding-right: 0px !important; background-color: #eeeeee; height: 100%">
+						<div class="row"
+							style="margin-top: 10px; width: 100%; margin: 0 auto; border-radius: 5px">
+							<div class="col-md-12"
+								style="border: 1px solid black; border-radius: 5px; padding: 5px">
+								<div class="col-md-5">
+									<div class="row">
+										<div class="col-md-6">
+											<p:outputLabel value="Từ tháng:" style="float:left" />
+										</div>
+										<div class="col-md-6">
+											<p:spinner style="float:left" min="1" max="12"
+												value="#{baoCaoInThongKe.fromMonth}">
+
+											</p:spinner>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-6">
+											<p:outputLabel value="Đến tháng:" style="float:left" />
+										</div>
+										<div class="col-md-6">
+											<p:spinner style="float:left" min="1" max="12"
+												value="#{baoCaoInThongKe.toMonth}">
+
+											</p:spinner>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-6">
+											<p:outputLabel value="Năm:" style="float:left" />
+										</div>
+										<div class="col-md-6">
+											<p:spinner style="float:left" min="2000" max="3000"
+												value="#{baoCaoInThongKe.year}">
+
+											</p:spinner>
+										</div>
+									</div>
+
+								</div>
+								<div class="col-md-2"
+									style="margin: 0 auto; text-align: center; background-color: #3b8e4a; margin-top: 20px; height: 50px">
+									<span
+										style="color: white; font-weight: bold; height: 100%; margin: none; vertical-align: middle">So với</span>
+								</div>
+								<div class="col-md-5" style="">
+									<div class="row">
+										<div class="col-md-6">
+											<p:outputLabel value="Từ tháng:" style="float:left" />
+										</div>
+										<div class="col-md-6">
+											<p:spinner style="float:left" min="1" max="12"
+												value="#{baoCaoInThongKe.compareFromMonth}">
+
+											</p:spinner>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-6">
+											<p:outputLabel value="Đến tháng:" style="float:left" />
+										</div>
+										<div class="col-md-6">
+											<p:spinner style="float:left" min="1" max="12"
+												value="#{baoCaoInThongKe.compareToMonth}">
+
+											</p:spinner>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-6">
+											<p:outputLabel value="Năm:" style="float:left" />
+										</div>
+										<div class="col-md-6">
+											<p:spinner style="float:left" min="2000" max="3000"
+												value="#{baoCaoInThongKe.compareYear}">
+
+											</p:spinner>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12"
+							style="border: 1px solid black; border-radius: 5px; margin-top: 1px">
+							<h:panelGrid columns="2" style="margin-bottom:10px"
+								cellpadding="5">
+								<h:outputText value="Chọn báo cáo" style="font-weight:bold" />
+								<br />
+								<p:selectOneRadio id="city"
+									value="#{baoCaoInThongKe.reportSelected}" layout="grid"
+									columns="2">
+									<f:selectItem itemLabel="Thống kê tiêu thụ" itemValue="TKTT" />
+									<f:selectItem itemLabel="Thống kê  tiêu thụ - maxn"
+										itemValue="TKTTMAXN" />
+									<f:selectItem itemLabel="Thống kê sản xuất" itemValue="TKSX" />
+									<f:selectItem itemLabel="Thống kê sản lượng của khách hàng"
+										itemValue="TKSLCKH" />
+									<f:selectItem itemLabel="Thống kê tiêu thụ của khách hàng"
+										itemValue="TKTTCKH" />
+									<f:selectItem itemLabel="Thống kê tiêu thụ theo vùng"
+										itemValue="TKTTTV" />
+									<f:selectItem itemLabel="Thống kê doanh số NPP"
+										itemValue="TKDSNPP" />
+									<f:selectItem itemLabel="Phân tích SL và DT (Excel)"
+										itemValue="PTSL" />
+									<p:ajax process="@this" />
+								</p:selectOneRadio>
+							</h:panelGrid>
+							<div class="col-md-12"
+								style="margin-top: 5px; margin-bottom: 5px">
+								<div class="col-md-3"></div>
+								<div class="col-md-3">
+									<p:commandLink process="@this"
+										action="#{contractBean.printPDFProcessContract()}"
+										styleClass="btn_printtt"
+										style="margin-left:0px; margin-right:3px; height:29px !important;line-height:29px !important;background-color:#bc1515!important">
+										<i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+										<span>Xuất PDF</span>
+									</p:commandLink>
+								</div>
+								<div class="col-md-3">
+									<p:commandLink ajax="false" styleClass="btn_printtt"
+										style="margin-left:0px; margin-right:3px; height:29px !important;line-height:29px !important;background-color:#008000!important"
+										action="#{contractBean.exportExcel()}" title="Xuất file excel">
+										<i class="fa fa-file-excel-o" aria-hidden="true"></i>
+										<span>Xuất Excel</span>
+									</p:commandLink>
+								</div>
+								<div class="col-md-3"></div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</h:form>
 		</div>
-		<p:dialog widgetVar="dlgup1" resizable="false" styleClass="dislogUpload"
-			header="Tải File">
+		<p:dialog widgetVar="dlgup1" resizable="false"
+			styleClass="dislogUpload" header="Tải File">
 			<h:form id="dlgup1" enctype="multipart/form-data">
-				<p:fileUpload style="text-align:center"
-				id="fileupload" dragDropSupport="true" allowTypes="/(\.|\/)(xls|xlsx)$/"
-				label="Chọn file từ máy tính" cancelLabel="Huỷ" update=":messages,menuformid:tabview1:tablect"
-				uploadLabel="Tải lên" multiple="false" 
-				fileUploadListener="#{goodsReceiptNoteBean.loadFileExcel}" mode="advanced" process="@this,dlgup1"/>
+				<p:fileUpload style="text-align:center" id="fileupload"
+					dragDropSupport="true" allowTypes="/(\.|\/)(xls|xlsx)$/"
+					label="Chọn file từ máy tính" cancelLabel="Huỷ" update=":messages"
+					uploadLabel="Tải lên" multiple="false"
+					fileUploadListener="#{goodsReceiptNoteBean.loadFileExcel}"
+					mode="advanced" process="@this,dlgup1" />
 			</h:form>
 		</p:dialog>
 	</ui:define>

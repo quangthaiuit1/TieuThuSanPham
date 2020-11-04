@@ -7,6 +7,8 @@ import java.util.Objects;
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
@@ -57,11 +59,12 @@ public class CustomerService implements ICustomerService{
 		return res;
 	}
 	@Override
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public int search(String json, PagingInfo page, List<Customer> list) {
 		int res=-1;
 		long totalRow=0;
 		long totalPage=0;
-		try{/*{ customer_info:{customer_code:'',customer_name:'',tax_code:'',phone_number:'',customer_types_id:0}, page:{page_index:0, page_size:0}}*/
+		try{/*{customer_info:{customer_code:'',customer_name:'',tax_code:'',phone_number:'',customer_types_id:0}, page:{page_index:0, page_size:0}}*/
 			JsonObject j=JsonParserUtil.getGson().fromJson(json, JsonObject.class);
 			HolderParser hCustomerCode=JsonParserUtil.getValueString(j.get("customer_info"),"customer_code", null);
 			HolderParser hCustomerName=JsonParserUtil.getValueString(j.get("customer_info"),"customer_name", null);

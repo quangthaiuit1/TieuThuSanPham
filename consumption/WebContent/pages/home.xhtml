@@ -66,6 +66,16 @@ function removeclass(){
 	$( '.showbutton' ).css( "display","none" );
 
 }
+function customFilter(itemLabel, filterValue) {
+	itemLabel_create = itemLabel.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a").replace(/\ /g, '-').replace(/đ/g, "d").replace(/đ/g, "d").replace(/ỳ|ý|ỵ|ỷ|ỹ/g,"y").replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g,"u").replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ.+/g,"o").replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ.+/g, "e").replace(/ì|í|ị|ỉ|ĩ/g,"i");
+	filterValue_create = filterValue.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a").replace(/\ /g, '-').replace(/đ/g, "d").replace(/đ/g, "d").replace(/ỳ|ý|ỵ|ỷ|ỹ/g,"y").replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g,"u").replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ.+/g,"o").replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ.+/g, "e").replace(/ì|í|ị|ỉ|ĩ/g,"i");
+	 var result = itemLabel_create.search(filterValue_create);
+	 if(result==-1){
+		return false;
+	 }else{
+		return true;
+	}
+}
 	//]]>		
 	</script>
 </h:head>
@@ -102,7 +112,7 @@ function removeclass(){
 			message="Bạn có chắc muốn xoá không?">
 			<p:commandButton value="OK" type="button"
 				styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-			<p:commandButton value="Cancel" type="button" 
+			<p:commandButton value="Cancel" type="button"
 				styleClass="ui-confirmdialog-no " icon="ui-icon-close" />
 		</p:confirmDialog>
 	</h:form>
@@ -113,11 +123,11 @@ function removeclass(){
 
 				<div class="wrapper">
 					<div class="logo">
-						<p:commandLink
-							action="#{applicationBean.logoutHome()}">
+						<p:commandLink action="#{applicationBean.logoutHome()}">
 							<img src="#{request.contextPath}/resources/gfx/lixco_logo.png"
-							style="width: 100px; height: 50px" /><span
-							style="color: rgba(128, 128, 128, 0.27); font-weight: bold; font-size: 12px;">
+								style="width: 100px; height: 50px" />
+							<span
+								style="color: rgba(128, 128, 128, 0.27); font-weight: bold; font-size: 12px;">
 								#{sessionScope.database} </span>
 						</p:commandLink>
 					</div>
@@ -155,7 +165,7 @@ function removeclass(){
 								</ul></li>
 							<li class="space" />
 							<li><h:form id="notice">
-									
+
 									<p:commandLink update=":danhsachthongbao,:notice"
 										oncomplete="PF('thongbaohethong').show();"
 										action="#{applicationBean.showNoticeSystem}">
@@ -190,7 +200,8 @@ function removeclass(){
 			<div style="width: 1290px; margin: auto;">
 				<h:form id="formmenutitlebar">
 					<p:sticky target="tb" />
-					<p:menubar id="tb" model="#{menuBean.model}" styleClass="menubar" style="padding-top:2px !important; padding-bottom:2px !important;">
+					<p:menubar id="tb" model="#{menuBean.model}" styleClass="menubar"
+						style="padding-top:2px !important; padding-bottom:2px !important;">
 						<f:facet name="options">
 							<p:inputText style="margin-right:10px; width:150px;"
 								placeholder="Search" />
