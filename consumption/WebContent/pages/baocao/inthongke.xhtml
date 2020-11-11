@@ -64,7 +64,6 @@
 									filterFunction="#{abstractCustomFilter.filterByText}">
 									<h:outputText value="#{item.customer_name}" />
 								</p:column>
-
 							</p:dataTable>
 						</div>
 					</div>
@@ -113,7 +112,8 @@
 								<div class="col-md-2"
 									style="margin: 0 auto; text-align: center; background-color: #3b8e4a; margin-top: 20px; height: 50px">
 									<span
-										style="color: white; font-weight: bold; height: 100%; margin: none; vertical-align: middle">So với</span>
+										style="color: white; font-weight: bold; height: 100%; margin: none; vertical-align: middle">So
+										với</span>
 								</div>
 								<div class="col-md-5" style="">
 									<div class="row">
@@ -182,13 +182,12 @@
 								style="margin-top: 5px; margin-bottom: 5px">
 								<div class="col-md-3"></div>
 								<div class="col-md-3">
-									<p:commandLink process="@this"
-										action="#{contractBean.printPDFProcessContract()}"
-										styleClass="btn_printtt"
+									<p:commandButton process="@this"
+										actionListener="#{baoCaoInThongKe.xuatPDF()}" ajax="false"
+										onclick="this.form.target='_blank'" icon="fa fa-file-pdf-o"
+										value="Xuất PDF"
 										style="margin-left:0px; margin-right:3px; height:29px !important;line-height:29px !important;background-color:#bc1515!important">
-										<i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-										<span>Xuất PDF</span>
-									</p:commandLink>
+									</p:commandButton>
 								</div>
 								<div class="col-md-3">
 									<p:commandLink ajax="false" styleClass="btn_printtt"

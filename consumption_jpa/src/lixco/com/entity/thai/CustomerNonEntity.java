@@ -1,14 +1,24 @@
 package lixco.com.entity.thai;
 
 public class CustomerNonEntity {
+	private long id;
 	private String customer_code;// mã khách hàng
 	private String customer_name;// tên khách hàng
 	private String cell_phone;
 
-	public CustomerNonEntity(String customer_code, String customer_name, String cell_phone) {
+	public CustomerNonEntity(long id, String customer_code, String customer_name, String cell_phone) {
+		this.id = id;
 		this.customer_code = customer_code;
 		this.customer_name = customer_name;
 		this.cell_phone = cell_phone;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getCustomer_code() {

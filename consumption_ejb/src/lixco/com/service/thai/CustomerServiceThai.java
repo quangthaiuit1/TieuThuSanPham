@@ -43,10 +43,10 @@ public class CustomerServiceThai extends AbstractService<Customer> {
 		return ct;
 	}
 
-	public List<Customer> findByCity(long cityId) {
+	public List<CustomerNonEntity> findByCity(long cityId) {
 		// primary
 		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<Customer> cq = cb.createQuery(Customer.class);
+		CriteriaQuery<CustomerNonEntity> cq = cb.createQuery(CustomerNonEntity.class);
 		Root<Customer> root = cq.from(Customer.class);
 		List<Predicate> queries = new ArrayList<>();
 		if (cityId != 0) {
@@ -61,14 +61,14 @@ public class CustomerServiceThai extends AbstractService<Customer> {
 		Predicate finalPredicate = cb.and(data);
 		// cq.where(finalPredicate);
 
-		cq.select(cb.construct(Customer.class, root.get("id"), root.get("customer_code"), root.get("customer_name")))
-				.where(finalPredicate);
-		TypedQuery<Customer> query = em.createQuery(cq);
-		List<Customer> results = query.getResultList();
+		cq.select(cb.construct(CustomerNonEntity.class, root.get("id"), root.get("customer_code"),
+				root.get("customer_name"), root.get("cell_phone"))).where(finalPredicate);
+		TypedQuery<CustomerNonEntity> query = em.createQuery(cq);
+		List<CustomerNonEntity> results = query.getResultList();
 		if (!results.isEmpty()) {
 			return results;
 		} else {
-			return new ArrayList<Customer>();
+			return new ArrayList<CustomerNonEntity>();
 		}
 	}
 }
