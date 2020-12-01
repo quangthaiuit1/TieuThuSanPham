@@ -17,7 +17,7 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/FontReport.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/netjavacom.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/unicodeconverter.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.jboss.ide.eclipse.as.core.server.runtime.runtimeTarget/tieuthusanpham">
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.jboss.ide.eclipse.as.core.server.runtime.runtimeTarget/JBoss EAP 6.1+ Runtime">
 		<attributes>
 			<attribute name="owner.project.facets" value="jst.jsf;jst.web"/>
 		</attributes>

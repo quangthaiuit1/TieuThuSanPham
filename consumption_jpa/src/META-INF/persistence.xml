@@ -12,9 +12,9 @@
 			<property name="hibernate.connection.isolation" value="0" />
 		</properties>
 	</persistence-unit>
-	<persistence-unit name="account_jpa" transaction-type="JTA">
+	<persistence-unit name="account_jpa2" transaction-type="JTA">
 	  <provider>org.hibernate.ejb.HibernatePersistence</provider>
-		<jta-data-source>java:/account</jta-data-source>
+		<jta-data-source>java:/account_j2</jta-data-source>
 		<properties>
 			<!--Hibernate properties -->
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />

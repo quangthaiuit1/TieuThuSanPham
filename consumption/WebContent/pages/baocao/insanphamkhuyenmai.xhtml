@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/home.xhtml">
+
+
+	<ui:define name="content">
+		<style>
+.ui-datatable-scrollable-body {
+	outline: none;
+}
+</style>
+		<h3 style="margin: 0px">In sản phẩm khuyến mãi</h3>
+		<p:separator />
+		<div class="col-md-12"
+			style="padding-left: 0px !important; padding-right: 0px !important;">
+			<p:growl id="growlInThongKe" showDetail="true" sticky="false" />
+			<h:form id="menuformid">
+
+				<div class="col-md-12"
+					style="padding-left: 0px !important; padding-right: 0px !important; background-color: #eeeeee; height: 100%">
+					<div class="col-md-6"
+						style="border: 1px solid black; border-radius: 5px; padding-left: 0px !important; padding-right: 0px !important; background-color: #eeeeee; height: 100%">
+						<div class="row"
+							style="margin-top: 20px; width: 100%; border-radius: 5px; text-align: center">
+
+							<h:outputText value="Chọn khu vực: "
+								style="font-weight:bold;margin-right:5px" />
+							<p:selectOneMenu value="#{baoCaoInSPKhuyenMai.citySelected}"
+								converter="abstractConverter" effect="fade" var="t" id="kdgtc"
+								style="width:150px;" filter="true" filterMatchMode="custom"
+								filterFunction="customFilter">
+								<p:ajax process="@this"
+									listener="#{baoCaoInSPKH.ajaxHandleShowCustomerByCity()}"
+									update="dtKhachHang,growlInThongKe" />
+								<f:selectItems value="#{baoCaoInSPKhuyenMai.allCity}" var="loop"
+									itemLabel="#{loop.city_name}" itemValue="#{loop}" />
+								<p:column>
+									<h:outputText value="#{t.city_name}" />
+								</p:column>
+							</p:selectOneMenu>
+							<br />
+							<p:dataTable var="item" value="#{baoCaoInSPKhuyenMai.customersByCity}"
+								selection="#{baoCaoInSPKhuyenMai.selectedsCustomer}"
+								rowKey="#{item.id}" id="dtKhachHang" scrollHeight="500"
+								scrollable="true" paginatorPosition="bottom"
+								style="margin-top:20px;width:100%"
+								rowsPerPageTemplate="100,150,200" paginator="true" rows="100">
+								<p:column selectionMode="multiple"
+									style="width:10%;text-align:center" />
+								<p:column headerText="Mã khách hàng"
+									style="text-align:center;width:25%">
+									<h:outputText value="#{item.customer_code}" />
+								</p:column>
+								<p:column headerText="Tên khách hàng"
+									style="text-align:center;width:63%"
+									filterBy="#{item.customer_name}"
+									filterFunction="#{abstractCustomFilter.filterByText}">
+									<h:outputText value="#{item.customer_name}" />
+								</p:column>
+							</p:dataTable>
+						</div>
+					</div>
+					<div class="col-md-6"
+						style="padding-left: 0px !important; padding-right: 0px !important; background-color: #eeeeee; height: 100%">
+						<div class="row"
+							style="margin-top: 10px; width: 100%; margin: 0 auto; border-radius: 5px">
+							<div class="col-md-12"
+								style="border: 1px solid black; border-radius: 5px; padding: 5px">
+								<div class="col-md-5">
+									<div class="row">
+										<div class="col-md-6">
+											<p:outputLabel value="Từ tháng:" style="float:left" />
+										</div>
+										<div class="col-md-6">
+											<p:spinner style="float:left" min="1" max="12"
+												value="#{baoCaoInSPKhuyenMai.fromMonth}">
+
+											</p:spinner>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-6">
+											<p:outputLabel value="Đến tháng:" style="float:left" />
+										</div>
+										<div class="col-md-6">
+											<p:spinner style="float:left" min="1" max="12"
+												value="#{baoCaoInSPKhuyenMai.toMonth}">
+
+											</p:spinner>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-6">
+											<p:outputLabel value="Năm:" style="float:left" />
+										</div>
+										<div class="col-md-6">
+											<p:spinner style="float:left" min="2000" max="3000"
+												value="#{baoCaoInSPKhuyenMai.year}">
+
+											</p:spinner>
+										</div>
+									</div>
+
+								</div>
+								<div class="col-md-2"
+									style="margin: 0 auto; text-align: center; background-color: #3b8e4a; margin-top: 20px; height: 50px">
+									<span
+										style="color: white; font-weight: bold; height: 100%; margin: none; vertical-align: middle">So
+										với</span>
+								</div>
+								<div class="col-md-5" style="">
+									<div class="row">
+										<div class="col-md-6">
+											<p:outputLabel value="Từ tháng:" style="float:left" />
+										</div>
+										<div class="col-md-6">
+											<p:spinner style="float:left" min="1" max="12"
+												value="#{baoCaoInSPKhuyenMai.compareFromMonth}">
+
+											</p:spinner>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-6">
+											<p:outputLabel value="Đến tháng:" style="float:left" />
+										</div>
+										<div class="col-md-6">
+											<p:spinner style="float:left" min="1" max="12"
+												value="#{baoCaoInSPKhuyenMai.compareToMonth}">
+
+											</p:spinner>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-6">
+											<p:outputLabel value="Năm:" style="float:left" />
+										</div>
+										<div class="col-md-6">
+											<p:spinner style="float:left" min="2000" max="3000"
+												value="#{baoCaoInSPKhuyenMai.compareYear}">
+
+											</p:spinner>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12"
+							style="border: 1px solid black; border-radius: 5px; margin-top: 1px">
+							<h:panelGrid columns="2" style="margin-bottom:10px"
+								cellpadding="5">
+								<h:outputText value="Chọn báo cáo" style="font-weight:bold" />
+								<br />
+								<p:selectOneRadio id="city"
+									value="#{baoCaoInSPKhuyenMai.reportSelected}" layout="grid"
+									columns="2">
+									<f:selectItem itemLabel="In tổng kết chi phí hoa hồng"
+										itemValue="CPHH" />
+									<f:selectItem
+										itemLabel="In bảng tổng hợp xuất khuyến mãi"
+										itemValue="THXKM" />
+									<f:selectItem itemLabel="Kiểm tra khuyến mãi"
+										itemValue="KTKM" />
+									<p:ajax process="@this" />
+								</p:selectOneRadio>
+							</h:panelGrid>
+							<div class="col-md-12"
+								style="margin-top: 5px; margin-bottom: 5px">
+								<div class="col-md-3"></div>
+								<div class="col-md-3">
+									<p:commandButton process="@this"
+										actionListener="#{baoCaoInSPKhuyenMai.xuatPDF()}" ajax="false"
+										onclick="this.form.target='_blank'" icon="fa fa-file-pdf-o"
+										value="Xuất PDF"
+										style="margin-left:0px; margin-right:3px; height:29px !important;line-height:29px !important;background-color:#bc1515!important">
+									</p:commandButton>
+								</div>
+								<div class="col-md-3">
+									<p:commandLink ajax="false" styleClass="btn_printtt"
+										style="margin-left:0px; margin-right:3px; height:29px !important;line-height:29px !important;background-color:#008000!important"
+										action="#{contractBean.exportExcel()}" title="Xuất file excel">
+										<i class="fa fa-file-excel-o" aria-hidden="true"></i>
+										<span>Xuất Excel</span>
+									</p:commandLink>
+								</div>
+								<div class="col-md-3"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</h:form>
+		</div>
+		<p:dialog widgetVar="dlgup1" resizable="false"
+			styleClass="dislogUpload" header="Tải File">
+			<h:form id="dlgup1" enctype="multipart/form-data">
+				<p:fileUpload style="text-align:center" id="fileupload"
+					dragDropSupport="true" allowTypes="/(\.|\/)(xls|xlsx)$/"
+					label="Chọn file từ máy tính" cancelLabel="Huỷ" update=":messages"
+					uploadLabel="Tải lên" multiple="false"
+					fileUploadListener="#{goodsReceiptNoteBean.loadFileExcel}"
+					mode="advanced" process="@this,dlgup1" />
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

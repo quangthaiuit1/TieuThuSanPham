@@ -13,7 +13,7 @@ import org.json.simple.JSONObject;
 
 public class CommonModel {
 
-    public static final byte HEADER_HTML = 0;
+	public static final byte HEADER_HTML = 0;//account_j2
     public static final byte HEADER_JS = 1;
     public static final byte HEADER_TEXT_PAINT = 2;
 

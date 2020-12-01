@@ -20,14 +20,13 @@ public class AccountCustomService extends AbstractService<Object>{
 	
 	protected final Logger logger = Logger.getLogger(getClass());
 	
-	@PersistenceContext( unitName="account_jpa")
+	@PersistenceContext( unitName="account_jpa2")
 	private EntityManager account;
 	@Resource
 	private SessionContext ct;
 	
 	@Override
 	protected Class<Object> getEntityClass() {
-		// TODO Auto-generated method stub
 		return Object.class;
 	}
 
