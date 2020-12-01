@@ -1,4 +1,4 @@
-package lixco.com.bean.thai;
+package lixco.com.bean.thai.staticentity;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
